@@ -1,0 +1,28 @@
+
+
+1.从live.500.com网站爬去比赛场次，和赔率数据。
+
+2.通过parse_item.py文件进行解析，讲每一项参数解析出来。
+
+3.将解析出来的数据存入数据库。
+
+4.从数据库中读出当天符合投注策略需要的比赛信息。
+	
+	每一场比赛需要的信息：
+		比赛序列	match_date(8) + match_order(3) + match_type(8)	12-21-006		varchar(19)
+		比赛类型	match_type(8)					世外亚洲		varchar(8)
+		比赛日期	match_date(5)					12-21			varchar(5)
+		比赛时间	match_time(5)					02:30			varchar(5)			
+		比赛状态	match_status(4)					未/90+			varchar(4)
+		比赛球队一	team_one(16)					[12]拉斯帕尔马	varchar(16)
+		比分		score(5)						13-11			varchar(5)	
+		比赛球队二	team_two(16)									varchar(16)
+		半场结果	match_result_half(2)			胜/负/平		varchar(2)
+		全场结果	match_result_finnal(2)			胜/负/平		varchar(2)
+		主赔		home_team_odds					1.65			float
+		平赔		draw_odds						3.20			float
+		客赔		visiting_team_odds				4.16			float
+	
+	create table t_soccer(match_sequence varchar(11), match_type varchar(8), match_date varchar(5), match_time varchar(5), match_status varchar(4), team_one varchar(16), score varchar(5), team_two varchar(16), match_result_half varchar(2), match_result_finnal varchar(2), home_team_odds float, draw_odds float, visiting_team_odds float);
+	
+5.根据投资策略生成投注的场次和金额。

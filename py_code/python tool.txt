@@ -1,0 +1,17 @@
+
+Jupyter NoteBook
+
+
+
+Anaconda
+开发环境
+
+第三方数据处理库
+NumPy		数据处理
+Pandas
+MatPlotLib	绘图工具
+scipy
+
+django
+tornado
+fask
