@@ -32,9 +32,14 @@ turnover:换手率[注：指数无此项]
 '''
 
 import tushare as ts
+import datetime
+
+stock_code = input('Please input stocke code:')
+
+date = datetime.date.today()
 
 # 获取某只股票数据
-# print(ts.get_hist_data('600487', start='2018-01-05',end='2018-04-18'))
+#print(ts.get_hist_data('600487', start='2018-01-05',end='2018-04-18'))
 
 # 基金持股情况
 # print(ts.fund_holdings(2017, 3))
@@ -47,5 +52,33 @@ import tushare as ts
 #print(ts.get_index())
 #print(ts.realtime_boxoffice())
 #print(ts.get_deposit_rate().rate)
-#print(ts.get_sina_dd('300395', date='2018-08-14', vol=300)) #默认400手
-print(ts.get_notices('300395'))
+
+#大单交易数据
+dd = ts.get_sina_dd(stock_code, date= date, vol=100)
+#type = ts.get_sina_dd(stock_code, date= date, vol=100).type
+print(ts.get_sina_dd(stock_code, date= date, vol=100)) #默认400手
+
+buy_vol = 0
+sell_vol = 0
+print(type(dd))
+
+for d in dd:
+	print(type(d))
+	if '买盘' in d:
+		buy_vol += d.volume
+	else:
+		sell_vol += d.volume
+
+print('buy:%d,sell:%d' % (buy_vol,sell_vol))
+#print(ts.get_notices('300395'))
+
+
+
+
+
+
+
+
+
+
+

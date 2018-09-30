@@ -2,6 +2,7 @@
 import datetime
 import time
 
+#compare with am 10:00, before of late
 def time_compare_am10():
 	'''
 	功能：	比较当前时间是10之前，还是10点之后
@@ -33,7 +34,7 @@ def get_time_stamp():
 	
 	return time_str
 
-	
+#get am 9:00 of next day	
 def get_next_day_am9():
 	today = datetime.date.today()
 	tomorrow = today + datetime.timedelta(days=1)
@@ -54,7 +55,7 @@ def compare_to_next_am9(time):
 	else:
 		return False
 
-#
+#construct time format "%Y-%m-%d %H:%M:%S"
 def date_time_struct(date, time):
 	year = datetime.datetime.now().year
 	date = str(year) + '-' + date + ' ' + time
@@ -62,7 +63,12 @@ def date_time_struct(date, time):
 
 	return date
 	
-	
+#get month from date
+def get_month_from_date(date):
+	#print(type(date))
+	date_f = datetime.datetime.strptime(date, "%Y-%m-%d")
+	#print(date_f.month)
+	return date_f.month
 
 
 
@@ -70,8 +76,9 @@ def date_time_struct(date, time):
 if __name__ == "__main__":
 	#time  = datetime.datetime.now()
 	#compare_to_next_am9(time)
-	date_time_stuct('10-18', '10:00:00')
-	print(time)
+	#date_time_stuct('10-18', '10:00:00')
+	#print(time)
+	get_month_from_date("2018-02-03")
 	
 	
 
