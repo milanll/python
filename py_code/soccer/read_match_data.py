@@ -29,15 +29,15 @@ def read_match_data(choice):
 	
 	if file_list is None:
 		print('no such file')
-		return
+		return None
 		
 	if (match_data_file_name not in file_list):
 		print('No match data file!')
-		return
+		return None
 	
 	if (match_odds_file_name not in file_list):
 		print('No odds file!')
-		return
+		return None
 	
 	with open(f'./match_data/{match_data_file_name}', 'r') as f:
 		match_data = json.load(f)

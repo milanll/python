@@ -55,40 +55,146 @@ power_smooth = spline(T,power,xnew)
 plt.plot(xnew,power_smooth)
 plt.show()
 
+(3)设置坐标轴刻度
+
+my_x_ticks = np.arange(-5, 5, 0.5)      #显示范围为-5至5，每0.5显示一刻度
+my_y_ticks = np.arange(-2, 2, 0.2)      #显示范围为-2至2，每0.2显示一刻度
+plt.xticks(my_x_ticks)
+plt.yticks(my_y_ticks)
+
+(4)设置网格
+matplotlin.pyplot.grid(b, which, axis, color, linestyle, linewidth， **kwargs)
+
+grid()参数有很多，这里只列举了我此次工作中用到的几个：
+
+    b : 布尔值。就是是否显示网格线的意思。官网说如果b设置为None， 且kwargs长度为0，则切换网格状态。但是没弄明白什            么意思。如果b设置为None，但是又给了其它参数，则默认None值失效。
+
+    which : 取值为'major', 'minor'， 'both'。 默认为'major'。看别人说是显示的我的是Windows7下，用Sublime跑的，minor                 只是一个白画板，没有网格，major和both也没看出什么效果，不知道为什么。
+
+    axis : 取值为‘both’， ‘x’，‘y’。就是想绘制哪个方向的网格线。不过我在输入参数的时候发现如果输入x或y的时候，             输入的是哪条轴，则会隐藏哪条轴
+
+    color : 这就不用多说了，就是设置网格线的颜色。或者直接用c来代替color也可以。
+
+    linestyle :也可以用ls来代替linestyle， 设置网格线的风格，是连续实线，虚线或者其它不同的线条。 | '-' | '--'                        | '-.' | ':' | 'None' | ' ' | '']
+
+    linewidth : 设置网格线的宽度
+
 '''
 import csv
+import copy
 from datetime import datetime
 
-filename = 'E:/7_python/code/soccer/bet_record/bet_record_18-19.csv'
-with open(filename) as f:
-	reader = csv.reader(f)
-	header_row=next(reader) #返回文件中的下一行
-	dates, counts = [], []
-	
-	#row = [Date,Balance,Cost]
-	#计算成本总额
-
-	for row in reader:
-		#date = datetime.strptime(row[0],'%Y-%m-%d')
-		date = row[0]
-		dates.append(date)
+import sys;
+sys.path.append("../time_chenll")
+from time_manage import get_month_from_date
+#read data from bet_record.csv, return dates list and balance list
+def read_record():
+	filename = 'E:/git/py_code/soccer/bet_record/bet_record_18-19.csv'
+	with open(filename) as f:
+		reader = csv.reader(f)
+		header_row = next(reader) #返回文件中的下一行
+		#dates, balance, costs = [], [], []
 		
-		count = int(row[1])
-		counts.append(count)
-#
+		#row = [Date,Balance,Cost,Mark]
+		#计算成本总额
+		cost = 0
+		bet_data = {}
+		for row in reader:
+			#date = datetime.strptime(row[0],'%Y-%m-%d')
+			date = row[0]
+			#dates.append(date)
 
-import matplotlib.pyplot as plt #importing matplot lib library
-import numpy as np
-from scipy.interpolate import spline
+			#成本
+			cost += int(row[2])
+			
+			count = int(row[1]) - cost
+			#balance.append(count)
+			
+			bet_data[date] = count
+		
+	return bet_data
 
-fig=plt.figure(dpi=80,figsize=(10,6))
-x = dates 
-#x_new = np.linspace(dates, dates[0], dates[len(dates) - 1])
-#print x, print and check what is x
-y = counts
-#y_new = spline(x,y,x_new)
-#print y
-plt.plot(x,y) #plotting x and y
-fig.autofmt_xdate()  #绘制斜的日期标签
-plt.show()
+#order bet_data by month
+#param [in]	:	dict data
+#return		:	dict data_month
+def read_data_every_month(data):
+	i = 0
+	j = 0
+	data_month = {}
+	data_one_month = []
+	data_one_month_1 = []
 
+	for (k, v) in data.items():
+		if i == 0:
+			i = get_month_from_date(k)
+			j = i
+			data_one_month.append(v)
+		else:
+			i = get_month_from_date(k)
+			if i == j:
+				data_one_month.append(v)
+			else:
+				data_one_month_1 = copy.deepcopy(data_one_month)
+				data_month[j] = data_one_month_1
+				#print(data_month.items())
+				data_one_month.clear()
+
+				j = i
+				data_one_month.append(v)
+				
+	data_month[i] = data_one_month
+	
+	#print(data_month.items())
+	return data_month
+	
+#draw chart according to dates list and balance list
+#param [in]:	list data
+def draw_chart(data):
+	import matplotlib.pyplot as plt #importing matplot lib library
+	import numpy as np
+	from scipy.interpolate import spline
+
+	fig=plt.figure(dpi=80,figsize=(10,6))
+	x = data.keys()
+	#x_new = np.linspace(dates, dates[0], dates[len(dates) - 1])
+	#print x, print and check what is x
+	y = data.values()
+
+	# 实现插值的模块
+	from scipy import interpolate
+	#y_new = spline(x,y,x_new)
+	#print y
+	print(len(x))
+	plt.plot(x,y) #plotting x and y
+	fig.autofmt_xdate()  #绘制斜的日期标签
+
+	#设置网格
+	plt.grid(axis = 'y')
+	plt.show()
+
+if __name__ == '__main__':
+	data = read_record()
+	data_month = read_data_every_month(data)
+	print(data_month)
+	#draw_chart(data)
+	#read_data_every_month(dates)
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
