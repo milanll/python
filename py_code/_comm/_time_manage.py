@@ -63,10 +63,6 @@ def date_time_struct(date, time):
 	return date
 	
 	
-
-
-
-
 if __name__ == "__main__":
 	#time  = datetime.datetime.now()
 	#compare_to_next_am9(time)

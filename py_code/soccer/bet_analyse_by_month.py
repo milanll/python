@@ -84,16 +84,12 @@ import csv
 import copy
 from datetime import datetime
 
-'''
 import sys;
 sys.path.append("../time_chenll")
 from time_manage import get_month_from_date
-'''
-
 #read data from bet_record.csv, return dates list and balance list
 def read_record():
-	#filename = 'E:/git/python/py_code/soccer/bet_record/bet_record_18-19.csv'
-	filename = 'E:/git/python/py_code/soccer/bet_record/bet_record_week_18-19.csv'
+	filename = 'E:/git/py_code/soccer/bet_record/bet_record_18-19.csv'
 	with open(filename) as f:
 		reader = csv.reader(f)
 		header_row = next(reader) #返回文件中的下一行
@@ -118,6 +114,38 @@ def read_record():
 		
 	return bet_data
 
+#order bet_data by month
+#param [in]	:	dict data
+#return		:	dict data_month
+def read_data_every_month(data):
+	i = 0
+	j = 0
+	data_month = {}
+	data_one_month = []
+	data_one_month_1 = []
+
+	for (k, v) in data.items():
+		if i == 0:
+			i = get_month_from_date(k)
+			j = i
+			data_one_month.append(v)
+		else:
+			i = get_month_from_date(k)
+			if i == j:
+				data_one_month.append(v)
+			else:
+				data_one_month_1 = copy.deepcopy(data_one_month)
+				data_month[j] = data_one_month_1
+				#print(data_month.items())
+				data_one_month.clear()
+
+				j = i
+				data_one_month.append(v)
+				
+	data_month[i] = data_one_month
+	
+	#print(data_month.items())
+	return data_month
 	
 #draw chart according to dates list and balance list
 #param [in]:	list data
@@ -125,9 +153,8 @@ def draw_chart(data):
 	import matplotlib.pyplot as plt #importing matplot lib library
 	import numpy as np
 	from scipy.interpolate import spline
-	
-	figsize_x = len(data) * 0.4;
-	fig=plt.figure(dpi=80,figsize=(figsize_x,6))
+
+	fig=plt.figure(dpi=80,figsize=(10,6))
 	x = data.keys()
 	#x_new = np.linspace(dates, dates[0], dates[len(dates) - 1])
 	#print x, print and check what is x
@@ -147,7 +174,10 @@ def draw_chart(data):
 
 if __name__ == '__main__':
 	data = read_record()
-	draw_chart(data)
+	data_month = read_data_every_month(data)
+	print(data_month)
+	#draw_chart(data)
+	#read_data_every_month(dates)
 
 	
 	
