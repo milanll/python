@@ -143,7 +143,7 @@ def read_record():
 			seed_money = int(row[5])
 			bet_money = int(row[4])
 			if result > 1:
-				odds_obtain = round(money_obtained / money_bet, 2)
+				odds_obtain = round( (earning_money + seed_money) / bet_money, 2)
 			else:
 				odds_obtain = 0
 			
