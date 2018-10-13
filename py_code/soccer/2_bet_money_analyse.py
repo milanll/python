@@ -124,7 +124,7 @@ def read_record():
 def draw_chart(data):
 	import matplotlib.pyplot as plt #importing matplot lib library
 	import numpy as np
-	from scipy.interpolate import spline
+	#from scipy.interpolate import spline
 	
 	figsize_x = len(data) * 0.4;
 	fig=plt.figure(dpi=80,figsize=(figsize_x,6))
@@ -134,7 +134,7 @@ def draw_chart(data):
 	y = data.values()
 
 	# 实现插值的模块
-	from scipy import interpolate
+	#from scipy import interpolate
 	#y_new = spline(x,y,x_new)
 	#print y
 	print(len(x))

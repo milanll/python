@@ -153,13 +153,12 @@ def read_record():
 			#add every row to bet_data(list)
 			bet_data.append(data_1)
 	
-	print_bet_data(bet_data)
-	
 	return bet_data
 
 
 if __name__ == '__main__':
 	data = read_record()
+	print_bet_data(data)
 
 	
 	
