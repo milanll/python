@@ -83,6 +83,8 @@ grid()参数有很多，这里只列举了我此次工作中用到的几个：
 
 ##################		analyse the bet result		###########################################
 
+# -*- coding:utf-8 -*-
+
 import csv
 import copy
 from datetime import datetime
