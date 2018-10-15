@@ -94,7 +94,7 @@ from time_manage import get_month_from_date
 def read_record():
 	#filename = 'E:/git/python/py_code/soccer/bet_record/bet_record_18-19.csv'
 	filename = 'E:/git/python/py_code/soccer/bet_record/bet_record_week_18-19.csv'
-	with open(filename) as f:
+	with open(filename, encoding ='utf-8') as f:
 		reader = csv.reader(f)
 		header_row = next(reader) #返回文件中的下一行
 		#dates, balance, costs = [], [], []

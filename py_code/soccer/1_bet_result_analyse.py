@@ -102,8 +102,8 @@ def print_bet_data(list):
 	#2018-10-11,	2018-10-001,	3,			3,			90,			140
 	print('DATE\t\tBet Number\tEarning Rate\tResult_A\tResult_B\tMoney Bet\tSeed Money\tEarning Money')
 	for e in list:
-		print("%s\t%s\t%s\t\t%s\t\t%s\t\t%s\t\t%s\t\t\t" % (e[0],e[1],e[7],e[2],e[3],e[4],e[5]),e[6])
-		total_earning_rate = total_earning_rate + e[7] - 1
+		print("%s\t%s\t%s\t\t%s\t\t%s\t\t%s\t\t%s\t\t\t" % (e[0],e[1],e[8],e[2],e[3],e[4],e[5]),e[6])
+		total_earning_rate = total_earning_rate + e[8] - 1
 	
 	print("\nTotal Earning Rate: %.2f" % total_earning_rate)
 
@@ -112,16 +112,16 @@ def print_bet_data(list):
 def read_record():
 	#filename = 'E:/git/python/py_code/soccer/bet_record/bet_record_18-19.csv'
 	filename = 'E:/git/python/py_code/soccer/bet_record/bet_result_record_18-19.csv'
-	with open(filename) as f:
+	with open(filename, encoding = 'utf-8') as f:
 		reader = csv.reader(f)
-		#返回文件中的下一行
+		#return next row of the file
 		header_row = next(reader) 
 		
-		#	0				1				2			3			4			5			6
-		#DATE,			Bet Number,		Result_A,	Result_B,	Bet Money,	Seed Money,	Earning Money
-		#2018-10-11,	2018-10-001,	3,			1,			85,			27,			112
-		#2018-10-12,	2018-10-002,	3,			3,			50,			50,			75
-		#2018-10-12,	2018-10-002,	1,			3,			85,			0,			0
+		#	0				1				2			3			4			5			6				7
+		#DATE,			Bet Number,		Result_A,	Result_B,	Bet Money,	Seed Money,	Earning Money,	Team
+		#2018-10-11,	2018-10-001,	3,			1,			85,			27,			112,			鹿岛鹿角
+		#2018-10-12,	2018-10-002,	3,			3,			50,			50,			75,				浦和红钻
+		#2018-10-12,	2018-10-002,	1,			3,			85,			0,			0,				全北现代
 		
 		bet_data = []
 		data = []
