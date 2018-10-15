@@ -105,7 +105,9 @@ def print_bet_data(list):
 		print("%s\t%s\t%s\t\t%s\t\t%s\t\t%s\t\t%s\t\t\t" % (e[0],e[1],e[8],e[2],e[3],e[4],e[5]),e[6])
 		total_earning_rate = total_earning_rate + e[8] - 1
 	
-	print("\nTotal Earning Rate: %.2f" % total_earning_rate)
+	print("\nTotal Earning Rate: %.2f\n" % total_earning_rate)
+	print("Sum of Bet Groups: %d\n" % len(list))
+	print("Average Earning Rate: %.2f" % round(total_earning_rate/len(list), 2))
 
 		
 #read data from bet_result_record_18-19.csv, caculate yield rate
@@ -117,7 +119,7 @@ def read_record():
 		#return next row of the file
 		header_row = next(reader) 
 		
-		#	0				1				2			3			4			5			6				7
+		#	0				1				2			3			4			5			6			7
 		#DATE,			Bet Number,		Result_A,	Result_B,	Bet Money,	Seed Money,	Earning Money,	Team
 		#2018-10-11,	2018-10-001,	3,			1,			85,			27,			112,			鹿岛鹿角
 		#2018-10-12,	2018-10-002,	3,			3,			50,			50,			75,				浦和红钻
