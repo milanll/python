@@ -72,6 +72,7 @@ def print_match_odds(odds_dict):
 #######################################	COMMON MACRO	#################################################
 PY_CODE = 'E:/git/python/py_code'
 C_CODE = 'E:/git/python/c_code'
+GIT_HOME = 'E:/git'
 
 
 

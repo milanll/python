@@ -3,22 +3,20 @@ import json
 import time
 
 import sys;
-sys.path.append("../time_chenll")
-import time_manage
-from time_manage import get_time_stamp		#get_time_stamp()
+sys.path.append("../py_comm")
+from py_time import get_time_stamp		#get_time_stamp()
 
 from get_match_data import get_id			#get_id(url)
 from parse_item import get_items_from_500
 from soccer_comm import print_help, print_match_result
+from soccer_comm import GIT_HOME
 
 #竞彩比分
 url_jc = "https://live.500.com"
 #单场比分
 url_dch = "http://live.500.com/zqdc.php"
 
-def save_match_data():
-	print_help()
-	choice = input('please choice url:')
+def save_match_data(choice):
 	
 	url = url_jc
 
@@ -54,7 +52,7 @@ def save_match_data():
 	
 	#save match data
 	if dict_items:
-		with open(f'./match_data/{time_data_str}.json', 'w') as f:
+		with open(f'{GIT_HOME}/match_data/{time_data_str}.json', 'w') as f:
 			#f.truncate()
 			#f.write(json.dumps(dict_items, ensure_ascii=False, indent=4).encode())
 			data_dict = json.dumps(dict_items)
@@ -71,7 +69,7 @@ def save_match_data():
 	else:
 		#save match odds
 		if dict_odds:
-			with open(f'./match_data/{time_odds_str}.json', 'w') as f:
+			with open(f'{GIT_HOME}/match_data/{time_odds_str}.json', 'w') as f:
 				odds_dict = json.dumps(dict_odds)
 				json.dump(odds_dict, f)
 				
@@ -80,5 +78,7 @@ def save_match_data():
 			print(f"Save match odds OK!!\nfile path: {os.getcwd()}\match_data/{time_odds_str}.json")
 
 if __name__ == '__main__':
-	save_match_data()
+	print_help()
+	choice = input('please choice url:')
+	save_match_data(choice)
 	

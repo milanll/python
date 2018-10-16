@@ -3,12 +3,12 @@ import json
 import time
 
 import sys;
-sys.path.append("../time_chenll")
-import time_manage
-from time_manage import get_time_stamp		#get_time_stamp()
-
+sys.path.append("../py_comm")
+from py_time import get_time_stamp		#get_time_stamp()
 from get_match_data import get_id			#get_id(url)
 from soccer_comm import print_help, print_match_result
+from soccer_comm import GIT_HOME
+from save_match_data import save_match_data
 		
 def read_match_data(choice):
 	time_now = time.strftime("%Y-%m-%d",time.localtime())
@@ -24,7 +24,7 @@ def read_match_data(choice):
 
 	match_odds_file_name = time_now + '_match_odds_' + choice + '.json'
 	
-	file_list = os.listdir(r'E:\7_python\code\soccer\match_data') #返回文件名
+	file_list = os.listdir(f'{GIT_HOME}/match_data/') #返回文件名
 	#print(file_list)
 	
 	if file_list is None:
@@ -33,18 +33,15 @@ def read_match_data(choice):
 		
 	if (match_data_file_name not in file_list):
 		print('No match data file!')
+		save_match_data(choice)
 		return None
 	
-	if (match_odds_file_name not in file_list):
-		print('No odds file!')
-		return None
-	
-	with open(f'./match_data/{match_data_file_name}', 'r') as f:
+	with open(f'{GIT_HOME}/match_data/{match_data_file_name}', 'r') as f:
 		match_data = json.load(f)
 		match_data_dict = json.loads(match_data)
 		f.close()
 	
-	with open(f'./match_data/{match_odds_file_name}', 'r') as f:
+	with open(f'{GIT_HOME}/match_data/{match_odds_file_name}', 'r') as f:
 		odds_data = json.load(f)
 		match_odds_dict = json.loads(odds_data)
 		f.close()

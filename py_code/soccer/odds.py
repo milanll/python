@@ -1,7 +1,7 @@
 
 import sys
-sys.path.append("../time_chenll")
-import time_manage
+sys.path.append("../py_comm")
+import py_time
 
 
 
@@ -34,7 +34,7 @@ def del_key_next_day_match(key_time_1, match_dict):
 	
 	for key in key_time_1:
 		#次日9点之后的比赛，删除
-		if time_manage.compare_to_next_am9(key_time_1[key]):
+		if py_time.compare_to_next_am9(key_time_1[key]):
 			key_temp.append(key)
 						
 	#print('key_temp:\n',key_temp)
@@ -56,7 +56,7 @@ def get_key_match_time(key_list, match_dict):
 	
 	for key in key_list:
 		if key in match_dict:
-			datetiem_1 = time_manage.date_time_struct(match_dict[key]['match_date'], match_dict[key]['match_time'] + ':00')
+			datetiem_1 = py_time.date_time_struct(match_dict[key]['match_date'], match_dict[key]['match_time'] + ':00')
 			key_time[key] = datetiem_1
 			#print(datetiem_1)
 	
