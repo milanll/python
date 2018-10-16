@@ -78,9 +78,10 @@ def calc_profit_every_month(data_month):
 		for e in v:
 			cost += int(v[i][1])
 			i += 1
-			
+		
+		#last record minus first record of a month
 		balance = int(v[-1][0]) - int(v[0][0])
-		print(balance , cost)
+
 		profit = balance - cost
 		profit_month[k] = profit
 	
@@ -95,7 +96,7 @@ if __name__ == '__main__':
 	data_month = order_data_by_month(data)
 	profit_month = calc_profit_every_month(data_month)
 	draw_bar_graph(profit_month)
-	#read_data_every_month(dates)
+
 
 	
 	
