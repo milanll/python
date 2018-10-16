@@ -11,8 +11,8 @@ sys.path.append("../py_comm")
 from py_time import get_month_from_date
 from py_csv import open_csv
 from soccer_comm import PY_CODE
-from soccer_comm import C_CODE
 from soccer_comm import read_record
+from py_matplot import draw_bar_graph
 
 #order bet_data by month
 #[input]: data(dict)		{date:[count, cost]}
@@ -33,7 +33,6 @@ def order_data_by_month(data):
 		m += 1
 		
 		data_day.clear()
-		data_day_1.clear()
 
 		#the first item
 		if i == 0:
@@ -50,7 +49,7 @@ def order_data_by_month(data):
 				data_day.append(count)
 				data_day.append(cost)
 				data_day_1 = copy.deepcopy(data_day)
-				data_one_month.append(data_day)
+				data_one_month.append(data_day_1)
 			else:
 				data_one_month_1 = copy.deepcopy(data_one_month)
 				data_month[j] = data_one_month_1
@@ -61,21 +60,28 @@ def order_data_by_month(data):
 				data_day.append(count)
 				data_day.append(cost)
 				data_day_1 = copy.deepcopy(data_day)
-				data_one_month.append(data_day)
+				data_one_month.append(data_day_1)
 	
 	#add data of last month
 	data_month[i] = data_one_month
-	print(m)
-	print(data_month.values())
+
 	return data_month
 
 #calculate profit every month
-#[input]:	data_month(dict)	{month:[count,count, ......]}
+#[input]:	data_month(dict)	{month:[[count, cost], [count, cost], ....]}
 #[output]:  profit_month(dict)	{month:profit}
 def calc_profit_every_month(data_month):
 	profit_month = {}
+	balance = profit = 0
 	for (k, v) in data_month.items():
-		profit = int(v[-1]) - int(v[0])
+		i = cost = 0
+		for e in v:
+			cost += int(v[i][1])
+			i += 1
+			
+		balance = int(v[-1][0]) - int(v[0][0])
+		print(balance , cost)
+		profit = balance - cost
 		profit_month[k] = profit
 	
 	print(profit_month)
@@ -87,8 +93,8 @@ if __name__ == '__main__':
 	data = read_record(reader)
 
 	data_month = order_data_by_month(data)
-	#profit_month = calc_profit_every_month(data_month)
-	#draw_chart(data)
+	profit_month = calc_profit_every_month(data_month)
+	draw_bar_graph(profit_month)
 	#read_data_every_month(dates)
 
 	

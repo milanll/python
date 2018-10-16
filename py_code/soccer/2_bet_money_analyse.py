@@ -7,7 +7,7 @@ sys.path.append("../py_comm")
 from py_csv import open_csv
 from soccer_comm import PY_CODE
 from soccer_comm import read_record
-from soccer_comm import draw_chart
+from py_matplot import draw_line_chart
 
 #[input]:	data(dict)		{date:[count, cost]}
 #[output]:	profit(dict)	{date:profit}
@@ -18,7 +18,7 @@ def calculate_profit(data):
 		cost += int(v[1])
 		count = int(v[0]) - cost
 		profit[k] = count
-	print(profit)	
+	#print(profit)	
 	return profit
 		
 if __name__ == '__main__':
@@ -26,7 +26,7 @@ if __name__ == '__main__':
 	reader = open_csv(filename)
 	data = read_record(reader)
 	profit = calculate_profit(data)
-	draw_chart(profit)
+	draw_line_chart(profit)
 
 	
 	
