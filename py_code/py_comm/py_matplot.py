@@ -75,8 +75,12 @@ def draw_line_chart(data):
 	from scipy.interpolate import spline
 
 	fig = plt.figure(dpi=80,figsize=(10,6))
-	x = data.keys()
-	y = data.values()
+	x = tuple(data.keys())
+	y = tuple(data.values())
+	
+	#设置标签
+	#for a,b in zip(x, y):
+		#plt.text(a, b+0.05, '%.0f' % b, ha='center', va= 'bottom',fontsize=12)
 
 	print(len(x))
 	plt.plot(x,y) #plotting x and y
