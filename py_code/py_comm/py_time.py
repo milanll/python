@@ -61,13 +61,20 @@ def date_time_struct(date, time):
 	date = datetime.datetime.strptime(date,"%Y-%m-%d %H:%M:%S")
 
 	return date
+
+# [input]: date(str)
+# [output]: month(str)
+def get_month_from_date(date):
+	date = datetime.datetime.strptime(date,'%Y-%m-%d')
+	#print(date.month)
 	
+	return date.month
 	
 if __name__ == "__main__":
 	#time  = datetime.datetime.now()
 	#compare_to_next_am9(time)
-	date_time_stuct('10-18', '10:00:00')
-	print(time)
+	#date_time_stuct('10-18', '10:00:00')
+	get_month_from_date('2018-10-12')
 	
 	
 
