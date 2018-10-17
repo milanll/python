@@ -14,23 +14,27 @@ from soccer_comm import PY_CODE
 from soccer_comm import read_result
 
 #print bet_data
+#[input]	list(list)	[DATE, Bet Number, Result_A, Result_B, Bet Money, Seed Money, Earning Money, Team, Earning Rate, Profit]
 def print_bet_data(list):
-	total_earning_rate = 0
-	#DATE,			Bet Number,		Result_A,	Result_B,	Bet Money,	Money Obtained
-	#2018-10-11,	2018-10-001,	3,			3,			90,			140
+	total_earning_rate = total_profit = 0
+	#  0				1				2			3			4			5			6			7			8			  9								
+	#DATE,			Bet Number,		Result_A,	Result_B,	Bet Money,	Seed Money,	Earning Money,	Team,	Earning Rate, 	Profit
+	#2018-10-11,	2018-10-001,	3,			1,			85,			27,			112,			0,
 	print('DATE\t\tBet Number\tEarning Rate\tResult_A\tResult_B\tMoney Bet\tSeed Money\tEarning Money')
 	for e in list:
 		print("%s\t%s\t%s\t\t%s\t\t%s\t\t%s\t\t%s\t\t\t" % (e[0],e[1],e[8],e[2],e[3],e[4],e[5]),e[6])
-		total_earning_rate = total_earning_rate + e[8] - 1
+		total_earning_rate += e[8] - 1
+		total_profit += e[9]
 	
 	print("\nTotal Earning Rate: %.2f\n" % total_earning_rate)
 	print("Sum of Bet Groups: %d\n" % len(list))
-	print("Average Earning Rate: %.2f" % round(total_earning_rate/len(list), 2))
+	print("Average Earning Rate: %.2f\n" % round(total_earning_rate/len(list), 2))
+	print("Total Profit: ￥%d\n" % total_profit)
 
 		
 #read data from bet_result_record_18-19.csv, caculate yield rate
 #[input]:	bet_result(list)	[Date,Bet Number, Result_A, Result_B, Bet Money, Seed Money, Earning Money, Team]
-#[output]:	bet_data(list)		[Date,Bet Number, Result_A, Result_B, Bet Money, Seed Money, Earning Money, Team, Earning Rate]
+#[output]:	bet_data(list)		[Date,Bet Number, Result_A, Result_B, Bet Money, Seed Money, Earning Money, Team, Earning Rate, Profit]
 def analyse_bet_result(bet_result):
 	#	0				1				2			3			4			5			6			7
 	#DATE,			Bet Number,		Result_A,	Result_B,	Bet Money,	Seed Money,	Earning Money,	Team
@@ -56,13 +60,18 @@ def analyse_bet_result(bet_result):
 		earning_money = int(row[6])
 		seed_money = int(row[5])
 		bet_money = int(row[4])
+		
+		#Earning Rate
 		if result > 1:
 			odds_obtain = round( (earning_money + seed_money) / bet_money, 2)
 		else:
 			odds_obtain = 0
 		
-		#Earning Rate
 		data.append(odds_obtain)
+		
+		#Profit
+		profit = earning_money + seed_money - bet_money
+		data.append(profit)
 		
 		data_1 = copy.deepcopy(data)
 		#add every row to bet_data(list)
