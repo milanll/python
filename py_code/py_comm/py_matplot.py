@@ -197,7 +197,7 @@ def draw_bar_graph(data):
 	x = index = tuple(data.keys())
 
 	# 柱子的宽度
-	width = 0.25
+	width = 0.3
 	
 	#设置柱子标签
 	for a,b in zip(x, y):
@@ -209,14 +209,14 @@ def draw_bar_graph(data):
 	# 设置横轴标签
 	plt.xlabel('Months')
 	# 设置纵轴标签
-	plt.ylabel('rainfall (mm)')
+	plt.ylabel('Money (￥)')
 
 	# 添加标题
 	plt.title('Monthly average rainfall')
 
 	# 添加纵横轴的刻度
 	plt.xticks(x, ('Aug', 'Seb', 'Oct'))
-	plt.yticks(np.arange(min(y), max(y), 100))
+	plt.yticks(np.arange(min(y), max(y), 200))
 
 	# 添加图例
 	#plt.legend(loc="upper right")
