@@ -9,7 +9,9 @@ from get_match_data import get_id			#get_id(url)
 from soccer_comm import print_help, print_match_result
 from soccer_comm import GIT_HOME
 from save_match_data import save_match_data
-		
+
+#[input] 	choice(str)
+#[output]	match_data_dict(dict),	match_odds_dict(dict)		
 def read_match_data(choice):
 	time_now = time.strftime("%Y-%m-%d",time.localtime())
 	
@@ -27,14 +29,20 @@ def read_match_data(choice):
 	file_list = os.listdir(f'{GIT_HOME}/match_data/') #返回文件名
 	#print(file_list)
 	
+	match_data_dict = {}
+	match_odds_dict = {}
+	
 	if file_list is None:
 		print('no such file')
 		return None
 		
 	if (match_data_file_name not in file_list):
 		print('No match data file!')
-		save_match_data(choice)
-		return None
+		if save_match_data(choice):
+			pass
+		else:
+			print('Save match data fail!!')
+			return None, None
 	
 	with open(f'{GIT_HOME}/match_data/{match_data_file_name}', 'r') as f:
 		match_data = json.load(f)

@@ -70,6 +70,8 @@ def match_select(odds_choice, url):
 	#选择“平局赔率”
 	Select(driver.find_element_by_id('sel_odds')).select_by_value("0")
 	
+	input('press enter key to exit.....')
+	
 if __name__ == "__main__":
 	soccer_comm.print_help()
 	url_choice = input('please choice url:')
@@ -93,7 +95,7 @@ if __name__ == "__main__":
 	key_final = odds.del_key_next_day_match(key_time_2, match_dict)
 	
 	match_select(key_final, url)
-	input('press enter key to exit.....')
+	
 	
 	
 		

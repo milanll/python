@@ -16,6 +16,8 @@ url_jc = "https://live.500.com"
 #单场比分
 url_dch = "http://live.500.com/zqdc.php"
 
+#[input] 	choice(str)
+#[output]	True / False
 def save_match_data(choice):
 	
 	url = url_jc
@@ -27,7 +29,7 @@ def save_match_data(choice):
 			time_data_str = time_now + '_match_result_' + choice
 		else:
 			print('your choice is wrong!')
-			return
+			return False
 	else:
 		time_data_str = time_now + '_match_data_' + choice
 		
@@ -42,7 +44,7 @@ def save_match_data(choice):
 		url = url_dch
 	else:
 		print('your choice is wrong!')
-		return
+		return	False
 		
 	dict_items, dict_odds = get_items_from_500(url)
 
@@ -61,6 +63,9 @@ def save_match_data(choice):
 			f.close()
 
 		print(f"Save match data OK!!\nfile path: {os.getcwd()}\match_data/{time_data_str}.json")
+	else:
+		print("Save match data OK!!\n")
+		return False
 	
 	#不保存odds
 	if len(sys.argv) > 1:
@@ -76,7 +81,12 @@ def save_match_data(choice):
 				f.close()
 
 			print(f"Save match odds OK!!\nfile path: {os.getcwd()}\match_data/{time_odds_str}.json")
-
+		else:
+			print("Save match odds OK!!\n")
+			return False
+	
+	return True
+	
 if __name__ == '__main__':
 	print_help()
 	choice = input('please choice url:')
