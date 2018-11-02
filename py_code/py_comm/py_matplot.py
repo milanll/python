@@ -88,7 +88,7 @@ def draw_line_chart(data):
 
 	#设置网格
 	plt.grid(axis = 'y')
-	plt.title("投注盈亏图")
+	plt.title("BetMoneyChart")
 	plt.show()
 
 	
