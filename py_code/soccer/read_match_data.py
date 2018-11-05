@@ -54,7 +54,8 @@ def read_match_data(choice):
 		match_odds_dict = json.loads(odds_data)
 		f.close()
 	
-	print('read dict len: ', len(match_data_dict))
+	print('match_data_dict: ', len(match_data_dict))
+	print('\n')
 	
 	return match_data_dict, match_odds_dict
 	

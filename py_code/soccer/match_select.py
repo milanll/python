@@ -43,7 +43,7 @@ import chardet
 from read_match_data import read_match_data
 
 import soccer_comm
-import odds
+from odds import get_key_final
 
 #竞彩比分
 url_jc = "https://live.500.com"
@@ -54,7 +54,7 @@ url_dch = "http://live.500.com/zqdc.php"
 def match_select(odds_choice, url):
 	driver = webdriver.Chrome()
 	#隐性等待时间为30秒
-	driver.implicitly_wait(3) 
+	#driver.implicitly_wait(3) 
 	
 	#打开网页，并使窗口最大化
 	driver.get(url)
@@ -86,13 +86,7 @@ if __name__ == "__main__":
 		print('url is wrong!')
 		sys.exit()
 	
-	key_list = odds.find_key(odds_dict)
-	
-	key_del_finish = odds.del_key_match_finish(key_list, match_dict)
-	
-	key_time_2 = odds.get_key_match_time(key_del_finish, match_dict)
-	
-	key_final = odds.del_key_next_day_match(key_time_2, match_dict)
+	key_final = get_key_final(odds_dict, match_dict)
 	
 	match_select(key_final, url)
 	

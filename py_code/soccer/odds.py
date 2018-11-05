@@ -2,6 +2,7 @@
 import sys
 sys.path.append("../py_comm")
 import py_time
+import py_config
 
 
 
@@ -10,12 +11,19 @@ def find_key(dict):
 	key = []
 	i = 0
 	
+	#read odds config
+	#home_team_odds_low 		= 1.40
+	#home_team_odds_high 		= 1.85
+	#visiting_team_odds_low 	= 1.50
+	#visiting_team_odds_high 	= 2.00
+	home_team_odds_low, home_team_odds_high, visiting_team_odds_low, visiting_team_odds_high = py_config.read_config('soccer')
+
 	for (k, v) in dict.items():
 		#print(k,v)
 		#防止赔率列表中没有平局赔率(key='0')一项
 		if('0' in v):
 			#选择主场赔率在[1.3,1.8]之间，和客场赔率在[1.3,2.0]之间的比赛场次，保存赔率。
-			if ((v['0'][0] < 1.8) and (v['0'][0] > 1.4)) or ((v['0'][2] < 2.0) and(v['0'][2] > 1.4)):
+			if ((v['0'][0] < home_team_odds_high) and (v['0'][0] > home_team_odds_low)) or ((v['0'][2] < visiting_team_odds_high) and(v['0'][2] > visiting_team_odds_low)):
 				key.append(k)
 			else:
 				i += 1
@@ -94,3 +102,19 @@ def del_key_match_finish(key_list, match_dict):
 	print('key_list_1:', len(key_list))	
 		
 	return key_list
+
+#[input]:	odds_dict(dict)
+#			match_dict(dict)
+#[output]:	key_final
+def get_key_final(odds_dict, match_dict):
+	
+	key_list = find_key(odds_dict)
+	
+	key_del_finish = del_key_match_finish(key_list, match_dict)
+	
+	key_time_2 = get_key_match_time(key_del_finish, match_dict)
+	
+	key_final = del_key_next_day_match(key_time_2, match_dict)
+	
+	return key_final
+	
