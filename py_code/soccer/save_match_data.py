@@ -82,7 +82,7 @@ def save_match_data(choice):
 
 			print(f"Save match odds OK!!\nfile path: {os.getcwd()}\match_data/{time_odds_str}.json")
 		else:
-			print("Save match odds OK!!\n")
+			print("Save match odds Fail!!\n")
 			return False
 	
 	return True
