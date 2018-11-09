@@ -1,10 +1,13 @@
 
 import sys
 sys.path.append("../py_comm")
+
 import py_time
 import py_config
 
-
+dir = "E:\\git\\python\\py_code\\soccer"
+filename = "soccer.conf"
+section = 'odds'
 
 #选择合适的场次的key，根据赔率
 def find_key(dict):
@@ -16,7 +19,7 @@ def find_key(dict):
 	#home_team_odds_high 		= 1.85
 	#visiting_team_odds_low 	= 1.50
 	#visiting_team_odds_high 	= 2.00
-	home_team_odds_low, home_team_odds_high, visiting_team_odds_low, visiting_team_odds_high = py_config.read_config('soccer')
+	home_team_odds_low, home_team_odds_high, visiting_team_odds_low, visiting_team_odds_high = py_config.read_config(dir, filename, section)
 
 	for (k, v) in dict.items():
 		#print(k,v)
@@ -30,7 +33,7 @@ def find_key(dict):
 		else:
 			i += 1
 	print('\n', sys._getframe().f_code.co_name)
-	print('odds_del_key_count: %d' % i)
+	print('delete key by odds, count: %d' % i)
 	print('odds_save_key: %d\n' % len(key))
 	#print(key)
 	return key
@@ -48,7 +51,7 @@ def del_key_next_day_match(key_time_1, match_dict):
 	#print('key_temp:\n',key_temp)
 	print('\n', sys._getframe().f_code.co_name)
 	#print(key_time_1.keys())
-	print('key_temp len: ', len(key_temp))
+	print('delete key which match is in next day, count: ', len(key_temp))
 	for key in key_temp:
 		del key_time_1[key]
 
@@ -93,7 +96,7 @@ def del_key_match_finish(key_list, match_dict):
 			key_temp.append(key)
 			i += 1
 	
-	print('del_key_count: ', i)
+	print('delete key that match finished, count: ', i)
 	print('loop count: ', j)
 	
 	for key in key_temp:

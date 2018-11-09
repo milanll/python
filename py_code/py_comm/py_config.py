@@ -1,4 +1,3 @@
-# !/usr/bin/env python
 # -*- coding:utf-8 -*-  
 
 '''
@@ -22,31 +21,81 @@
 '''
 
 import configparser
-import os
+import os, sys
+import traceback
+import codecs
 
-#[input]	db(str)	'soccer'
+#[input]	dir(str)		"E:\\git\\python\\py_code\\soccer"
+#			filename(str)	"config.conf"
+#[output]	cf()
+def init_config(dir, filename):
+	os.chdir(dir)
+	cf = configparser.ConfigParser()
+	
+	return cf
+
+#[input]	dir(str)		"E:\\git\\python\\py_code\\soccer"
+#			filename(str)	"config.conf"
+#			section(str)	'odds'
+
 #[output]	home_team_odds_low(float)
 #			home_team_odds_high(float)
 #			visiting_team_odds_low(float)
 #			visiting_team_odds_high(float)
-def read_config(db):
-	os.chdir("E:\\git\\python\\py_code\\py_comm")
-	 
-	cf = configparser.ConfigParser()
-	 
-	cf.read("config.conf")
-
-	items = cf.items(db)
-	#print(type(items))
-	#print('db:', items)
+def read_config(dir, filename, section):
+	cf = init_config(dir, filename)
+	cf.read(filename, encoding = 'utf-8')
 	
-	home_team_odds_low 		= cf.getfloat(db, 'home_team_odds_low')
-	home_team_odds_high 	= cf.getfloat(db, 'home_team_odds_high')
-	visiting_team_odds_low 	= cf.getfloat(db, 'visiting_team_odds_low')
-	visiting_team_odds_high = cf.getfloat(db, 'visiting_team_odds_high')
+	home_team_odds_low 		= cf.getfloat(section, 'home_team_odds_low')
+	home_team_odds_high 	= cf.getfloat(section, 'home_team_odds_high')
+	visiting_team_odds_low 	= cf.getfloat(section, 'visiting_team_odds_low')
+	visiting_team_odds_high = cf.getfloat(section, 'visiting_team_odds_high')
 	
 	return home_team_odds_low, home_team_odds_high, visiting_team_odds_low, visiting_team_odds_high
+
+#[input]	section(str)	'odds'
+#			dir(str)		"E:\\git\\python\\py_code\\soccer"
+#			filename(str)	"config.conf"
+#			option(dict)	{'63':'欧罗巴',......}
+def update_option(dir, filename, section, option):
+	cf = init_config(dir, filename)
+	#read config content to cf first, otherwise, config file will be overided
+	try:
+		cf.read(filename, encoding = "utf-8-sig")
+	except:
+		traceback.print_exc()
+		sys.exit()
+		
+	if section not in cf.sections():
+		cf.add_section(section)	
+			
+	for(k, v) in option.items():
+		cf.set(section, k, v)
+	
+	with open(f'{dir}\\{filename}', 'w') as f:
+		try:
+			cf.write(f)
+		except:
+			 traceback.print_exc()
+		
+	#for (k, v) in cf.items('odds'):
+	#	print(k,v)
+	
+	return
+	
 	
 if __name__ == '__main__':
-	items = read_config('soccer')
-	print(float(items[0][1]),float(items[1][1]),float(items[2][1]),float(items[3][1]))
+	dir = "E:\\git\\python\\py_code\\soccer"
+	filename = "soccer.conf"
+	#items = read_config(dir, filename, 'odds')
+	option = {'123':'2.3'}
+	update_option(dir, filename, 'odds', option)
+
+	
+	
+	
+	
+	
+	
+	
+	

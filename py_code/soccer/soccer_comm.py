@@ -159,7 +159,12 @@ def read_result(reader):
 	#print(bet_data)
 	return bet_data
 	
+#[input]	odds_dict(dict)
+def print_odds(odds_dict):
+	for item in odds_dict:
+		print(item)
 	
+	print('\nodds_dict number: ', len(odds_dict))	
 	
 	
 

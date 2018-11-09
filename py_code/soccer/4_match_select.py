@@ -38,9 +38,7 @@ from lxml import etree
 import requests,re,json
 from selenium.webdriver.support.ui import Select
 
-import chardet
-
-from read_match_data import read_match_data
+from read_match_data import read_match_data, read_match_odds
 
 import soccer_comm
 from odds import get_key_final
@@ -76,8 +74,12 @@ if __name__ == "__main__":
 	soccer_comm.print_help()
 	url_choice = input('please choice url:')
 
-	match_dict, odds_dict = read_match_data(url_choice)
-	
+	match_dict = read_match_data(url_choice)
+	odds_dict = read_match_odds(url_choice)
+	if match_dict is None:
+		print('read_match_data() Fail!!')
+		sys.exit()
+		
 	if url_choice == 'jc':
 		url = url_jc
 	elif url_choice == 'dch':

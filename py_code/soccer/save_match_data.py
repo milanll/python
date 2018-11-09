@@ -47,6 +47,8 @@ def save_match_data(choice):
 		return	False
 		
 	dict_items, dict_odds = get_items_from_500(url)
+	
+	print('dict_odds len: ', len(dict_odds))
 
 	# r'input\n' # 非转义原生字符，经处理'\n'变成了'\\'和'n'。也就是\n表示的是两个字符，而不是换行。
 	# u'input\n' # unicode编码字符，python3默认字符串编码方式。
@@ -75,8 +77,8 @@ def save_match_data(choice):
 		#save match odds
 		if dict_odds:
 			with open(f'{GIT_HOME}/match_data/{time_odds_str}.json', 'w') as f:
-				odds_dict = json.dumps(dict_odds)
-				json.dump(odds_dict, f)
+				odds_json = json.dumps(dict_odds)
+				json.dump(odds_json, f)
 				
 				f.close()
 
