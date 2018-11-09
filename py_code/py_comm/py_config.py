@@ -44,7 +44,7 @@ def init_config(dir, filename):
 #			visiting_team_odds_high(float)
 def read_config(dir, filename, section):
 	cf = init_config(dir, filename)
-	cf.read(filename, encoding = 'utf-8')
+	cf.read(filename)
 	
 	home_team_odds_low 		= cf.getfloat(section, 'home_team_odds_low')
 	home_team_odds_high 	= cf.getfloat(section, 'home_team_odds_high')
@@ -61,7 +61,7 @@ def update_option(dir, filename, section, option):
 	cf = init_config(dir, filename)
 	#read config content to cf first, otherwise, config file will be overided
 	try:
-		cf.read(filename, encoding = "utf-8-sig")
+		cf.read(filename)
 	except:
 		traceback.print_exc()
 		sys.exit()
