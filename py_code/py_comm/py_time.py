@@ -45,7 +45,8 @@ def get_next_day_am9():
 	
 	return next_am9
 
-#Return：True(before am9:00 next day),False(after am9:00 next day)	
+#[Return]：	True(before am9:00 next day)
+#			False(after am9:00 next day)	
 def compare_to_next_am9(time):
 	next_am9 = get_next_day_am9()
 	
