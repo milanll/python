@@ -23,7 +23,7 @@ def find_key(odds_dict):
 	home_team_odds_low, home_team_odds_high, visiting_team_odds_low, visiting_team_odds_high = py_config.read_config(dir, filename, section)
 
 	for (k, v) in odds_dict.items():
-		print(k,v)
+		#print(k,v)
 		#防止赔率列表中没有平局赔率(key='0')一项
 		if('0' in v):
 			#选择主场赔率在[1.3,1.8]之间，和客场赔率在[1.3,2.0]之间的比赛场次，保存赔率。
@@ -89,6 +89,11 @@ def del_key_match_finish(key_list, match_dict):
 	key_temp = []
 	for key in key_list:
 		j += 1
+		
+		if key not in match_dict.keys():
+			print('fid %s is not in match dict' % (key))
+			continue
+			
 		'''
 		match status:
 			0	Unplayed match
@@ -96,6 +101,7 @@ def del_key_match_finish(key_list, match_dict):
 			4   Finishied match
 			6 	Delayed match
 		'''
+		#if the match is unplayed, it will be deleted.
 		if '0' != match_dict[key]['match_status']:
 			key_temp.append(key)
 			i += 1

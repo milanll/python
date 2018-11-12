@@ -49,7 +49,7 @@ def get_next_day_am9():
 #			False(after am9:00 next day)	
 def compare_to_next_am9(time):
 	next_am9 = get_next_day_am9()
-	
+	#print(time,next_am9)
 	if time > next_am9:
 		return True
 	else:
