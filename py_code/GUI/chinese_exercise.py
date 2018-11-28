@@ -14,18 +14,15 @@ class show:
     #a group of random numbers
     random_numbers = []
     
-    count = 10
-    j = 0
-    
     def __init__(self):
         
         self.root = Tk()
         self.root.title("语文练习")
-        self.root.geometry('600x500')
+        self.root.geometry('700x550')
         ########
         self.frm = Frame(self.root)
         #Top
-        Label(self.root, text="语文练习", font=('Arial', 15)).pack()
+        Label(self.root, text="语文练习", font=('Arial', 40)).pack()
         self.load_sys()
         self.frm = Frame(self.root)
         
@@ -51,10 +48,25 @@ class show:
         
         self.t_show_bottom = Text(self.frm_R, width=25, height=2, font =('Verdana',20))
         self.t_show_bottom.insert('1.0', '')
-        self.t_show_bottom.pack(side=BOTTOM)
+        self.t_show_bottom.pack()
 
         self.frm_R.pack(side=RIGHT)
         
+        #Bottom
+        '''
+        self.frm_B = Frame(self.frm)
+        Button(self.frm_B, text="设置", command=self.read_word, width=10, height=2, font=('Arial', 10)).pack(side = BOTTOM)
+        
+        self.count_1 = StringVar()
+        Entry(self.frm_B, textvariable=self.count_1, width = 5, font =('Verdana',15)).pack(side=RIGHT)
+        Label(self.frm_B, text = '数量', font =('Arial',12)).pack(side = TOP)
+        
+        self.duration = StringVar()
+        Entry(self.frm_B, textvariable=self.duration, width = 5, font =('Verdana',15)).pack(side=RIGHT)
+        Label(self.frm_B, text = '间隔(S)', font =('Arial',12)).pack()
+
+        self.frm_B.pack(side=RIGHT)
+        '''
         self.frm.pack()
         ########
 
@@ -98,6 +110,9 @@ class show:
         self.text = None
         self.duration = 2
         
+        count = 10
+        count_temp = 0
+        
         try:
             f = open('word.txt', encoding = 'utf-8')
             for line in f:
@@ -133,9 +148,9 @@ class show:
         return random_num
     
     def get_char(self):
-        print(self.random_numbers[self.j], self.j)
-        char = self.characters[self.random_numbers[self.j] - 1]
-        self.j += 1
+        print(self.random_numbers[self.count_temp], self.count_temp)
+        char = self.characters[self.random_numbers[self.count_temp] - 1]
+        self.count_temp += 1
         return char
      
     def show_word(self):
@@ -147,7 +162,7 @@ class show:
         self.timer = threading.Timer(self.duration, self.show_word)
         self.timer.start()
         
-        if self.j == self.count:
+        if self.count_temp == self.count:
             print('Expiry!!')
             self.timer.cancel()
             
@@ -158,7 +173,7 @@ class show:
                 self.t_show_bottom.insert('1.0', char_set)
     
     def reset(self):
-        self.j = 0
+        self.count_temp = 0
         
         self.t_show_top.delete('1.0', 'end')
         self.t_show_mid.delete('1.0', 'end')
