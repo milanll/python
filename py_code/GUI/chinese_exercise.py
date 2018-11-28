@@ -119,8 +119,8 @@ class show:
                 #'lesson_1','秋气了树叶片大飞会个'
                 d = line.strip().split(',')
                 #print(d)
-                for w in d[1]:
-                    if w != ' ':
+                for w in d[4]:
+                    if w != '0' and w != '\t':
                         self.characters.append(w)
             self.len_char = len(self.characters)
             print(self.characters)
