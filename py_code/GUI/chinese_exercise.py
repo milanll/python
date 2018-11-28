@@ -23,7 +23,7 @@ class show:
         
         self.root = Tk()
         self.root.title("语文练习")
-        self.root.geometry('600x400')
+        self.root.geometry('600x500')
         ########
         self.frm = Frame(self.root)
         #Top
@@ -34,13 +34,15 @@ class show:
         #Left
         self.frm_L = Frame(self.frm)
         Button(self.frm_L, text="认字", command=self.read_word, width=10, height=2, font=('Arial', 10)).pack(side=TOP)
-        Button(self.frm_L, text="默写", command=self.write_pinyin, width=10, height=2, font=('Arial', 10)).pack(side=BOTTOM)
+        Button(self.frm_L, text="默写生字", command=self.write_char, width=10, height=2, font=('Arial', 10)).pack()
+        Button(self.frm_L, text="默写拼音", command=self.write_pinyin, width=10, height=2, font=('Arial', 10).pack()
+        Button(self.frm_L, text="退出", command=self.exit_1, width=10, height=2, font=('Arial', 10)).pack(side=BOTTOM)
         self.frm_L.pack(side = LEFT)
 
         #Right
         self.frm_R = Frame(self.frm)
         
-        self.t_show_top = Text(self.frm_R, width=5, height=3, font =('Verdana',100))
+        self.t_show_top = Text(self.frm_R, width=5, height=2, font =('Verdana',100))
         self.t_show_top.insert('1.0', '')
         self.t_show_top.pack(side=TOP)
         
@@ -55,13 +57,29 @@ class show:
         ########
 
     def read_word(self):
-        timer_1 = threading.Timer(0.2, self.show_word)
-        timer_1.start()
+        self.j = 0
+        self.duration = 2
+        self.timer = threading.Timer(0.2, self.show_word)
+        self.timer.start()
            
     def write_pinyin(self):
+        self.j = 0
+        self.duration = 12
+        self.timer = threading.Timer(0.2, self.show_word)
+        self.timer.start()
+    
+    def write_char(self):
         pass
+       
+    def exit_1(self):
+        if self.timer:
+            self.timer.cancel()
+        self.root.destroy()
         
     def load_sys(self):
+        self.timer = None
+        self.duration = 2
+        
         try:
             f = open('word.txt', encoding = 'utf-8')
             for line in f:
@@ -109,12 +127,13 @@ class show:
         self.t_show_top.delete('1.0', 'end')
         self.t_show_top.insert('1.0', char)
         
-        timer = threading.Timer(2, self.show_word)
-        timer.start()
+        self.timer.cancel()
+        self.timer = threading.Timer(self.duration, self.show_word)
+        self.timer.start()
         
         if self.j == self.count:
             print('Expiry!!')
-            timer.cancel()
+            self.timer.cancel()
         
         
 def main():
