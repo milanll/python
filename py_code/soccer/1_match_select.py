@@ -41,7 +41,7 @@ from selenium.webdriver.support.ui import Select
 from read_match_data import read_match_data, read_match_odds
 
 import soccer_comm
-from odds import get_key_final
+from odds_selection import get_key_final, get_match_finished_parse
 
 #竞彩比分
 url_jc = "https://live.500.com"
@@ -49,6 +49,8 @@ url_jc = "https://live.500.com"
 url_dch = "http://live.500.com/zqdc.php"
 
 #根据赔率列表，在网页中选择合适的场次
+#[input]	odds_choice(list)
+#			url(str)
 def match_select(odds_choice, url):
 	driver = webdriver.Chrome()
 	#隐性等待时间为30秒
@@ -73,13 +75,6 @@ def match_select(odds_choice, url):
 if __name__ == "__main__":
 	soccer_comm.print_help()
 	url_choice = input('please choice url:')
-
-	match_dict = read_match_data(url_choice)
-	odds_dict = read_match_odds(url_choice)
-	if match_dict is None:
-		print('read_match_data() Fail!!')
-		sys.exit()
-		
 	if url_choice == 'jc':
 		url = url_jc
 	elif url_choice == 'dch':
@@ -88,7 +83,14 @@ if __name__ == "__main__":
 		print('url is wrong!')
 		sys.exit()
 	
+	match_dict = read_match_data(url_choice)
+	odds_dict = read_match_odds(url_choice)
+	if match_dict is None:
+		print('read_match_data() Fail!!')
+		sys.exit()
+		
 	key_final = get_key_final(odds_dict, match_dict)
+	#key_final = get_match_finished_parse(odds_dict, match_dict)
 	
 	match_select(key_final, url)
 	

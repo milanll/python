@@ -21,7 +21,28 @@ def find_key(odds_dict):
 	#visiting_team_odds_low 	= 1.50
 	#visiting_team_odds_high 	= 2.00
 	home_team_odds_low, home_team_odds_high, visiting_team_odds_low, visiting_team_odds_high = py_config.read_config(dir, filename, section)
-
+	
+	#单场
+	#"730519":{
+	#"0":[1.48,3.89,6.83],		平局赔率
+	#"3":[1.55,3.8,6.5],		bet365
+	#"5":[1.46,3.8,6.28],		澳门彩票
+	#"rqsp":[2.86,4.48,2.33],	参考SP值
+	#"280":[1.45,4.05,6.0],		皇冠
+	#"1055":[1.49,4.03,8.22],
+	#"293":[1.5,4.2,6.5]		威廉希尔
+	#}
+	
+	#竞彩
+	#"730519":{
+	#"0":[1.49,3.89,6.82],		
+	#"3":[1.55,3.8,6.5],
+	#"5":[1.46,3.8,6.28],
+	#"rqsp":[2.28,3.15,2.68],	让球奖金
+	#"sp":[1.34,4.00,7.50],		胜负奖金
+	#"280":[1.45,4.05,6.0],
+	#"293":[1.5,4.2,6.5],
+	
 	for (k, v) in odds_dict.items():
 		#print(k,v)
 		#防止赔率列表中没有平局赔率(key='0')一项
@@ -132,6 +153,51 @@ def get_key_final(odds_dict, match_dict):
 	
 	return key_final
 
+#[brief]:	delete the match finished	
+#[input]:	match_info(dict)
+#[output]:	match_finished(dict)
+def get_match_finished(match_info):
+	match_finished = {}
+	'''
+	match status:
+		0	Unplayed match
+		3  	Ongoing match
+		4   Finishied match
+		6 	Delayed match
+	'''
+	for (k, v) in match_info.items():
+		if '4' == v['match_status']:
+			match_finished[k] = v
+	
+	return match_finished
+
+#[brief]:	delete the match finished	
+#[input]:	match_info(dict)
+#			odds(list)
+#[output]:	match_finished(dict)
+def get_final_odds(match_info, odds):
+	odds_ret = []
+	
+	for e in odds:
+		if e in match_info.keys():
+			odds_ret.append(e)
+	
+	print(odds_ret)
+	return odds_ret
+
+#[brief]:	select the match finished ,and odds is appropriate, for analyse	
+#[input]:	odds_dict(dict)
+#			match_dict(dict)
+#[output]:	odds(list)	
+def get_match_finished_parse(odds_dict, match_dict):
+
+	odds = find_key(odds_dict)
+	
+	match_finished = get_match_finished(match_dict)
+	
+	odds = get_final_odds(match_finished, odds)
+	
+	return odds
 	
 if __name__ == "__main__":
 	from soccer_comm import print_help
@@ -146,7 +212,8 @@ if __name__ == "__main__":
 		print('read_match_data() Fail!!')
 		sys.exit()	
 	
-	get_key_final(odds_dict, match_dict)	
+	#get_key_final(odds_dict, match_dict)	
+	get_match_finished_parse(odds_dict, match_dict)
 		
 		
 		

@@ -74,6 +74,10 @@ PY_CODE = 'E:/git/python/py_code'
 C_CODE = 'E:/git/python/c_code'
 GIT_HOME = 'E:/git'
 
+#竞彩比分
+URL_JC = "https://live.500.com"
+#单场比分
+URL_DCH = "http://live.500.com/zqdc.php"
 
 
 #read csv files

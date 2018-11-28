@@ -1,6 +1,10 @@
 # -*- coding: UTF-8 -*-
 
+import sys
+sys.path.append("../py_comm")
+
 from get_match_data import get_id
+import re
 
 '''
 {
@@ -20,6 +24,44 @@ from get_match_data import get_id
 	"match_score_finnal": match_score_finnal
 }
 '''
+
+#[brief]	change the match result to 3,1,0, if the match finished.
+#[input]	match_info(str)		{'736775': ..., {'match_result_half': '5-4'}, ...}
+#[output]	match_info(str)		{'736775': ..., {'match_result_half': '3'}, ...}
+def tanslate_score(match_info):
+	
+	for (k, v) in match_info.items():
+		#match finished
+		if '4' == v['match_status']:
+			#half 
+			score = v['match_result_half']
+			score_home = re.search('(\d+)(.)(-)(.)(\d+)', score).group(1)
+			score_visiting = re.search('(\d+)(.)(-)(.)(\d+)', score).group(5)
+			score_int = int(score_home) - int(score_visiting)
+			
+			if score_int > 0:
+				v['match_result_half'] = '3'
+			elif score_int < 0:
+				v['match_result_half'] = '0'
+			else:
+				v['match_result_half'] = '1'
+			
+			#finish
+			score_1 = v['score']
+			score_home_1 = re.search('(\d+)(-)(\d+)', score_1).group(1)
+			score_visiting_1 = re.search('(\d+)(-)(\d+)', score_1).group(3)
+			score_int_1 = int(score_home_1) - int(score_visiting_1)
+			
+			if score_int_1 > 0:
+				v['match_result_finnal'] = '3'
+			elif score_int_1 < 0:
+				v['match_result_finnal'] = '0'
+			else:
+				v['match_result_finnal'] = '1'
+			
+			#print(v['team_one'], score_1, score_int_1, match_info[k]['match_result_finnal'])
+		
+	return match_info
 
 def get_items_from_500(url):
 
@@ -54,7 +96,10 @@ def get_items_from_500(url):
 			dict_item[v['fid']]["infoid"] = v['infoid']
 		
 		i += 1
-	print('match number: %d\n' % (i))		
+	print('match number: %d\n' % (i))
+	
+	dict_item = tanslate_score(dict_item)
+	#print(dict_item)		
 	return dict_item, odds
 
 def chinese(data):  
@@ -105,8 +150,8 @@ def print_items(dict_item):
 				v['draw_odds'],
 				v['visiting_team_odds'])
 		'''
-		
-		print(v['match_date'].ljust(8),v['match_status'].ljust(2),v['team_one'].ljust(16))
+		if '4' == v['match_status']:
+			print(v['match_date'].ljust(5),v['match_status'].ljust(2),v['team_one'].ljust(16), v['match_result_half'].ljust(2), v['match_result_finnal'].ljust(2))
 		
 def count_match_finish(match_dict):
 	i = 0
@@ -121,9 +166,9 @@ def count_match_finish(match_dict):
 
 if __name__ == '__main__':
 	url_dch = "http://live.500.com/zqdc.php"
-	dict_item = get_items_from_500(url_dch)
-	#print_items(dict_item)
-	count_match_finish(dict_item)
+	dict_item, odds = get_items_from_500(url_dch)
+	print_items(dict_item)
+	#count_match_finish(dict_item)
 
 
 
