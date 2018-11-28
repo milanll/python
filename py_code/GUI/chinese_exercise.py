@@ -169,7 +169,7 @@ class show:
             char_set = []
             if self.button == 'write_pinyin':
                 for i in self.random_numbers:
-                    char_set.append(self.characters[i])
+                    char_set.append(self.characters[i - 1])
                 self.t_show_bottom.insert('1.0', char_set)
     
     def reset(self):
