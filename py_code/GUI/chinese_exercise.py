@@ -7,13 +7,17 @@ import csv
 from pinyin_ import pinyin_
 
 class show:
-    #词语list
-    words = []
-    len_word = 0
+    #all data
+    words = {}
+    len_words = 0
     
     #蓝线汉字list
     characters = []
     len_char = 0
+    
+    #根据unit选择后的蓝线汉字list
+    characters_unit = []
+    len_char_unit = 0
     
     #田字格汉字list
     chinese = []
@@ -23,10 +27,16 @@ class show:
     chinese_extend = []
     len_chinese_extend = 0
     
+    #根据unit选择后的扩词表listlist
+    characters_extend_unit = []
+    len_char_extend_unit = 0
+    
     #a group of random numbers
     random_numbers = []
     random_range = 0
     
+    #unit list
+    unit_options = ['unit-all']
     def __init__(self):
         
         self.root = Tk()
@@ -35,13 +45,12 @@ class show:
         self.load_sys()
         
         ########
-        self.frm = Frame(self.root)
+        self.frm_L = Frame(self.root)
         
         #Top
         Label(self.root, text="语文练习", font=('Arial', 40)).pack()
         
         #Left
-        self.frm_L = Frame(self.frm)
         self.frm_L_A = Frame(self.frm_L)
         Button(self.frm_L_A, text="认字", command=self.read_word, width=10, height=2, font=('Arial', 10)).pack(side=TOP)
         Button(self.frm_L_A, text="默写生字", command=self.write_chinese, width=10, height=2, font=('Arial', 10)).pack()
@@ -68,12 +77,23 @@ class show:
         Button(self.frm_L_B_C, text="设置默写", command=self.set_write, width=10, height=2, font=('Arial', 10)).pack()
         self.frm_L_B_C.pack()
         
+        # 创建一个下拉列表
+        print(self.unit_options)
+        self.frm_L_B_D = Frame(self.frm_L_B)
+        self.variable = StringVar(self.frm_L_B_D)
+        self.variable.set(self.unit_options[0]) # default value
+         
+        #self.w = OptionMenu(self.frm_L_B_D, self.variable, "one", "two", "three")
+        self.w = OptionMenu(self.frm_L_B_D, self.variable, *self.unit_options)
+        self.w.pack()
+        self.frm_L_B_D.pack()
+
         self.frm_L_B.pack(side=RIGHT)
         
         self.frm_L.pack(side = LEFT)
 
         #Right
-        self.frm_R = Frame(self.frm)
+        self.frm_R = Frame(self.root)
         
         self.t_show_top = Text(self.frm_R, width=5, height=1, font =('Verdana',100))
         self.t_show_top.insert('1.0', '')
@@ -90,7 +110,6 @@ class show:
         self.frm_R.pack(side=RIGHT)
         #
 
-        self.frm.pack()
         ########
      
     #Initiate
@@ -131,10 +150,16 @@ class show:
             print(self.chinese)
             print(self.len_chinese)
             
-            #读取扩词表
+            #csv读取
             f2 = open('word.txt', 'r', encoding = 'utf-8')
             reader = csv.reader(f2)
             for l in reader:
+                #读取单元号
+                l[1] = l[1].strip().strip('\t')
+                if l[1] not in self.unit_options:
+                    self.unit_options.append(l[1])
+                
+                #读取扩词表
                 l[6] = l[6].strip('\t')
                 if l[6] != '0':
                     word_1 = l[6].split('-')
@@ -144,6 +169,7 @@ class show:
             self.len_chinese_extend = len(self.chinese_extend)
             print(self.chinese_extend)
             print(self.len_chinese_extend)
+            
         except:
             print(sys.exc_info())
     
@@ -154,8 +180,8 @@ class show:
         self.count = self.count_read
         self.button = 'read_word'
         self.text =self.t_show_top
-        self.random_range = self.len_char
         
+        self.random_range = self.len_char
         self.random_numbers = self.get_random()
         
         self.timer = threading.Timer(0.2, self.show_word)
@@ -167,8 +193,8 @@ class show:
         self.count = self.count_write
         self.button = 'write_pinyin'
         self.text = self.t_show_mid
-        self.random_range = self.len_char
         
+        self.random_range = self.len_char
         self.random_numbers = self.get_random()
         
         self.timer = threading.Timer(0.2, self.show_word)
