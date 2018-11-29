@@ -1,9 +1,9 @@
 # -*- coding:utf-8 -*-
 from tkinter import *
 import tkinter.messagebox
-import sys, threading
+import sys, threading, time
 import pinyin
-import csv as _csv
+import csv
 
 class show:
     #词语list
@@ -132,7 +132,7 @@ class show:
             
             #读取扩词表
             f2 = open('word.txt', 'r', encoding = 'utf-8')
-            reader = _csv.reader(f2)
+            reader = csv.reader(f2)
             for l in reader:
                 l[6] = l[6].strip('\t')
                 if l[6] != '0':
@@ -245,8 +245,8 @@ class show:
         self.timer.start()
         
         if self.count_temp == self.count:
-            print('Expiry!!')
             self.timer.cancel()
+            time.sleep(self.duration)
             
             #if the button is 'write_pinyin', display the words at the end.
             char_set = []
