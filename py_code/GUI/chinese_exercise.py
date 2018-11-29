@@ -4,6 +4,7 @@ import tkinter.messagebox
 import sys, threading, time
 import pinyin
 import csv
+from pinyin_ import pinyin_
 
 class show:
     #词语list
@@ -224,7 +225,8 @@ class show:
         print(self.random_numbers[self.count_temp], self.count_temp)
         if self.button == 'write_chinese':
             char1 = self.chinese_extend[self.random_numbers[self.count_temp] - 1]
-            char = pinyin.get(char1, delimiter = ' ')
+            #char = pinyin.get(char1, delimiter = ' ')
+            char = pinyin_(char1)
             print(char,char1)
         elif (self.button == 'read_word') or (self.button == 'write_pinyin'):
             char = self.characters[self.random_numbers[self.count_temp] - 1]
