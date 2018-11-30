@@ -41,6 +41,7 @@ def get_words_dict(file):
             
             #第几单元
             l[1] = l[1].strip().strip('\t')
+            #新的单元
             if l[1] not in dict_2.keys():
 
                 #读取完一个单元的数据后，向dict_1更新一次。
@@ -61,10 +62,16 @@ def get_words_dict(file):
                 
             else:
                 dict_2[l[1]].update(dict_3_temp)
+        
+        #将最后一个单元加进去
+        dict_2_temp = deepcopy(dict_2)
+        l[0] = l[0].strip().strip('\t')
+        #新的学期
+        if l[0] not in dict_1.keys():
+            dict_1[l[0]] = dict_2_temp
+        else:
+            dict_1[l[0]].update(dict_2_temp)
             
-            
-                    
-        print(dict_1.keys())
     except:
         print(traceback.print_exc())
     
@@ -72,11 +79,46 @@ def get_words_dict(file):
     words = dict_1
     return words
 
+#根据下拉菜单中的unit，选择字和词语
+def get_words_according_to_unit(words):
+
+    unit = 'unit-5'
+    characters = []
+    chinese = []
+    chinese_extend = []
+    
+    if unit == 'unit-all':
+        pass
+    else:
+        for (k, v) in words.items():
+            for (k1, v1) in v.items():
+                if unit == k1:
+                    #读汉字和词语
+                    for (k3, v3) in v1.items():
+                        #读入蓝线字
+                        for l in v3['蓝线字']:
+                            characters.append(l)
+                        #读入田字格字    
+                        for t in v3['田字格字']:
+                            if t != '0':
+                                chinese.append(t)
+                        #读入扩词表        
+                        k1 = v3['扩词表']
+                        if k1 != '0':
+                            k2 = k1.split('-') 
+                            for k in k2:
+                                chinese_extend.append(k)
+    
+    len_char = len(characters)
+    len_chinese = len(chinese)            
+    len_chinese_extend = len(chinese_extend)
+    
+    print(characters)
+    
+    return
 if __name__ == '__main__':
 
     dict = get_words_dict('word.txt')
-    
-    for e in dict['1-1']['unit-4'].items():
-        print(e)
+    get_words_according_to_unit(dict)
 
     

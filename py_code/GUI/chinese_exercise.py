@@ -5,6 +5,8 @@ import sys, threading, time
 import pinyin
 import csv
 from pinyin_ import pinyin_
+from read_word_txt import get_words_dict
+
 
 class show:
     #all data
@@ -78,13 +80,12 @@ class show:
         self.frm_L_B_C.pack()
         
         # 创建一个下拉列表
-        print(self.unit_options)
         self.frm_L_B_D = Frame(self.frm_L_B)
-        self.variable = StringVar(self.frm_L_B_D)
-        self.variable.set(self.unit_options[0]) # default value
+        self.OM_unit = StringVar(self.frm_L_B_D)
+        self.OM_unit.set(self.unit_options[0]) # default value
          
         #self.w = OptionMenu(self.frm_L_B_D, self.variable, "one", "two", "three")
-        self.w = OptionMenu(self.frm_L_B_D, self.variable, *self.unit_options)
+        self.w = OptionMenu(self.frm_L_B_D, self.OM_unit, *self.unit_options)
         self.w.pack()
         self.frm_L_B_D.pack()
 
@@ -127,52 +128,51 @@ class show:
         self.count_read = 20
         self.count_write = 10
         
-        try:
-            f1 = open('word.txt', encoding = 'utf-8')
-            for line in f1:
-                #'lesson_1','秋气了树叶片大飞会个'
-                d = line.strip().split(',')
-                #print(d)
-                #读取蓝线汉字
-                for d4 in d[4]:
-                    if d4 != '0' and d4 != '\t':
-                        self.characters.append(d4)
-                
-                #读取田字格汉字
-                for d5 in d[5]:
-                    if d5 != '0' and d5 != '\t':
-                        self.chinese.append(d5)
-           
-            self.len_char = len(self.characters)
-            self.len_chinese = len(self.chinese)
-            print(self.characters)
-            print(self.len_char)
-            print(self.chinese)
-            print(self.len_chinese)
-            
-            #csv读取
-            f2 = open('word.txt', 'r', encoding = 'utf-8')
-            reader = csv.reader(f2)
-            for l in reader:
-                #读取单元号
-                l[1] = l[1].strip().strip('\t')
-                if l[1] not in self.unit_options:
-                    self.unit_options.append(l[1])
-                
-                #读取扩词表
-                l[6] = l[6].strip('\t')
-                if l[6] != '0':
-                    word_1 = l[6].split('-')
-                    for w in word_1:
-                        self.chinese_extend.append(w)
-                    
-            self.len_chinese_extend = len(self.chinese_extend)
-            print(self.chinese_extend)
-            print(self.len_chinese_extend)
-            
-        except:
-            print(sys.exc_info())
+        self.words = get_words_dict('word.txt')
+        self.get_words_according_to_type()
+        
+        return
     
+    #按'蓝线字','田字格字', '扩词表'分类
+    def get_words_according_to_type(self):
+        
+        for (k1, v1) in self.words.items():
+            #initiate unit_options
+            for key in v1.keys():
+                if key not in self.unit_options:
+                    self.unit_options.append(key)
+                    
+            #读汉字和词语
+            for (k2, v2) in v1.items():
+                for (k3, v3) in v2.items():
+                    #读入蓝线字
+                    for l in v3['蓝线字']:
+                        self.characters.append(l)
+                    #读入田字格字    
+                    for t in v3['田字格字']:
+                        if t != '0':
+                            self.chinese.append(t)
+                    #读入扩词表        
+                    k1 = v3['扩词表']
+                    if k1 != '0':
+                        k2 = k1.split('-') 
+                        for k in k2:
+                            self.chinese_extend.append(k)
+                                    
+        self.len_char = len(self.characters)
+        #print(self.characters)
+        #print(self.len_char)
+                
+        self.len_chinese = len(self.chinese)
+        #print(self.chinese)
+        #print(self.len_chinese)
+                    
+        self.len_chinese_extend = len(self.chinese_extend)
+        #print(self.chinese_extend)
+        #print(self.len_chinese_extend)
+        
+        return
+        
     #Button         
     def read_word(self):
         self.reset()
@@ -181,12 +181,21 @@ class show:
         self.button = 'read_word'
         self.text =self.t_show_top
         
+        self.get_words_according_to_unit()
+        
+        if self.len_char < self.count:
+            self.count = self.len_char
+            
         self.random_range = self.len_char
         self.random_numbers = self.get_random()
         
         self.timer = threading.Timer(0.2, self.show_word)
         self.timer.start()
-           
+        
+        print(self.characters)
+        
+        return
+        
     def write_pinyin(self):
         self.reset()
         self.duration = self.duration_write
@@ -194,12 +203,21 @@ class show:
         self.button = 'write_pinyin'
         self.text = self.t_show_mid
         
+        self.get_words_according_to_unit()
+        
+        if self.len_char < self.count:
+            self.count = self.len_char
+
         self.random_range = self.len_char
         self.random_numbers = self.get_random()
         
         self.timer = threading.Timer(0.2, self.show_word)
         self.timer.start()
-    
+        
+        print(self.characters)
+        
+        return
+        
     def write_chinese(self):
         self.reset()
         self.duration = self.duration_write
@@ -207,12 +225,21 @@ class show:
         self.button = 'write_chinese'
         self.text = self.t_show_bottom
         
+        self.get_words_according_to_unit()
+        
+        if self.len_char < self.count:
+            self.count = self.len_chinese_extend
+            
         self.random_range = self.len_chinese_extend
         self.random_numbers = self.get_random()
         
         self.timer = threading.Timer(0.2, self.show_word)
         self.timer.start()
-       
+        
+        print(self.chinese_extend)
+        
+        return
+        
     def exit_1(self):
         self.stop_timer()
         self.root.quit()
@@ -220,16 +247,59 @@ class show:
     def stop_1(self):
         self.stop_timer()
         
+        return
+        
     def set_read(self):
         #print(type(self.count_1.get()), self.duration.get())
         self.duration_read = int(self.input_duration.get())
         self.count_read  = int(self.input_count.get())
+        
+        return
     
     def set_write(self):
         #print(type(self.count_1.get()), self.duration.get())
         self.duration_write = int(self.input_duration.get())
         self.count_write  = int(self.input_count.get())
-
+        
+        return
+    
+    #根据下拉菜单中的unit，选择字和词语
+    def get_words_according_to_unit(self):
+        
+        self.characters.clear()
+        self.chinese.clear()
+        self.chinese_extend.clear()
+        
+        self.unit = self.OM_unit.get()
+        
+        if self.unit == 'unit-all':
+            pass
+        else:
+            for (k, v) in self.words.items():
+                for (k1, v1) in v.items():
+                    if self.unit == k1:
+                        #读汉字和词语
+                        for (k3, v3) in v1.items():
+                            #读入蓝线字
+                            for l in v3['蓝线字']:
+                                self.characters.append(l)
+                            #读入田字格字    
+                            for t in v3['田字格字']:
+                                if t != '0':
+                                    self.chinese.append(t)
+                            #读入扩词表        
+                            k1 = v3['扩词表']
+                            if k1 != '0':
+                                k2 = k1.split('-') 
+                                for k in k2:
+                                    self.chinese_extend.append(k)
+        
+        self.len_char = len(self.characters)
+        self.len_chinese = len(self.chinese)            
+        self.len_chinese_extend = len(self.chinese_extend)
+        
+        return
+        
     #breif  get m number in range 0~n
     #input  n(int)              range 0~n
     #       m(int)              get count m
@@ -245,6 +315,7 @@ class show:
                 random_num.append(random_number)
                        
         print('\nRandom Numbers:', random_num, '\n')
+        
         return random_num
     
     def get_char(self):
@@ -293,7 +364,8 @@ class show:
             else:
                 pass
             
-            
+        return
+        
     def reset(self):
         self.count_temp = 0
         
@@ -303,16 +375,24 @@ class show:
         
         self.stop_timer()
         
+        return
+        
     def stop_timer(self):
         if self.timer:
             self.timer.cancel()
+        
+        return
             
 def main():
     d = show()
     mainloop()
+    
+    return
+    
 if __name__== "__main__":
     main()
     #get_random(50, 10)
+    
     
     
     
