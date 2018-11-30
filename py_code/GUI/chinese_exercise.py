@@ -310,9 +310,9 @@ class show:
         random_num = []
         while(i < self.count):
             random_number = random.randint(0,self.random_range)
-            if  random_number not in random_num:
+            if  (random_number - 1) not in random_num:
                 i += 1
-                random_num.append(random_number - 1)
+                random_num.append(random_number)
                        
         print('\nRandom Numbers:', random_num, '\nRandom Length:', len(random_num), '\n')
         
