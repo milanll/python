@@ -43,7 +43,7 @@ class show:
         
         self.root = Tk()
         self.root.title("语文练习")
-        self.root.geometry('700x500')
+        self.root.geometry('700x600')
         self.load_sys()
         
         ########
@@ -104,7 +104,7 @@ class show:
         self.t_show_mid.insert('1.0', '')
         self.t_show_mid.pack()
         
-        self.t_show_bottom = Text(self.frm_R, width=25, height=2, font =('Verdana',20))
+        self.t_show_bottom = Text(self.frm_R, width=25, height=4, font =('Verdana',20))
         self.t_show_bottom.insert('1.0', '')
         self.t_show_bottom.pack()
 
@@ -192,7 +192,7 @@ class show:
         self.timer = threading.Timer(0.2, self.show_word)
         self.timer.start()
         
-        print(self.characters)
+        print(self.characters, '\n\nCharacters Length:', len(self.characters), '\n')
         
         return
         
@@ -214,7 +214,7 @@ class show:
         self.timer = threading.Timer(0.2, self.show_word)
         self.timer.start()
         
-        print(self.characters)
+        print(self.characters, '\n\nCharacters Length:', len(self.characters), '\n')
         
         return
         
@@ -236,7 +236,7 @@ class show:
         self.timer = threading.Timer(0.2, self.show_word)
         self.timer.start()
         
-        print(self.chinese_extend)
+        print(self.chinese_extend, '\n\nChinese_extend Length:', len(self.chinese_extend), '\n')
         
         return
         
@@ -265,16 +265,16 @@ class show:
     
     #根据下拉菜单中的unit，选择字和词语
     def get_words_according_to_unit(self):
-        
-        self.characters.clear()
-        self.chinese.clear()
-        self.chinese_extend.clear()
-        
+
         self.unit = self.OM_unit.get()
         
         if self.unit == 'unit-all':
             pass
         else:
+            self.characters.clear()
+            self.chinese.clear()
+            self.chinese_extend.clear()
+        
             for (k, v) in self.words.items():
                 for (k1, v1) in v.items():
                     if self.unit == k1:
@@ -294,9 +294,9 @@ class show:
                                 for k in k2:
                                     self.chinese_extend.append(k)
         
-        self.len_char = len(self.characters)
-        self.len_chinese = len(self.chinese)            
-        self.len_chinese_extend = len(self.chinese_extend)
+            self.len_char = len(self.characters)
+            self.len_chinese = len(self.chinese)            
+            self.len_chinese_extend = len(self.chinese_extend)
         
         return
         
@@ -312,21 +312,21 @@ class show:
             random_number = random.randint(0,self.random_range)
             if  random_number not in random_num:
                 i += 1
-                random_num.append(random_number)
+                random_num.append(random_number - 1)
                        
-        print('\nRandom Numbers:', random_num, '\n')
+        print('\nRandom Numbers:', random_num, '\nRandom Length:', len(random_num), '\n')
         
         return random_num
     
     def get_char(self):
         print(self.random_numbers[self.count_temp], self.count_temp)
         if self.button == 'write_chinese':
-            char1 = self.chinese_extend[self.random_numbers[self.count_temp] - 1]
+            char1 = self.chinese_extend[self.random_numbers[self.count_temp]]
             #char = pinyin.get(char1, delimiter = ' ')
             char = pinyin_(char1)
             print(char,char1)
         elif (self.button == 'read_word') or (self.button == 'write_pinyin'):
-            char = self.characters[self.random_numbers[self.count_temp] - 1]
+            char = self.characters[self.random_numbers[self.count_temp]]
         else:
             assert(0)
         
@@ -347,20 +347,34 @@ class show:
             self.timer.cancel()
             time.sleep(self.duration)
             
+            self.t_show_bottom.delete('1.0', 'end')
+            
             #if the button is 'write_pinyin', display the words at the end.
             char_set = []
             if self.button == 'write_pinyin':
                 for i in self.random_numbers:
-                    char_set.append(self.characters[i - 1])
+                    char_set.append(self.characters[i])
                 self.t_show_bottom.insert('1.0', char_set)
                 
                 #pop message box at the end
                 tkinter.messagebox.showinfo('write_pinyin', '默写拼音结束！')
+                
             elif self.button == 'read_word':
+                for i in self.random_numbers:
+                    char_set.append(self.characters[i])
+                self.t_show_bottom.insert('1.0', char_set)
+                
                 #pop message box at the end
                 tkinter.messagebox.showinfo('read_word', '认字结束！')
+                
             elif self.button == 'write_chinese':
+                print(self.random_numbers)
+                for i in self.random_numbers:
+                    #char_set.append(pinyin_(self.chinese_extend[i]))
+                    self.t_show_bottom.insert('1.0', pinyin_(self.chinese_extend[i])+', ')
+                
                 tkinter.messagebox.showinfo('read_word', '默写汉字结束！')
+                
             else:
                 pass
             
