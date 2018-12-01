@@ -96,15 +96,16 @@ class show:
         #Right
         self.frm_R = Frame(self.root)
         
-        self.t_show_top = Text(self.frm_R, width=5, height=1, font =('Verdana',100))
+        self.t_show_top = Text(self.frm_R, width=6, height=1, font =('楷体',100))
         self.t_show_top.insert('1.0', '')
         self.t_show_top.pack(side=TOP)
         
-        self.t_show_mid = Text(self.frm_R, width=5, height=1, font =('Verdana',100), fg='red')
+        self.t_show_mid = Text(self.frm_R, width=6, height=1, font =('楷体',100), fg='blue')
         self.t_show_mid.insert('1.0', '')
         self.t_show_mid.pack()
         
-        self.t_show_bottom = Text(self.frm_R, width=25, height=4, font =('Verdana',20))
+        #self.t_show_bottom = Text(self.frm_R, width=25, height=4, font =('Verdana',20))
+        self.t_show_bottom = Text(self.frm_R, width=30, height=6, font=('New Time Roma', 20))
         self.t_show_bottom.insert('1.0', '')
         self.t_show_bottom.pack()
 
