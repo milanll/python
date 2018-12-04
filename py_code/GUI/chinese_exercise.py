@@ -36,9 +36,30 @@ class show:
     #a group of random numbers
     random_numbers = []
     random_range = 0
-    
+
+    #读一个汉字/词语的时长
+    duration_read = 0
+    #写一个汉字/拼音的时长
+    duration_write = 0
+    #组词时长
+    duration_combine_word = 0
+
+    #随机选择识读字词的个数
+    count_read = 0
+    #随机选择写汉字/拼音的个数
+    count_write = 0
+    #选择田字格汉字进行组词，所选汉字的个数
+    count_combine_word = 0
+
     #unit list
     unit_options = ['unit-all']
+
+    #
+    timer_combine_word = None
+
+    #
+    char_display = None
+
     def __init__(self):
         
         self.root = Tk()
@@ -54,7 +75,8 @@ class show:
         
         #Left
         self.frm_L_A = Frame(self.frm_L)
-        Button(self.frm_L_A, text="认字", command=self.read_word, width=10, height=2, font=('Arial', 10)).pack(side=TOP)
+        Button(self.frm_L_A, text="识读字词", command=self.read_word, width=10, height=2, font=('Arial', 10)).pack(side=TOP)
+        Button(self.frm_L_A, text="组词练习", command=self.combine_word, width=10, height=2, font=('Arial', 10)).pack()
         Button(self.frm_L_A, text="默写生字", command=self.write_chinese, width=10, height=2, font=('Arial', 10)).pack()
         Button(self.frm_L_A, text="默写拼音", command=self.write_pinyin, width=10, height=2, font=('Arial', 10)).pack()
         Button(self.frm_L_A, text="停止", command=self.stop_1, width=10, height=2, font=('Arial', 10)).pack()
@@ -76,6 +98,7 @@ class show:
         
         self.frm_L_B_C = Frame(self.frm_L_B)
         Button(self.frm_L_B_C, text="设置认字", command=self.set_read, width=10, height=2, font=('Arial', 10)).pack()
+        Button(self.frm_L_B_C, text="设置组词", command=self.set_combine_word, width=10, height=2, font=('Arial', 10)).pack()
         Button(self.frm_L_B_C, text="设置默写", command=self.set_write, width=10, height=2, font=('Arial', 10)).pack()
         self.frm_L_B_C.pack()
         
@@ -126,8 +149,11 @@ class show:
         
         self.duration_read = 3
         self.duration_write = 15
+        self.duration_combine_word = 6
+
         self.count_read = 20
         self.count_write = 10
+        self.count_combine_word = 10
         
         self.words = get_words_dict('word.txt')
         self.get_words_according_to_type()
@@ -174,7 +200,7 @@ class show:
         
         return
         
-    #Button         
+    #按钮：识读字词
     def read_word(self):
         self.reset()
         self.duration = self.duration_read
@@ -196,7 +222,31 @@ class show:
         print(self.characters, '\n\nCharacters Length:', len(self.characters), '\n')
         
         return
-        
+
+    #按钮：组词
+    def combine_word(self):
+        self.reset()
+        self.duration = 30
+        self.count = self.count_combine_word
+        self.button = 'combine_word'
+        self.text = self.t_show_mid
+
+        self.get_words_according_to_unit()
+
+        if self.len_chinese < self.count:
+            self.count = self.len_chinese
+
+        self.random_range = self.len_chinese
+        self.random_numbers = self.get_random()
+
+        self.timer = threading.Timer(0.2, self.show_word)
+        self.timer.start()
+
+        print(self.chinese, '\n\nChinese Length:', len(self.chinese), '\n')
+
+        return
+
+    #按钮：默写拼音
     def write_pinyin(self):
         self.reset()
         self.duration = self.duration_write
@@ -218,7 +268,8 @@ class show:
         print(self.characters, '\n\nCharacters Length:', len(self.characters), '\n')
         
         return
-        
+
+    #按钮：默写汉字
     def write_chinese(self):
         self.reset()
         self.duration = self.duration_write
@@ -240,13 +291,15 @@ class show:
         print(self.chinese_extend, '\n\nChinese_extend Length:', len(self.chinese_extend), '\n')
         
         return
-        
+
+    #按钮：退出
     def exit_1(self):
-        self.stop_timer()
+        self.stop_all_timer()
         self.root.quit()
-     
+
+    #按钮：停止
     def stop_1(self):
-        self.stop_timer()
+        self.stop_all_timer()
         
         return
         
@@ -256,7 +309,13 @@ class show:
         self.count_read  = int(self.input_count.get())
         
         return
-    
+
+    def set_combine_word(self):
+        self.duration_combine_word = int(self.input_duration.get())
+        self.count_combine_word = int(self.input_count.get())
+
+        return
+
     def set_write(self):
         #print(type(self.count_1.get()), self.duration.get())
         self.duration_write = int(self.input_duration.get())
@@ -320,14 +379,21 @@ class show:
         return random_num
     
     def get_char(self):
+
         print(self.random_numbers[self.count_temp], self.count_temp)
+
         if self.button == 'write_chinese':
             char1 = self.chinese_extend[self.random_numbers[self.count_temp]]
             #char = pinyin.get(char1, delimiter = ' ')
             char = pinyin_(char1)
             print(char,char1)
+
         elif (self.button == 'read_word') or (self.button == 'write_pinyin'):
             char = self.characters[self.random_numbers[self.count_temp]]
+
+        elif self.button == 'combine_word':
+            char = self.chinese[self.random_numbers[self.count_temp]]
+
         else:
             assert(0)
         
@@ -336,51 +402,78 @@ class show:
         return char
      
     def show_word(self):
-        char = self.get_char()
+        self.char_display = self.get_char()
         self.text.delete('1.0', 'end')
-        self.text.insert('1.0', char)
-        
-        self.stop_timer()
+        self.text.insert('1.0', self.char_display)
+
+        #练习字数达到设定值后，退出
+        if self.count_temp == self.count:
+            self.final()
+            return
+
+        #组词练习时
+        if self.button == 'combine_word':
+            self.t_show_bottom.delete('1.0', 'end')
+
+            if self.timer_combine_word:
+                self.timer_combine_word.cancel()
+            self.timer_combine_word = threading.Timer(20, self.show_combine_word)
+            self.timer_combine_word.start()
+
+        if self.timer:
+            self.timer.cancel()
         self.timer = threading.Timer(self.duration, self.show_word)
         self.timer.start()
-        
-        if self.count_temp == self.count:
-            self.timer.cancel()
-            time.sleep(self.duration)
-            
-            self.t_show_bottom.delete('1.0', 'end')
-            
-            #if the button is 'write_pinyin', display the words at the end.
-            char_set = []
-            if self.button == 'write_pinyin':
-                for i in self.random_numbers:
-                    char_set.append(self.characters[i])
-                self.t_show_bottom.insert('1.0', char_set)
-                
-                #pop message box at the end
-                tkinter.messagebox.showinfo('write_pinyin', '默写拼音结束！')
-                
-            elif self.button == 'read_word':
-                for i in self.random_numbers:
-                    char_set.append(self.characters[i])
-                self.t_show_bottom.insert('1.0', char_set)
-                
-                #pop message box at the end
-                tkinter.messagebox.showinfo('read_word', '认字结束！')
-                
-            elif self.button == 'write_chinese':
-                print(self.random_numbers)
-                for i in self.random_numbers:
-                    #char_set.append(pinyin_(self.chinese_extend[i]))
-                    self.t_show_bottom.insert('1.0', pinyin_(self.chinese_extend[i])+', ')
-                
-                tkinter.messagebox.showinfo('read_word', '默写汉字结束！')
-                
-            else:
-                pass
-            
+
         return
-        
+
+    def show_combine_word(self):
+        for v in self.chinese_extend:
+            if self.char_display in v:
+                self.t_show_bottom.insert('1.0', v + ', ')
+
+        return
+
+    def final(self):
+        self.stop_all_timer()
+        time.sleep(self.duration)
+
+        self.t_show_bottom.delete('1.0', 'end')
+
+        # if the button is 'write_pinyin', display the words at the end.
+        char_set = []
+        if self.button == 'write_pinyin':
+            for i in self.random_numbers:
+                char_set.append(self.characters[i])
+            self.t_show_bottom.insert('1.0', char_set)
+
+            # pop message box at the end
+            tkinter.messagebox.showinfo('write_pinyin', '默写拼音结束！')
+
+        elif self.button == 'read_word':
+            for i in self.random_numbers:
+                char_set.append(self.characters[i])
+            self.t_show_bottom.insert('1.0', char_set)
+
+            # pop message box at the end
+            tkinter.messagebox.showinfo('read_word', '认字结束！')
+
+        elif self.button == 'write_chinese':
+            print(self.random_numbers)
+            for i in self.random_numbers:
+                # char_set.append(pinyin_(self.chinese_extend[i]))
+                self.t_show_bottom.insert('1.0', pinyin_(self.chinese_extend[i]) + ', ')
+
+            tkinter.messagebox.showinfo('read_word', '默写汉字结束！')
+
+        elif self.button == 'combine_word':
+            tkinter.messagebox.showinfo('read_word', '组词练习结束！')
+
+        else:
+            pass
+
+        return
+
     def reset(self):
         self.count_temp = 0
         
@@ -388,14 +481,17 @@ class show:
         self.t_show_mid.delete('1.0', 'end')
         self.t_show_bottom.delete('1.0', 'end')
         
-        self.stop_timer()
+        self.stop_all_timer()
         
         return
         
-    def stop_timer(self):
+    def stop_all_timer(self):
         if self.timer:
             self.timer.cancel()
-        
+
+        if self.timer_combine_word:
+            self.timer_combine_word.cancel()
+
         return
             
 def main():
