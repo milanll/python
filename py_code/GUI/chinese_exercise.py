@@ -6,13 +6,16 @@ import pinyin
 import csv
 from pinyin_ import pinyin_
 from read_word_txt import get_words_dict
-
+from copy import deepcopy
 
 class show:
     #all data
     words = {}
     len_words = 0
-    
+
+    # struct of word.txt
+    struct = {}
+
     #蓝线汉字list
     characters = []
     len_char = 0
@@ -51,7 +54,8 @@ class show:
     #选择田字格汉字进行组词，所选汉字的个数
     count_combine_word = 0
 
-    #unit list
+    #struct list
+    term = ['一年级（上）']
     unit_options = ['unit-all']
 
     #
@@ -101,11 +105,18 @@ class show:
         Button(self.frm_L_B_C, text="设置组词", command=self.set_combine_word, width=10, height=2, font=('Arial', 10)).pack()
         Button(self.frm_L_B_C, text="设置默写", command=self.set_write, width=10, height=2, font=('Arial', 10)).pack()
         self.frm_L_B_C.pack()
-        
-        # 创建一个下拉列表
+
+        '''
+        # 学期下拉列表
         self.frm_L_B_D = Frame(self.frm_L_B)
         self.OM_unit = StringVar(self.frm_L_B_D)
         self.OM_unit.set(self.unit_options[0]) # default value
+        '''
+
+        # 单元下拉列表
+        self.frm_L_B_D = Frame(self.frm_L_B)
+        self.OM_unit = StringVar(self.frm_L_B_D)
+        self.OM_unit.set(self.unit_options[0])  # default value
          
         #self.w = OptionMenu(self.frm_L_B_D, self.variable, "one", "two", "three")
         self.w = OptionMenu(self.frm_L_B_D, self.OM_unit, *self.unit_options)
@@ -149,7 +160,7 @@ class show:
         
         self.duration_read = 3
         self.duration_write = 15
-        self.duration_combine_word = 6
+        self.duration_combine_word = 5
 
         self.count_read = 20
         self.count_write = 10
@@ -157,9 +168,26 @@ class show:
         
         self.words = get_words_dict('word.txt')
         self.get_words_according_to_type()
+
+        self.get_word_struct()
         
         return
-    
+
+    #获取汉字列表word.txt的结构，{学期:'单元，.....'}
+    def get_word_struct(self):
+        l = []
+        l_temp = []
+        for (k, v) in self.words.items():
+            l_temp.clear()
+
+            for k1 in v.keys():
+                l_temp.append(k1)
+
+            l = deepcopy(l_temp)
+            self.struct[k] = l_temp
+
+        return
+
     #按'蓝线字','田字格字', '扩词表'分类
     def get_words_according_to_type(self):
         
@@ -226,7 +254,7 @@ class show:
     #按钮：组词
     def combine_word(self):
         self.reset()
-        self.duration = 30
+        self.duration = 25
         self.count = self.count_combine_word
         self.button = 'combine_word'
         self.text = self.t_show_mid
@@ -272,14 +300,14 @@ class show:
     #按钮：默写汉字
     def write_chinese(self):
         self.reset()
-        self.duration = self.duration_write
+        self.duration = 25
         self.count = self.count_write
         self.button = 'write_chinese'
         self.text = self.t_show_bottom
         
         self.get_words_according_to_unit()
         
-        if self.len_char < self.count:
+        if self.len_chinese_extend < self.count:
             self.count = self.len_chinese_extend
             
         self.random_range = self.len_chinese_extend
@@ -380,19 +408,20 @@ class show:
     
     def get_char(self):
 
-        print(self.random_numbers[self.count_temp], self.count_temp)
+        num = self.random_numbers[self.count_temp]
+        print(num, self.count_temp)
 
         if self.button == 'write_chinese':
-            char1 = self.chinese_extend[self.random_numbers[self.count_temp]]
+            char1 = self.chinese_extend[num]
             #char = pinyin.get(char1, delimiter = ' ')
             char = pinyin_(char1)
             print(char,char1)
 
         elif (self.button == 'read_word') or (self.button == 'write_pinyin'):
-            char = self.characters[self.random_numbers[self.count_temp]]
+            char = self.characters[num]
 
         elif self.button == 'combine_word':
-            char = self.chinese[self.random_numbers[self.count_temp]]
+            char = self.chinese[num]
 
         else:
             assert(0)
@@ -417,9 +446,11 @@ class show:
 
             if self.timer_combine_word:
                 self.timer_combine_word.cancel()
+
             self.timer_combine_word = threading.Timer(20, self.show_combine_word)
             self.timer_combine_word.start()
 
+        #间隔时间后，继续显示
         if self.timer:
             self.timer.cancel()
         self.timer = threading.Timer(self.duration, self.show_word)
