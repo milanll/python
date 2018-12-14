@@ -254,7 +254,7 @@ class show:
     #按钮：组词
     def combine_word(self):
         self.reset()
-        self.duration = 25
+        self.duration = 15
         self.count = self.count_combine_word
         self.button = 'combine_word'
         self.text = self.t_show_mid
@@ -447,7 +447,7 @@ class show:
             if self.timer_combine_word:
                 self.timer_combine_word.cancel()
 
-            self.timer_combine_word = threading.Timer(20, self.show_combine_word)
+            self.timer_combine_word = threading.Timer(10, self.show_combine_word)
             self.timer_combine_word.start()
 
         #间隔时间后，继续显示
