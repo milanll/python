@@ -190,7 +190,11 @@ class show:
 
     #按'蓝线字','田字格字', '扩词表'分类
     def get_words_according_to_type(self):
-        
+
+        self.characters.clear()
+        self.chinese.clear()
+        self.chinese_extend.clear()
+
         for (k1, v1) in self.words.items():
             #initiate unit_options
             for key in v1.keys():
@@ -357,6 +361,7 @@ class show:
         self.unit = self.OM_unit.get()
         
         if self.unit == 'unit-all':
+            self.get_words_according_to_type()
             pass
         else:
             self.characters.clear()
