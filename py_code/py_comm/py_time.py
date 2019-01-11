@@ -32,7 +32,6 @@ def get_time_stamp():
 		time_str = time_now + '_match'
 	
 	return time_str
-
 	
 def get_next_day_am9():
 	today = datetime.date.today()
