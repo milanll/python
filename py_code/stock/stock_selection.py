@@ -5,28 +5,43 @@ import pandas as pd
 import numpy as np
 
 from _date import get_period
+from _comm_stock import save_stock_final
 
 # ts.set_token('1b75b5ac5f9dd3aaaa43264942284efff50d34f0f87b720d4504a35e')
 pro = ts.pro_api()
+stock_basic_info = pd.read_csv("./data/stock_basic_info.csv", encoding="utf-8")
 
 start_date, end_date, num_week = get_period()
+
 
 global g_num
 g_num = 0
 
+g_num_weeks = 2
+g_mltp_week_amount = 2
+
+#[Return]   df(dict)
 def get_final_stock():
-    stock_final = {}
-    stock_info = pd.read_csv("./data/stock_basic_info.csv", encoding="utf-8")
+    #create a initial dataframe
+    col_name = ('ts_code', 'symbol', 'name', 'area', 'industry', 'list_date')
+    stock_final = pd.DataFrame(columns = col_name)
+    i = 0
 
     #      Unnamed: 0   ts_code     symbol  name        area    industry  list_date
     #              0    000001.SZ      1    平安银行     深圳       银行    19910403
-
-    for index, row in stock_info.iterrows():
+    for index, row in stock_basic_info.iterrows():
         if analyse_stock_by_week(row.ts_code):
-            stock_final.update({row.ts_code:row})
+            #translate from series to dataframe
+            row = row.drop('Unnamed: 0')
+            df_row = pd.DataFrame([row], columns = col_name)
+            #append datafarme
+            stock_final = stock_final.append(df_row)
 
+            i += 1
 
+    save_stock_final(stock_final)
 
+    return stock_final
 
 #[Return]   True    wanted
 #           False   not wanted
@@ -60,6 +75,7 @@ def analyse_stock_by_day(ts_code):
     else:
         return False
 
+
 #[Return]   True    wanted
 #           False   not wanted
 def analyse_stock_by_week(ts_code):
@@ -76,8 +92,11 @@ def analyse_stock_by_week(ts_code):
 
     #len of rows
     len_amount = stock_info_week.shape[0]
+    if(len_amount < num_week - 1):
+        return False
+
     for index, row in stock_info_week.iterrows():
-        if index < 3:
+        if index < g_num_weeks:
             amount_1.append(row.amount)
         else:
             amount_2.append(row.amount)
@@ -87,13 +106,14 @@ def analyse_stock_by_week(ts_code):
 
     print(g_num, ts_code, len(amount_1), amount_avr_1, len(amount_2), amount_avr_2)
 
-    if  amount_avr_1 > (amount_avr_2 * 1.5):
+    if  amount_avr_1 > (amount_avr_2 * g_mltp_week_amount):
         return True
     else:
         return False
 
 if __name__ == "__main__":
-    get_final_stock()
-    
-    print(stock_final.keys())
+    stock_final = get_final_stock()
+
+    print(stock_final)
+    print(stock_final.index)
     print(len(stock_final))

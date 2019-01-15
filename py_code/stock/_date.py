@@ -1,7 +1,7 @@
 import datetime
 import time
 
-DAYS = 70
+DAYS = 60
 
 #[Return]   True    After 16:00
 #           False   Before 16:00
@@ -41,6 +41,19 @@ def get_period():
 
     return str_start_date, str_end_date, DAYS/10
 
+#[breif]    if before 16:00,return yestoday
+#           else return today
+#[date]     date(str)   2019-01-14
+def get_date():
+    if time_compare_pm4():
+        #today
+        return datetime.date.today()
+    else:
+        #yestoday
+        return datetime.date.today() - datetime.timedelta(days = 1)
+
+
 if __name__ == "__main__":
-    str_start_date, end_date = get_period()
-    print(str_start_date, end_date)
+    #str_start_date, end_date = get_period()
+    date = get_date()
+    print(date)
