@@ -7,6 +7,8 @@ from _date import get_period
 
 start_date, end_date, num_week = get_period()
 
+ts.set_token('1b75b5ac5f9dd3aaaa43264942284efff50d34f0f87b720d4504a35e')
+
 pro = ts.pro_api()
 
 #    ts_code    trade_date  open   high    low      close   pre_close  change      pct_chg      vol         amount
@@ -15,26 +17,9 @@ pro = ts.pro_api()
 stock_info_week = pro.weekly(ts_code = '000001.SZ', start_date = start_date, end_date = end_date,
                fields='ts_code,trade_date,open,high,low,close,vol,amount')
 
-amount_avr_1 = 0
-amount_avr_2 = 2
-amount_1 = []
-amount_2 = []
-len_amount = 0
+print(stock_info_week)
 
-# len of rows
-len_amount = stock_info_week.shape(0)
-print(len_amount)
-print(stock_info_week.values)
-for index, row in stock_info_week.iterrows():
-	if index < len_amount * 1/3:
-		amount_1.append(row.amount)
-	else:
-		amount_2.append(row.amount)
 
-amount_avr_1 = np.mean(tuple(amount_1))
-amount_avr_2 = np.mean(tuple(amount_2))
-
-print(len(amount_1), amount_avr_1, len(amount_2), amount_avr_2)
 
 
 

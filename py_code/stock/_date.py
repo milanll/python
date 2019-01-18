@@ -9,15 +9,7 @@ def time_compare_pm4():
     str_Time_16 = time.strftime("%Y%m%d",time.localtime()) + '160000'
     str_Time_now = time.strftime("%Y%m%d%H%M%S",time.localtime())
 
-    #format
-    str_Time_16 = time.strptime(str_Time_16,'%Y%m%d%H%M%S')
-    str_Time_now = time.strptime(str_Time_now,'%Y%m%d%H%M%S')
-
-    #time stamp
-    time_16 = time.mktime(str_Time_16)
-    time_now = time.mktime(str_Time_now)
-
-    if (time_now - time_16) > 0:
+    if (str_Time_now > str_Time_16):
         return True
     else:
         return False

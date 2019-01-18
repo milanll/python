@@ -5,7 +5,7 @@ import pandas as pd
 import numpy as np
 
 from _date import get_period
-from _comm_stock import save_stock_final
+from _comm_stock import *
 
 # ts.set_token('1b75b5ac5f9dd3aaaa43264942284efff50d34f0f87b720d4504a35e')
 pro = ts.pro_api()
@@ -25,21 +25,24 @@ def get_final_stock():
     #create a initial dataframe
     col_name = ('ts_code', 'symbol', 'name', 'area', 'industry', 'list_date')
     stock_final = pd.DataFrame(columns = col_name)
-    i = 0
+
+    col_name_1 = ('ts_code', 'trade_date', 'close', 'open', 'high', 'low', 'vol', 'amount')
+    df_trade_detail = pd.DataFrame(columns = col_name_1)
 
     #      Unnamed: 0   ts_code     symbol  name        area    industry  list_date
     #              0    000001.SZ      1    平安银行     深圳       银行    19910403
     for index, row in stock_basic_info.iterrows():
-        if analyse_stock_by_week(row.ts_code):
+        find, trade_detail = analyse_stock_by_week(row.ts_code)
+        if find:
             #translate from series to dataframe
             row = row.drop('Unnamed: 0')
             df_row = pd.DataFrame([row], columns = col_name)
             #append datafarme
             stock_final = stock_final.append(df_row)
+            df_trade_detail = df_trade_detail.append(trade_detail, ignore_index = True)
 
-            i += 1
-
-    save_stock_final(stock_final)
+    save_stock_amount(stock_final)
+    save_stock_trade(df_trade_detail)
 
     return stock_final
 
@@ -93,7 +96,7 @@ def analyse_stock_by_week(ts_code):
     #len of rows
     len_amount = stock_info_week.shape[0]
     if(len_amount < num_week - 1):
-        return False
+        return False, None
 
     for index, row in stock_info_week.iterrows():
         if index < g_num_weeks:
@@ -107,9 +110,9 @@ def analyse_stock_by_week(ts_code):
     print(g_num, ts_code, len(amount_1), amount_avr_1, len(amount_2), amount_avr_2)
 
     if  amount_avr_1 > (amount_avr_2 * g_mltp_week_amount):
-        return True
+        return True, stock_info_week
     else:
-        return False
+        return False, None
 
 if __name__ == "__main__":
     stock_final = get_final_stock()
