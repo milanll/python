@@ -23,7 +23,7 @@ g_mltp_week_amount = 2
 #[Return]   df(dict)
 def get_final_stock():
     #create a initial dataframe
-    col_name = ('ts_code', 'symbol', 'name', 'area', 'industry', 'list_date')
+    col_name = ('ts_code', 'symbol', 'name', 'area', 'industry', 'board', 'list_date')
     stock_final = pd.DataFrame(columns = col_name)
 
     col_name_1 = ('ts_code', 'trade_date', 'close', 'open', 'high', 'low', 'vol', 'amount')

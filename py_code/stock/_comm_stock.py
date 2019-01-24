@@ -1,6 +1,8 @@
 import tushare as ts
-#from pandas import dataframe
+import datetime
 import pandas as pd
+import numpy as np
+import time
 
 from _date import get_period, get_date
 
@@ -40,6 +42,23 @@ def read_stock_trade():
     trade_detail = pd.read_csv(dir, encoding = "utf-8")
 
     return trade_detail
+
+#[Input]   stock_ma(DataFrame)
+#          filter(str)             ma/amount/trade
+def save_stock(stock_ma, filter):
+    date = get_date()
+    dir = f'./stock_date_final/{filter}-{date}.csv'
+    stock_ma.to_csv(dir, encoding="utf-8")
+
+#[Input]    filter(str)             ma/amount/trade
+#[Return]   trade_detail(DataFrame)
+def read_stock(filter):
+    date = get_date()
+    dir = f'./stock_date_final/{filter}-{date}.csv'
+    print(dir)
+    stock_ma = pd.read_csv(dir, encoding = "utf-8")
+
+    return stock_ma
 
 if __name__ == "__main__":
     stock_info = store_stock_basic_info()
