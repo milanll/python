@@ -67,30 +67,30 @@ def get_items_from_500(url):
 
 	dict_item = {}
 	dict_id, odds = get_id(url)
-	
+
 	i = 0
 	for (k,v) in dict_id.items():
-		#dict_item[i] = {
-		dict_item[v['fid']] = {
-			'match_sequence'		: v['match_sequence'],
-			'match_type'			: v['match_type'],
-			'match_round'			: v['match_round'],
-			'match_date'			: v['match_date'],
-			'match_time'			: v['match_time'],
-			'match_status'			: v['match_status'],
-			'match_result_finnal'	: v['match_result_finnal'],
-			'team_one'				: v['team_one'],
-			'score'					: v['team_one_score'] + '-' + v['team_two_score'],
-			'team_two'				: v['team_two'],
-			'match_result_half'		: v['match_result_half'],
-			'home_team_odds'		: v['平均欧赔'][0],
-			'draw_odds'				: v['平均欧赔'][1],
-			'visiting_team_odds'	: v['平均欧赔'][2],
-			'lid':v['lid'],
-			'fid':v['fid'],
-			'sid':v['sid']
-			#'infoid':v['infoid']
-		}
+		if '平均欧赔' in v.keys():
+			dict_item[v['fid']] = {
+				'match_sequence'		: v['match_sequence'],
+				'match_type'			: v['match_type'],
+				'match_round'			: v['match_round'],
+				'match_date'			: v['match_date'],
+				'match_time'			: v['match_time'],
+				'match_status'			: v['match_status'],
+				'match_result_finnal'	: v['match_result_finnal'],
+				'team_one'				: v['team_one'],
+				'score'					: v['team_one_score'] + '-' + v['team_two_score'],
+				'team_two'				: v['team_two'],
+				'match_result_half'		: v['match_result_half'],
+				'home_team_odds'		: v['平均欧赔'][0],
+				'draw_odds'				: v['平均欧赔'][1],
+				'visiting_team_odds'	: v['平均欧赔'][2],
+				'lid':v['lid'],
+				'fid':v['fid'],
+				'sid':v['sid']
+				#'infoid':v['infoid']
+			}
 		
 		if 'zqdc.php' not in url:
 			dict_item[v['fid']]["infoid"] = v['infoid']

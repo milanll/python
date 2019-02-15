@@ -54,6 +54,26 @@ def get_period_3days():
 
     return start_date, end_date
 
+#[Input]    x_days(int)          5
+#[Return]   str_start_date(str)  2018-01-01
+#           str_end_date(str)    2018-12-11
+def get_period_x_days(x_days):
+    today = datetime.date.today()
+    oneday = datetime.timedelta(days = 1)
+    days_x = datetime.timedelta(days = int(x_days))
+
+    if time_compare_pm4():
+        end_date = today
+    else:
+        end_date = today - oneday
+
+    start_date = end_date - days_x
+
+    start_date = start_date.strftime("%Y-%m-%d")
+    end_date = end_date.strftime("%Y-%m-%d")
+
+    return start_date, end_date
+
 #[breif]    if before 16:00,return yestoday
 #           else return today
 #[date]     date(str)   2019-01-14
