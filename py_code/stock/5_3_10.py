@@ -49,7 +49,7 @@ if __name__ == '__main__':
     print (time.asctime( time.localtime(time.time()) ))
 
     get_stock()
-    stock = read_stock('ma')
+    stock = read_stock('3_10')
     print (stock)
     print (stock.shape[0])
 

@@ -1,7 +1,7 @@
 
 from _comm_stock import *
 from _date import *
-start_date, end_date = get_period_3days()
+start_date, end_date = get_period_x_days(5)
 
 stock_basic_info = pd.read_csv("./data/stock_basic_info.csv", encoding="utf-8")
 
@@ -17,17 +17,23 @@ def get_stock_by_pchange(code):
     i = 0
     for index, r in data.iterrows():
         i += 1
-        if i == 1:
-            if r.volume > r.v_ma10 * 3:
-                if (r.p_change > 4):
-                    return True
+        if i < 4:
+            '''
+            if i == 1:
+                if r.ma5 > r.ma10 and r.ma10 > r.ma20:
+                    pass
                 else:
                     return False
-
+            '''
+            if (r.volume > r.v_ma10 * 2) and (r.p_change > 2):
+                if i == 3:
+                    return True
+                else:
+                    continue
             else:
                 return False
-        elif i == 2:
-            pass
+
+
 
 def get_stock():
     # create a initial dataframe
