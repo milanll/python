@@ -1,6 +1,6 @@
 from _comm_stock import *
 from _date import *
-start_date, end_date = get_period_x_days(30)
+start_date, end_date = get_x_trade_days(30)
 
 '''
 ts.get_hist_data('600848') #一次性获取全部日k线数据

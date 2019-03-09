@@ -1,7 +1,7 @@
 
 from _comm_stock import *
 from _date import *
-start_date, end_date = get_period_x_days(5)
+start_date, end_date = get_x_trade_days(5)
 
 stock_basic_info = pd.read_csv("./data/stock_basic_info.csv", encoding="utf-8")
 
@@ -14,16 +14,15 @@ def get_stock_by_3_rasing_limit(code):
 
     i = 0
     for index, r in data.iterrows():
-        if r.p_change > 9.7:
+        if r.p_change > 9.8:
             i += 1
+        else:
+            continue
 
         if i == 3:
-            break
+            return True
 
-    if i == 3:
-        return True
-    else:
-        return False
+    return False
 
 def get_stock():
     # create a initial dataframe

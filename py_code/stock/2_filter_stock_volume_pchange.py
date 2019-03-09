@@ -17,21 +17,21 @@ def get_stock_by_pchange(code):
     i = 0
     for index, r in data.iterrows():
         i += 1
-        if i < 4:
-            '''
-            if i == 1:
-                if r.ma5 > r.ma10 and r.ma10 > r.ma20:
-                    pass
-                else:
-                    return False
-            '''
-            if (r.volume > r.v_ma10 * 2) and (r.p_change > 2):
-                if i == 3:
-                    return True
-                else:
-                    continue
+
+        '''
+        if i == 1:
+            if r.ma5 > r.ma10 and r.ma10 > r.ma20:
+                pass
             else:
                 return False
+        '''
+        if (r.volume > r.v_ma20 * 2) and (r.p_change > 2):
+            if i == 3:
+                return True
+            else:
+                continue
+        else:
+            return False
 
 
 
