@@ -1,30 +1,32 @@
 
 from _comm_stock import *
 from _date import *
-start_date, end_date = get_x_trade_days(5)
+start_date, end_date = get_x_trade_days(25)
 
 stock_basic_info = pd.read_csv("./data/stock_basic_info.csv", encoding="utf-8")
 
 pd.set_option('display.width', 1000)
 
-def get_stock_by_3_rasing_limit(code):
+def get_stock_by_ma20(code):
     # open   high    close   low     volume      price_change    p_change    ma5     ma10    ma20    v_ma5       v_ma10      v_ma20
     # 10.40  10.55   10.52   10.37   679240.88   0.17            1.64        10.384  10.320  9.941   607936.01   663916.01   713548.05
     data = ts.get_hist_data(code, start = start_date, end = end_date)
+
     if data is None:
-        return None
+        return False
 
-    i = 0
+    #if DataFrame is null, DataFrame.empty return True, else return False.
+    if data.empty:
+        print('%s is empty!' % (code))
+        return False
+
     for index, r in data.iterrows():
-        if r.p_change > 9.8:
-            i += 1
-        else:
+        if r.close > r.ma20 * 1.05:
             continue
+        else:
+            return False
 
-        if i == 3:
-            return True
-
-    return False
+    return True
 
 def get_stock():
     # create a initial dataframe
@@ -33,7 +35,7 @@ def get_stock():
 
     for index, row in stock_basic_info.iterrows():
         code = str(row.symbol).zfill(6)
-        ret = get_stock_by_3_rasing_limit(code)
+        ret = get_stock_by_ma20(code)
 
         if ret:
             # translate from series to dataframe
@@ -42,7 +44,7 @@ def get_stock():
             # append datafarme
             stock_ma = stock_ma.append(df_row)
 
-    save_stock(stock_ma, '3_10')
+    save_stock(stock_ma, '9_ma20')
     return stock_ma
 
 if __name__ == '__main__':
@@ -50,7 +52,7 @@ if __name__ == '__main__':
     print (time.asctime( time.localtime(time.time()) ))
 
     get_stock()
-    stock = read_stock('3_10')
+    stock = read_stock('9_ma20')
     print (stock)
     print (stock.shape[0])
 
