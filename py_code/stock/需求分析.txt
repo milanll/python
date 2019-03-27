@@ -15,12 +15,11 @@
     需求：a. 连续3天，pchange > 2
           b. 连续3天，volume > (v_ma10 * 2)
           
-3.根据日成交量和均线选股
+3.根据降幅选股
 
     py文件：3_filter_stock_volume_pchange.py
     
-    需求：a. ma10 > (ma20 * 1.02)
-          b. volume > (v_ma10 * 2)
+    需求：a. 三天跌幅超过15%
           
 4.横向比较选股
 

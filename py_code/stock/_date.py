@@ -107,14 +107,14 @@ def get_x_trade_days(x):
     while (i < cal_date.shape[0]):
         if cal_date[i] == today:
             break
-
-        i += 1
+        else:
+            i += 1
 
     if i < x:
         print ('x is too small to get date!')
         return (None)
 
-    start_date = transfer_date_format(cal_date[i - x])
+    start_date = transfer_date_format(cal_date[i - x + 1])
     end_date = get_date()
 
     #start_date = datetime.datetime.strptime(start_date, "%Y-%m-%d").date()
@@ -124,5 +124,5 @@ def get_x_trade_days(x):
 
 if __name__ == "__main__":
 
-    start_date, end_date = get_x_trade_days(5)
-    #print (start_date, end_date)
+    start_date, end_date = get_x_trade_days(3)
+    print (start_date, end_date)

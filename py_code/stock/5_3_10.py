@@ -42,7 +42,7 @@ def get_stock():
             # append datafarme
             stock_ma = stock_ma.append(df_row)
 
-    save_stock(stock_ma, '3_10')
+    save_stock(stock_ma, '5_3_10')
     return stock_ma
 
 if __name__ == '__main__':
@@ -50,7 +50,7 @@ if __name__ == '__main__':
     print (time.asctime( time.localtime(time.time()) ))
 
     get_stock()
-    stock = read_stock('3_10')
+    stock = read_stock('5_3_10')
     print (stock)
     print (stock.shape[0])
 

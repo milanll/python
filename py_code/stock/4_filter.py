@@ -14,12 +14,10 @@ def get_stock_by_strategy(code):
     if data is None:
         return None
 
-    i = 0
-    for index, r in data.iterrows():
-        #type(r.p_change) is numpy.float64
-        i += r.p_change
+    if len(data) != 4:
+        return False
 
-    if i < -15:
+    if data['ma5'][0] > data['ma5'][1] and data['ma5'][1] > data['ma5'][2] and data['ma5'][2] > data['ma5'][3]:
         return True
 
     return False
@@ -39,8 +37,8 @@ def get_stock():
             print(row.values)
             # append datafarme
             stock_ma = stock_ma.append(df_row)
-
-    save_stock(stock_ma, '3_filter')
+        #break
+    save_stock(stock_ma, '4_filter')
     return stock_ma
 
 if __name__ == '__main__':
@@ -48,7 +46,7 @@ if __name__ == '__main__':
     print (time.asctime( time.localtime(time.time()) ))
 
     get_stock()
-    stock = read_stock('3_filter')
+    stock = read_stock('4_filter')
     print (stock)
     print (stock.shape[0])
 
