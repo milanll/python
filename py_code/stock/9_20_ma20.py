@@ -1,7 +1,9 @@
 
 from _comm_stock import *
 from _date import *
-start_date, end_date = get_x_trade_days(25)
+
+count_days = 20
+start_date, end_date = get_x_trade_days(count_days)
 
 stock_basic_info = pd.read_csv("./data/stock_basic_info.csv", encoding="utf-8")
 
@@ -11,17 +13,12 @@ def get_stock_by_ma20(code):
     # open   high    close   low     volume      price_change    p_change    ma5     ma10    ma20    v_ma5       v_ma10      v_ma20
     # 10.40  10.55   10.52   10.37   679240.88   0.17            1.64        10.384  10.320  9.941   607936.01   663916.01   713548.05
     data = ts.get_hist_data(code, start = start_date, end = end_date)
-
-    if data is None:
-        return False
-
-    #if DataFrame is null, DataFrame.empty return True, else return False.
-    if data.empty:
-        print('%s is empty!' % (code))
+    
+    if check_stock_data(data, count_days, code) != True:
         return False
 
     for index, r in data.iterrows():
-        if r.close > r.ma20 * 1.05:
+        if r.close > r.ma20 * 0.99:
             continue
         else:
             return False

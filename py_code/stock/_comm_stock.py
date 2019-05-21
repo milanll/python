@@ -10,9 +10,17 @@ pro = ts.pro_api()
 
 #[Return]   stock_info(DataFrame)
 def store_stock_basic_info():
+    print('\nstore_stock_basic_info():')
+    time_start = time.time()
+    print (time.asctime( time.localtime(time.time()) ))
+    
     #查询当前所有正常上市交易的股票列表
     stock_info = pro.stock_basic(exchange='', list_status='L', fields='ts_code,symbol,name,area,industry,market,list_date')
     stock_info.to_csv("./data/stock_basic_info.csv" , encoding = "utf-8")
+    
+    time_end = time.time()
+    print (time.asctime(time.localtime(time.time())))
+    print(int(time_end - time_start))
 
     return stock_info
 
@@ -60,10 +68,32 @@ def read_stock(filter):
 
     return stock_ma
 
+#[input]    data(DataFrame)
+#           x_trade_days(int)
+def check_stock_data(data, x_trade_days, code):
+    if data is None:
+        print('%s is None!' % code)
+        return False
+
+    if data.empty or len(data) < (x_trade_days * 0.8):
+        print('%s exchange is stopped!' % (code))
+        return False
+
+    return True
+
+#[breif]    append one record to count_grow_2_days.csv  
+#[input]    date(str)       2019-05-15
+#           count(int)      50
+def save_count_grow_2_days(date, count):
+    file = './data/count_grow_2_days.csv'
+    f = pd.read_csv(file)
+    if f is None:
+        print('Read count_grow_2_days.csv fail!!!')
+    
+    df = pd.DataFrame({'Date':date, 'Count':count}, index = [len(f) + 1])
+    df.to_csv(file, mode='a', header=False)
+    
 if __name__ == "__main__":
-    stock_info = store_stock_basic_info()
-    stock_info = stock_basic_info = pd.read_csv("./data/stock_basic_info.csv", encoding="utf-8")
-    print(stock_info)
     '''
     #    A  B  C
     # x  1  2  3
@@ -77,5 +107,6 @@ if __name__ == "__main__":
     df.iat[0,0]
     df.get_value('x', 'A')
     '''
-    #print(stock_info.index)
-    #save_stock_final(stock_info)
+    #save_count_grow_2_days('2019-05-13', 20)
+    store_stock_basic_info()
+    

@@ -38,7 +38,7 @@ def get_stock():
             # append datafarme
             stock_ma = stock_ma.append(df_row)
         #break
-    save_stock(stock_ma, '4_filter')
+    save_stock(stock_ma, '4-filter')
     return stock_ma
 
 if __name__ == '__main__':
@@ -46,7 +46,7 @@ if __name__ == '__main__':
     print (time.asctime( time.localtime(time.time()) ))
 
     get_stock()
-    stock = read_stock('4_filter')
+    stock = read_stock('4-filter')
     print (stock)
     print (stock.shape[0])
 
