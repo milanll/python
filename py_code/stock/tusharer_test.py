@@ -64,7 +64,7 @@ for index, row in stock_basic_info.iterrows():
     if '种业' in row['name'] or '农' in row['name']:
         print(row.values)
 '''
-print(stock_basic_info.head(10))
+print(stock_basic_info.shape[0])
 
 
 

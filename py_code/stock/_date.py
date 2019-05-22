@@ -134,10 +134,10 @@ def get_x_trade_days(x):
         print ('x is too small to get date!')
         return (None)
     
-    print('i is %d' % i)
+    #print('i is %d' % i)
     start_date = transfer_date_format(cal_date[i - x + 1])
     end_date = get_date()
-    print(end_date)
+    #print(end_date)
 
     #start_date = datetime.datetime.strptime(start_date, "%Y-%m-%d").date()
     end_date = end_date.strftime("%Y-%m-%d")
