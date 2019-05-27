@@ -3,6 +3,9 @@ from _comm_stock import *
 from _date import *
 from _file import *
 import json
+import sys
+import time
+import os
 
 pd.set_option('display.width', 1000)
 
@@ -22,7 +25,11 @@ def progress_bar(i, base):
         sys.stdout.write('\r[ %.2f%s ]' % ((p), '%'))
         sys.stdout.flush()
         #time.sleep(0.1)
-        
+
+def del_hist_data():
+    print('rm -rf ./data/hist_data_*')
+    os.system('rm -rf ./data/hist_data_*')    
+    
 #[return]   file(str)  E:\\git\\python\\py_code\\stock\\data\\hist_data_2019-05-22.json 
 def save_hist_data():
 
@@ -34,6 +41,8 @@ def save_hist_data():
     
     if file_json not in files:
     
+        del_hist_data()
+        
         hist_data_dict = get_stock_hist_data()
         
         with open(file_json_dir, 'w') as f:
