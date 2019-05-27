@@ -6,7 +6,7 @@ import json
 
 pd.set_option('display.width', 1000)
 
-x_trade_days = 20
+x_trade_days = 40
 start_date, end_date = get_x_trade_days(x_trade_days)
 
 #0    ts_code       symbol      name        area        industry    market  list_date
@@ -16,10 +16,10 @@ stock_basic_info = pd.read_csv("./data/stock_basic_info.csv", encoding="utf-8")
 
 import sys,time
 def progress_bar(i, base):
-        p = round(i / base, 1) * 100
-        q = p
-        str = '.' * (int(q) + 1)
-        sys.stdout.write('\r[%d%s]%s ' % ((p), '%', str))
+        p = (i / base) * 100
+        str = '.' * (int(p) + 1)
+        #sys.stdout.write('\r[%.2f%s]%s ' % ((p), '%', str))
+        sys.stdout.write('\r[ %.2f%s ]' % ((p), '%'))
         sys.stdout.flush()
         #time.sleep(0.1)
         
@@ -64,7 +64,7 @@ def get_stock_hist_data():
   
     print('\nget_stock_hist_data():')
     time_start = time.time()
-    print (time.asctime( time.localtime(time.time()) ))
+    #print (time.asctime( time.localtime(time.time()) ))
     
     hist_data_dict = {}
     base = stock_basic_info.shape[0]
@@ -86,10 +86,10 @@ def get_stock_hist_data():
         #if i > 5:
             #break
             
-    print("Get stock history data finish!!!\n")
+    print("\nGet stock history data finish!!!")
     time_end = time.time()
-    print (time.asctime(time.localtime(time.time())))
-    print(int(time_end - time_start))
+    #print (time.asctime(time.localtime(time.time())))
+    print('Cost %d S.\n' % int(time_end - time_start))
        
     return hist_data_dict
 

@@ -4,7 +4,7 @@ from _date import *
 #import get_stock_hist_data
 from get_stock_hist_data import *
 
-count_days = 20
+count_days = 30
 start_date, end_date = get_x_trade_days(count_days)
 
 stock_basic_info = pd.read_csv("./data/stock_basic_info.csv", encoding="utf-8")
@@ -54,7 +54,8 @@ def filter_9(stock_data):
     stock_ma = pd.DataFrame(columns=col_name)
     
     stock_key = []
-    base = stock_basic_info.shape[0]
+    #base = stock_basic_info.shape[0]
+    base = len(stock_data)
     
     #stock_data = get_hist_data_()
     
