@@ -1,28 +1,32 @@
 
 from _comm_stock import *
 from _date import *
-from get_stock_hist_data import *
-
-start_date, end_date = get_x_trade_days(2)
+start_date, end_date = get_x_trade_days(4)
 
 stock_basic_info = pd.read_csv("./data/stock_basic_info.csv", encoding="utf-8")
 
 pd.set_option('display.width', 1000)
 
-#[breif]    append one record to count_grow_2_days.csv  
-#[input]    date(str)       2019-05-15
-#           count(int)      50
-def save_count_grow_2_days(date, count):
-    file = './data/count_grow_2_days.csv'
-    f = pd.read_csv(file)
-    if f is None:
-        print('Read count_grow_2_days.csv fail!!!')
-    
-    df = pd.DataFrame({'Date':date, 'Count':count}, index = [len(f) + 1])
-    df.to_csv(file, mode='a', header=False)
-    
-def filter_2(stock_data):
-    print('\nfilter_9():')
+def get_stock_by_strategy(code):
+    # open   high    close   low     volume      price_change    p_change    ma5     ma10    ma20    v_ma5       v_ma10      v_ma20
+    # 10.40  10.55   10.52   10.37   679240.88   0.17            1.64        10.384  10.320  9.941   607936.01   663916.01   713548.05
+    data = ts.get_hist_data(code, start = start_date, end = end_date)
+    if data is None:
+        return None
+
+    i = 0
+    for index, r in data.iterrows():
+        #type(r.p_change) is numpy.float64
+        i += r.p_change
+
+    if i < -15:
+        return True
+
+    return False
+
+from get_stock_hist_data import *
+def filter_3(stock_data):
+    print('\nfilter_3():')
     # create a initial dataframe
     col_name = ('ts_code', 'symbol', 'name', 'area', 'industry', 'market', 'list_date')
     stock_ma = pd.DataFrame(columns=col_name)
@@ -30,48 +34,38 @@ def filter_2(stock_data):
     stock_key = []
     #base = stock_basic_info.shape[0]
     base = len(stock_data)
-    
-    #stock_data = get_hist_data_()
-    
+      
     j = 0
     for k, v in stock_data.items():
         j += 1
         df = pd.DataFrame(v)
-        #get the last 2 rows.
-        df = df[-2:]
+        #data.iloc[-1]   #选取DataFrame最后一行，返回的是Series
+        #data.iloc[-1:]   #选取DataFrame最后一行，返回的是DataFrame
+        df = df[-3:]
         
         #open   high    close   low     volume      price_change    p_change    ma5     ma10    ma20    v_ma5       v_ma10      v_ma20
         #10.40  10.55   10.52   10.37   679240.88   0.17            1.64        10.384  10.320  9.941   607936.01   663916.01   713548.05
-        i = 0
-        for index, r in df.iterrows(): 
-            if (r.volume > r.v_ma10 * 1.3) and (r.p_change > 2):
-                i += 1
-            else:
-                break
-                
-        if i == 2:
+        p_change = 0
+        for index, r in df.iterrows():
+            p_change += r.p_change
+            
+        if p_change > 15:
             stock_key.append(k)
             #print(k)
             progress_bar(j, base)
 
-        #if j > 250:
-            #break
             
     stock_p_change = get_stock_info_by_key(stock_key)
-    save_stock(stock_p_change, '2_filter') 
-    
-    count = len(stock_p_change)
-    save_count_grow_2_days(end_date, count)
+    #save_stock(stock_p_change, '3_filter') 
 
     return
-    
-if __name__ == '__main__':
 
+if __name__ == '__main__':
     time_start = time.time()
     print (time.asctime( time.localtime(time.time()) ))
 
     stock_data = get_hist_data_()
-    filter_2(stock_data)
+    filter_3(stock_data)
 
     time_end = time.time()
     print (time.asctime(time.localtime(time.time())))
