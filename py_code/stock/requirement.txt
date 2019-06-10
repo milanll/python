@@ -37,11 +37,10 @@
     py文件：6_filter.py
     需求：a.ma5 > ma20 and ma20 > ma10
     
-7.统计日涨幅大于5%的股票的行业分布情况。
+7.连续3天涨幅大于2%。
     
     py文件：7_count_industres.py
-    需求：a.筛选出日涨幅大于5%的股票
-          b.统计这些股票行业分布情况
+    需求：a.连续3天涨幅大于2%
           
 8.存储当日所有股票交易数据  
     py文件：8_save_stock_exchange_data.py

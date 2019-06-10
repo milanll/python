@@ -7,13 +7,14 @@ stock_basic_info = pd.read_csv("./data/stock_basic_info.csv", encoding="utf-8")
 
 pd.set_option('display.width', 1000)
 
+
 from get_stock_hist_data import *
-def filter_3(stock_data):
-    print('\nfilter_3():')
+def filter_7(stock_data):
+    print('\nfilter_7():')
     # create a initial dataframe
     col_name = ('ts_code', 'symbol', 'name', 'area', 'industry', 'market', 'list_date')
     stock_ma = pd.DataFrame(columns=col_name)
-    
+        
     stock_key = []
     #base = stock_basic_info.shape[0]
     base = len(stock_data)
@@ -28,18 +29,19 @@ def filter_3(stock_data):
         
         #open   high    close   low     volume      price_change    p_change    ma5     ma10    ma20    v_ma5       v_ma10      v_ma20
         #10.40  10.55   10.52   10.37   679240.88   0.17            1.64        10.384  10.320  9.941   607936.01   663916.01   713548.05
-        p_change = 0
+        i = 0
         for index, r in df.iterrows():
-            p_change += r.p_change
+            if r.p_change > 2:
+                i += 1
             
-        if p_change > 15:
+        if i == 3:
             stock_key.append(k)
             #print(k)
             progress_bar(j, base)
 
             
     stock_p_change = get_stock_info_by_key(stock_key)
-    #save_stock(stock_p_change, '3_filter') 
+    #save_stock(stock_p_change, '7_filter') 
 
     return
 
@@ -48,7 +50,7 @@ if __name__ == '__main__':
     print (time.asctime( time.localtime(time.time()) ))
 
     stock_data = get_hist_data_()
-    filter_3(stock_data)
+    filter_7(stock_data)
 
     time_end = time.time()
     print (time.asctime(time.localtime(time.time())))
