@@ -1,5 +1,18 @@
 需求分析：
 
+0.任洋洋需求
+
+    py文件：0_renyy.py
+    
+    需求：a. 14日，在3个ATR之内
+          
+          
+          ATR：
+            1.TR=∣最高价-最低价∣ 和 ∣最高价-昨收∣ 和 ∣昨收-最低价∣ 的最大值
+                =max(max(∣H-L∣,∣H-PC∣),∣PC-L∣)
+            2.真实波幅（ATR）=TR的N日简单移动平均
+            3.参数N设置为14日 [2] 
+
 1.根据成交价和成交量选股
 
     py文件：1_filter.py
@@ -42,8 +55,8 @@
     py文件：7_count_industres.py
     需求：a.连续3天涨幅大于2%
           
-8.存储当日所有股票交易数据  
-    py文件：8_save_stock_exchange_data.py
+8.X日新高
+    py文件：8_filter.py
     
 9.连续20个交易日，收盘价在ma20以上  
     py文件：9_20_ma20.py
