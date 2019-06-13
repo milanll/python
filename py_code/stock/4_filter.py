@@ -19,7 +19,7 @@ def filter_4(stock_data):
     base = len(stock_data)
     
     #stock_data = get_hist_data_()
-    
+    vol = 150000
     j = 0
     for k, v in stock_data.items():
         j += 1
@@ -31,11 +31,10 @@ def filter_4(stock_data):
         #10.40  10.55   10.52   10.37   679240.88   0.17            1.64        10.384  10.320  9.941   607936.01   663916.01   713548.05  
         if df['ma5'][0] < df['ma5'][1] and df['ma5'][1] < df['ma5'][2] and df['ma5'][2] < df['ma5'][3]:
             if df['ma5'][2] > df['ma10'][2] > df['ma20'][2]:
-                stock_key.append(k)
-                #print(k)
-                
-                progress_bar(j, base)
-    
+                if df['volume'][0] > vol and df['volume'][1] > vol and df['volume'][2] > vol and df['volume'][3] > vol:
+                    stock_key.append(k)
+                    progress_bar(j, base)
+                    
     stock_ma = get_stock_info_by_key(stock_key)
     #save_stock(stock_ma, '4_filter') 
 

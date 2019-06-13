@@ -58,13 +58,17 @@ start_date, end_date = get_x_trade_days(x_trade_days)
 
 hist_data = {}
 
-stock_basic_info = pd.read_csv("./data/stock_basic_info.csv", encoding="utf-8")
+#stock_basic_info = pd.read_csv("./data/stock_basic_info.csv", encoding="utf-8")
 '''
 for index, row in stock_basic_info.iterrows():
     if '种业' in row['name'] or '农' in row['name']:
         print(row.values)
 '''
-print(stock_basic_info.shape[0])
+
+d = ts.get_hist_data('hs300', start = '2019-06-01', end = '2019-06-11')
+d = d.sort_index()
+
+print(d)
 
 
 

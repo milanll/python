@@ -30,7 +30,7 @@ def filter_1(stock_data):
         #open   high    close   low     volume      price_change    p_change    ma5     ma10    ma20    v_ma5       v_ma10      v_ma20
         #10.40  10.55   10.52   10.37   679240.88   0.17            1.64        10.384  10.320  9.941   607936.01   663916.01   713548.05
  
-        if (df.p_change > 3) and (df.volume > (df.v_ma10 * 2)) and (df.close > (df.open * 1.02)):
+        if (df.p_change > 3) and (df.volume > (df.v_ma10 * 2)) :
             stock_key.append(k)
             #print(k)
             progress_bar(j, base)
