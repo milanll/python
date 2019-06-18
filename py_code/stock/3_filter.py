@@ -31,10 +31,11 @@ def filter_3(stock_data):
         p_change = 0
         i = 0
         j = 0
+        pre_close = 0
         for index, r in df.iterrows():
             p_change += r.p_change
             
-            if r.close > r.open:
+            if r.close > min(r.open, pre_close):
                 i += 1
             else:
                 break
@@ -43,6 +44,8 @@ def filter_3(stock_data):
                 j += 1
             else:
                 break
+                
+            pre_close = r.close
             
         if p_change > 8 and i == 3 and j > 1:
             stock_key.append(k)
