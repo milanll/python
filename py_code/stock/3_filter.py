@@ -29,10 +29,22 @@ def filter_3(stock_data):
         #open   high    close   low     volume      price_change    p_change    ma5     ma10    ma20    v_ma5       v_ma10      v_ma20
         #10.40  10.55   10.52   10.37   679240.88   0.17            1.64        10.384  10.320  9.941   607936.01   663916.01   713548.05
         p_change = 0
+        i = 0
+        j = 0
         for index, r in df.iterrows():
             p_change += r.p_change
             
-        if p_change > 15:
+            if r.close > r.open:
+                i += 1
+            else:
+                break
+                
+            if r.ma5 > r.ma10 and r.ma10 > r.ma20:
+                j += 1
+            else:
+                break
+            
+        if p_change > 8 and i == 3 and j > 1:
             stock_key.append(k)
             #print(k)
             progress_bar(j, base)

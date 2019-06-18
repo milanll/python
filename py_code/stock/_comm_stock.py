@@ -80,6 +80,40 @@ def check_stock_data(data, x_trade_days, code):
         return False
 
     return True
+
+#[input]    stock_info(DataFrame)
+#[return]   atr(int)
+def get_atr(stock_info):
+    atr = 0
+    n_atr = 0
+    #assert(len(stock_info) == 14)
+    if len(stock_info) > 14:
+        stock_info = stock_info[-14:]
+    
+    '''
+    ATR定义：
+    1.TR=∣最高价-最低价∣ 和 ∣最高价-昨收∣ 和 ∣昨收-最低价∣ 的最大值
+        =max(max(∣H-L∣,∣H-PC∣),∣PC-L∣)
+    2.真实波幅（ATR）= TR的N日简单移动平均
+    3.参数N设置为14日
+    '''
+    pre_close = 0
+    for index, v in stock_info.iterrows():
+        if pre_close == 0:
+            pre_close = v.close
+            continue
+             
+        m = max(abs(v.high - v.low), abs(v.high - pre_close), abs(pre_close - v.low))
+        print(index, m)
+        atr += m
+        n_atr += 1
+        
+        pre_close = v.close
+    
+    atr = atr / n_atr
+    #print(atr)
+    
+    return atr
     
 if __name__ == "__main__":
     '''
