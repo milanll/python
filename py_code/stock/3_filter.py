@@ -22,32 +22,46 @@ def filter_3(stock_data):
     for k, v in stock_data.items():
         j += 1
         df = pd.DataFrame(v)
+        
+        atr = get_atr(df)
+        
         #data.iloc[-1]   #选取DataFrame最后一行，返回的是Series
         #data.iloc[-1:]   #选取DataFrame最后一行，返回的是DataFrame
-        df = df[-3:]
+        d = df[-3:]
         
         #open   high    close   low     volume      price_change    p_change    ma5     ma10    ma20    v_ma5       v_ma10      v_ma20
         #10.40  10.55   10.52   10.37   679240.88   0.17            1.64        10.384  10.320  9.941   607936.01   663916.01   713548.05
         p_change = 0
         i = 0
-        j = 0
-        pre_close = 0
-        for index, r in df.iterrows():
+        ma = 0
+        pre_close = df.iloc[-4].close
+        for index, r in d.iterrows():
+            
+            #波动幅度不能太大
+            if (r.high - r.close) > atr:
+                break
+            
+            #涨幅不能太小
+            if r.p_change < 0.6:
+                break
+                
+            #累计涨幅
             p_change += r.p_change
             
+            #大于开盘价，或者大于前一日收盘价
             if r.close > min(r.open, pre_close):
                 i += 1
             else:
                 break
                 
             if r.ma5 > r.ma10 and r.ma10 > r.ma20:
-                j += 1
+                ma += 1
             else:
                 break
-                
+
             pre_close = r.close
-            
-        if p_change > 8 and i == 3 and j > 1:
+                
+        if p_change > 6 and i == 3 and ((d.iloc[-1].close * d.iloc[-1].volume * 100) > 100000000):
             stock_key.append(k)
             #print(k)
             progress_bar(j, base)

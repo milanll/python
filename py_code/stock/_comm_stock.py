@@ -104,7 +104,7 @@ def get_atr(stock_info):
             continue
              
         m = max(abs(v.high - v.low), abs(v.high - pre_close), abs(pre_close - v.low))
-        print(index, m)
+        #print(index, m)
         atr += m
         n_atr += 1
         
@@ -113,7 +113,7 @@ def get_atr(stock_info):
     atr = atr / n_atr
     #print(atr)
     
-    return atr
+    return round(atr, 2)
     
 if __name__ == "__main__":
     '''

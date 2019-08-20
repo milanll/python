@@ -35,13 +35,28 @@ def renyy_0(stock_data):
         #10.40  10.55   10.52   10.37   679240.88   0.17            1.64        10.384  10.320  9.941   607936.01   663916.01   713548.05
         i = 0
         ma = 0
+        first_close = 0
+        last_close = 0
+        high = 0
+        low = 1000
         for index, r in df.iterrows():
-            if abs(r.price_change) < (atr):
+            if first_close == 0:
+                first_close = r.close
+                
+            last_close = r.close
+            
+            if r.close > high:
+                high = r.close
+                
+            if r.close < low:
+                low = r.close
+            
+            if abs(r.price_change) < (atr * 0.9):
                 i += 1
             if r.close > r.ma5:
                 ma += 1
             
-        if i == 14 and ma > 7:
+        if i == 14 and ma > 7 and last_close > (first_close * 1.10) and (high - low) < 2.8 * atr:
             stock_key.append(k)
             #print(k)
             progress_bar(j, base)

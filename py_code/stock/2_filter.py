@@ -35,19 +35,19 @@ def filter_2(stock_data):
     for k, v in stock_data.items():
         j += 1
         df = pd.DataFrame(v)
-        #get the last 2 rows.
-        df = df[-2:]
+        #get the last 3 rows.
+        df = df[-3:]
         
         #open   high    close   low     volume      price_change    p_change    ma5     ma10    ma20    v_ma5       v_ma10      v_ma20
         #10.40  10.55   10.52   10.37   679240.88   0.17            1.64        10.384  10.320  9.941   607936.01   663916.01   713548.05
+        p = 0
         i = 0
         for index, r in df.iterrows(): 
-            if (r.volume > r.v_ma10 * 1.3) and (r.p_change > 2):
+            if r.p_change > 1:
                 i += 1
-            else:
-                break
+            p += r.p_change
                 
-        if i == 2:
+        if p > 10 and i == 3:
             stock_key.append(k)
             #print(k)
             progress_bar(j, base)
@@ -59,7 +59,7 @@ def filter_2(stock_data):
     #save_stock(stock_p_change, '2_filter') 
     
     count = len(stock_p_change)
-    save_count_grow_2_days(end_date, count)
+    #save_count_grow_2_days(end_date, count)
 
     return
     

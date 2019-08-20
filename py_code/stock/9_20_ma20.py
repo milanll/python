@@ -32,11 +32,11 @@ def filter_9(stock_data):
         #10.40  10.55   10.52   10.37   679240.88   0.17            1.64        10.384  10.320  9.941   607936.01   663916.01   713548.05
         i = 0
         for index, r in df.iterrows():           
-            if r.close > (r.ma20 * 0.99):
+            if r.close > (r.ma20):
                 i += 1
                 continue
             
-        if i > (len(df) * 0.9):
+        if i > (len(df) * 0.95):
             stock_key.append(k)
             #print(k)
             progress_bar(j, base)

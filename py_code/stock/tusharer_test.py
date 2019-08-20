@@ -101,7 +101,7 @@ def test_hist_data():
 
     hist_data = {}
 
-    #stock_basic_info = pd.read_csv("./data/stock_basic_info.csv", encoding="utf-8")
+    stock_basic_info = pd.read_csv("./data/stock_basic_info.csv", encoding="utf-8")
 
     for index, row in stock_basic_info.iterrows():
         if '种业' in row['name'] or '农' in row['name']:
@@ -115,7 +115,7 @@ def test_hist_data():
 
 if __name__ == '__main__':
     
-    basic_info()
+    test_hist_data()
 
 
 

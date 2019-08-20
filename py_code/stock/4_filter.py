@@ -34,6 +34,9 @@ def filter_4(stock_data):
         #10.40  10.55   10.52   10.37   679240.88   0.17            1.64        10.384  10.320  9.941   607936.01   663916.01   713548.05  
         i = 0
         for index, r in df.iterrows():
+            if r.close < 5:
+                break
+                
             if r.ma5 > r.ma10 and r.ma10 > r.ma20 and (r.volume * 100 * ((r.high + r.low) / 2)) > 5000 * W:
                 i += 1
             else:
