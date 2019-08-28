@@ -51,7 +51,9 @@
 6.日均线反转。
     
     py文件：6_filter.py
-    需求：a.ma5 > ma20 and ma20 > ma10
+    需求：a.当日ma5 > ma10 and ma5 > ma20
+          b.前一日ma5 < ma10 < ma20
+          c.成交额大于2亿
     
 7.连续3天涨幅大于2%。
     

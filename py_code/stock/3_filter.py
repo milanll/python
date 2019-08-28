@@ -1,11 +1,14 @@
 
 from _comm_stock import *
 from _date import *
-start_date, end_date = get_x_trade_days(4)
+#start_date, end_date = get_x_trade_days(4)
 
 stock_basic_info = pd.read_csv("./data/stock_basic_info.csv", encoding="utf-8")
 
 pd.set_option('display.width', 1000)
+
+E = 100000000
+W = 10000
 
 from get_stock_hist_data import *
 def filter_3(stock_data):
@@ -61,7 +64,11 @@ def filter_3(stock_data):
 
             pre_close = r.close
                 
-        if p_change > 6 and i == 3 and ((d.iloc[-1].close * d.iloc[-1].volume * 100) > 100000000):
+        if (p_change > 6 
+            and i == 3 
+            #成交额大于2亿
+            and ((d.iloc[-1].close * d.iloc[-1].volume * 100) > 2 * E)):
+            
             stock_key.append(k)
             #print(k)
             progress_bar(j, base)

@@ -8,6 +8,7 @@ stock_basic_info = pd.read_csv("./data/stock_basic_info.csv", encoding="utf-8")
 pd.set_option('display.width', 1000)
 
 W = 10000
+E = 100000000
 #[input]     stock_data(dict)   
 def filter_4(stock_data):
     print('\nfilter_4():')
@@ -37,7 +38,7 @@ def filter_4(stock_data):
             if r.close < 5:
                 break
                 
-            if r.ma5 > r.ma10 and r.ma10 > r.ma20 and (r.volume * 100 * ((r.high + r.low) / 2)) > 5000 * W:
+            if r.ma5 > r.ma10 and r.ma10 > r.ma20 and (r.volume * 100 * ((r.high + r.low) / 2)) > 1 * E:
                 i += 1
             else:
                 break

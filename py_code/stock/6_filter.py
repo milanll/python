@@ -19,6 +19,8 @@ ts.get_hist_data('600848') #一次性获取全部日k线数据
 15.ts.get_hist_data('cyb'）#获取创业板指数k线数据
 '''
 
+E = 100000000
+
 from get_stock_hist_data import *
 def filter_6(stock_data):
     print('\nfilter_6():')
@@ -37,11 +39,14 @@ def filter_6(stock_data):
         df = pd.DataFrame(v)
         #data.iloc[-1]   #选取DataFrame最后一行，返回的是Series
         #data.iloc[-1:]   #选取DataFrame最后一行，返回的是DataFrame
-        df = df.iloc[-1]
+        df = df[-3:]
         
         #open   high    close   low     volume      price_change    p_change    ma5     ma10    ma20    v_ma5       v_ma10      v_ma20
         #10.40  10.55   10.52   10.37   679240.88   0.17            1.64        10.384  10.320  9.941   607936.01   663916.01   713548.05
-        if (df.ma5 > df.ma20) and (df.ma20 > df.ma10):
+        if (((df.iloc[-1].ma5 > df.iloc[-1].ma10) and (df.iloc[-1].ma20 > df.iloc[-1].ma5))
+            and ((df.iloc[-2].ma5 < df.iloc[-2].ma10) and (df.iloc[-2].ma10 < df.iloc[-2].ma20))
+            and ((df.iloc[-1].close * df.iloc[-1].volume * 100) > 2 * E)):
+            
             stock_key.append(k)
             #print(k)
             progress_bar(j, base)
