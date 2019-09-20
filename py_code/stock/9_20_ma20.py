@@ -28,6 +28,7 @@ def filter_9(stock_data):
     for k, v in stock_data.items():
         j += 1
         df = pd.DataFrame(v)
+
         #open   high    close   low     volume      price_change    p_change    ma5     ma10    ma20    v_ma5       v_ma10      v_ma20
         #10.40  10.55   10.52   10.37   679240.88   0.17            1.64        10.384  10.320  9.941   607936.01   663916.01   713548.05
         i = 0

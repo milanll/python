@@ -85,17 +85,29 @@ def get_stock_hist_data():
     base = stock_basic_info.shape[0]
 
     i = 0
+    j = 0
+    E = 100000000
     for index, row in stock_basic_info.iterrows():
         i += 1
         code = str(row.symbol).zfill(6)
         data = ts.get_hist_data(code, start = start_date, end = end_date)
+        
+        #the data is wrong, discard
         if check_stock_data(data, x_trade_days, code) != True:
             continue
-        
+            
+        #最近一日成交额 < 1 亿，不要
+        avg_price = (data.iloc[0].high + data.iloc[0].low + data.iloc[0].open + data.iloc[0].close) / 4
+        volume = data.iloc[0].volume * 100
+        if (avg_price * volume) < (1.0 * E):
+            continue
+            
         #hist_data[code] = data
         data = data.to_dict()
         hist_data_dict[code] = data
         progress_bar(i, base)
+        
+        j += 1
         
         #i += 1
         #if i > 5:
@@ -105,6 +117,7 @@ def get_stock_hist_data():
     time_end = time.time()
     #print (time.asctime(time.localtime(time.time())))
     print('Cost %d S.\n' % int(time_end - time_start))
+    print('Total: %d' % j)
        
     return hist_data_dict
 
