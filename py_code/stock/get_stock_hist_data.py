@@ -15,7 +15,7 @@ pd.set_option('display.max_rows', None)
 #设置value的显示长度为100，默认为50
 #pd.set_option('max_colwidth',100)
 
-x_trade_days = 70
+x_trade_days = 125
 start_date, end_date = get_x_trade_days(x_trade_days)
 
 #0    ts_code       symbol      name        area        industry    market  list_date
@@ -158,6 +158,6 @@ def get_hist_data_():
     return stock_data
     
 if __name__ == '__main__':
-
     stock_data = get_hist_data_()
+    #print(start_date, end_date)
 

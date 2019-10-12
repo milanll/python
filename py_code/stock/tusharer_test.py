@@ -6,7 +6,7 @@ import json
 
 from _comm_stock import *
 from _date import *
-
+from get_stock_hist_data import *
 
 #ts.set_token('1b75b5ac5f9dd3aaaa43264942284efff50d34f0f87b720d4504a35e')
 
@@ -113,9 +113,30 @@ def test_hist_data():
 
     print(d)
 
-if __name__ == '__main__':
+def test(stock_data):
+    print('\ntest():')
     
-    test_hist_data()
+    stock_key = []
+    #base = stock_basic_info.shape[0]
+    base = len(stock_data)
+      
+    j = 0
+    for k, v in stock_data.items():
+        j += 1
+        df = pd.DataFrame(v)
+        
+        if df.iloc[0].close < df.iloc[-1].close:
+            stock_key.append(k)
+            #print(k)
+            progress_bar(j, base)
+            
+    stock_p_change = get_stock_info_by_key(stock_key) 
+
+    return
+
+if __name__ == '__main__':
+    stock_data = get_hist_data_()
+    test(stock_data)
 
 
 
