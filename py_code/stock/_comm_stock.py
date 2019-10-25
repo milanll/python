@@ -88,7 +88,7 @@ def get_atr(stock_info):
     n_atr = 0
     #assert(len(stock_info) == 14)
     if len(stock_info) > 14:
-        stock_info = stock_info[-14:]
+        stock_info = stock_info[0:14]
     
     '''
     ATR定义：
@@ -98,6 +98,7 @@ def get_atr(stock_info):
     3.参数N设置为14日
     '''
     pre_close = 0
+
     for index, v in stock_info.iterrows():
         if pre_close == 0:
             pre_close = v.close
