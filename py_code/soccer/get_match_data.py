@@ -29,11 +29,12 @@ def get_id(url):
 	"""
 
 	url = check_http(url)
-
+	
 	try:
 		html_text = requests.get(url).content.decode('gbk')
 		x_response = etree.HTML(html_text)
 		id_dict = ''.join(re.findall(r'var.*?liveOddsList=(\{.*?\});', html_text, re.S))
+		print(id_dict)
 		id_dict = json.loads(id_dict)
 		data_dict = {}
 		for key in id_dict:

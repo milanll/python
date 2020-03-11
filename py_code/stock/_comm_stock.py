@@ -8,6 +8,8 @@ from _date import get_period, get_trade_date
 
 pro = ts.pro_api()
 
+E = 100000000
+
 #[Return]   stock_info(DataFrame)
 def store_stock_basic_info():
     print('\nstore_stock_basic_info():')

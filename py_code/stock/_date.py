@@ -20,7 +20,7 @@ def transfer_date_format(date):
 def time_compare_pm4():
 
     str_Time_16 = datetime.datetime.now().strftime('%Y-%m-%d') + ' ' + '16:00:00'
-    str_Time_now = (datetime.datetime.now()+datetime.timedelta(hours=7)).strftime('%Y-%m-%d %H:%M:%S')
+    str_Time_now = (datetime.datetime.now()+datetime.timedelta(hours=8)).strftime('%Y-%m-%d %H:%M:%S')
     
     if (str_Time_now > str_Time_16):
         return True
@@ -154,17 +154,17 @@ def get_x_trade_days(x):
     cal_date = calendar['cal_date']
 
     today = get_trade_date()
-
+    print(cal_date[1])
     i = 0
     while (i < cal_date.shape[0]):
         if cal_date[i] == today:
             break
         else:
             i += 1
-
+	
     if i < x:
-        print ('x is too small to get date!')
-        return (None)
+        print ('\nx is too big to get date!\n')
+        i = x
     
     #print('i is %d' % i)
     start_date = transfer_date_format(cal_date[i - x + 1])
@@ -173,10 +173,24 @@ def get_x_trade_days(x):
 
     #start_date = datetime.datetime.strptime(start_date, "%Y-%m-%d").date()
     
-    #print('\nstart_date: %s\nend_date: %s\n' % (start_date, end_date))
+    print('\nstart_date: %s\nend_date: %s\n' % (start_date, end_date))
     
     return start_date, end_date
 
+
+#[breif]    check if today is a trade day
+#[ret]      True     today is a trade day
+#           False   today is not a trade day
+def today_is_trade_day():
+    cal = get_trade_calendar()
+    date_today = datetime.date.today()
+    today = transfer_date_format(date_today)
+    
+    if today in cal['cal_date'].values:
+        return True
+    
+    return False
+    
 #[Return]   today(str)  2018-01-01
 def get_today():
     today = datetime.date.today()

@@ -99,16 +99,7 @@ def test_hist_data():
     x_trade_days = 2
     start_date, end_date = get_x_trade_days(x_trade_days)
 
-    hist_data = {}
-
-    stock_basic_info = pd.read_csv("./data/stock_basic_info.csv", encoding="utf-8")
-
-    for index, row in stock_basic_info.iterrows():
-        if '种业' in row['name'] or '农' in row['name']:
-            print(row.values)
-
-
-    d = ts.get_hist_data('hs300', start = '2019-06-01', end = '2019-06-11')
+    d = ts.get_hist_data('000001', start = '2020-01-03' , end = '2020-03-04')
     d = d.sort_index()
 
     print(d)
@@ -135,8 +126,9 @@ def test(stock_data):
     return
 
 if __name__ == '__main__':
-    stock_data = get_hist_data_()
-    test(stock_data)
+    #stock_data = get_hist_data_()
+    #test(stock_data)
+	test_hist_data()
 
 
 

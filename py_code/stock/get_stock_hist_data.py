@@ -15,7 +15,7 @@ pd.set_option('display.max_rows', None)
 #设置value的显示长度为100，默认为50
 #pd.set_option('max_colwidth',100)
 
-x_trade_days = 70
+x_trade_days = 28
 start_date, end_date = get_x_trade_days(x_trade_days)
 
 #0    ts_code       symbol      name        area        industry    market  list_date
@@ -57,7 +57,7 @@ def save_hist_data():
             f.close()
         print('Save \'%s\' successfully!!!' % file_json)
     else:
-        print('\'%s\' exsit!!!' % file_json)
+        print('\'%s\' exsit!!!\n' % file_json)
     
     return  file_json_dir      
 
@@ -86,12 +86,13 @@ def get_stock_hist_data():
 
     i = 0
     j = 0
-    E = 100000000
+    #E = 100000000
     for index, row in stock_basic_info.iterrows():
         i += 1
         code = str(row.symbol).zfill(6)
+
         data = ts.get_hist_data(code, start = start_date, end = end_date)
-        
+
         #the data is wrong, discard
         if check_stock_data(data, x_trade_days, code) != True:
             continue
@@ -124,7 +125,7 @@ def get_stock_hist_data():
 #[input]    key_list(list)
 #[output]   stock_info(DataFrame)
 def get_stock_info_by_key(key_list):
-    print('\n\nget_stock_info_by_key():')
+    #print('\n\nget_stock_info_by_key():')
     # create a initial dataframe
     col_name = ('ts_code', 'symbol', 'name', 'area', 'industry', 'market', 'list_date')
     stock_info = pd.DataFrame(columns=col_name)
@@ -143,11 +144,12 @@ def get_stock_info_by_key(key_list):
                 stock_info = stock_info.append(df_row)
                 break
                 
-        progress_bar(i, base)
+        #progress_bar(i, base)
     
-    print('\n')
+    #print('\n')
     print(stock_info)
-    print (stock_info.shape[0])
+    print ('\nTotal:%d\n' % (stock_info.shape[0]))
+
     return stock_info
 
 
@@ -158,6 +160,7 @@ def get_hist_data_():
     return stock_data
     
 if __name__ == '__main__':
-    stock_data = get_hist_data_()
+    #stock_data = get_hist_data_()
+    get_stock_hist_data()
     #print(start_date, end_date)
 
