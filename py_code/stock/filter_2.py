@@ -47,7 +47,7 @@ def filter_2(stock_data):
                 i += 1
             p += r.p_change
                 
-        if p > 10 and i == 3:
+        if p > 15 and i == 3:
             stock_key.append(k)
             #print(k)
             progress_bar(j, base)
@@ -56,7 +56,9 @@ def filter_2(stock_data):
             #break
     
     print('''\n======================= 需求2 =============================
-            a. 连续3天，累计涨幅超10%。\n''')
+            a. 连续3天，累计涨幅超15%。
+            b. 每天涨幅大于1%。 
+            \n''')
     stock_p_change = get_stock_info_by_key(stock_key)
     #save_stock(stock_p_change, '2_filter') 
     

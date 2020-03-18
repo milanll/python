@@ -1,5 +1,6 @@
 import datetime
 import tushare as ts
+
 #import time
 #from _comm_stock import *
 
@@ -20,8 +21,8 @@ def transfer_date_format(date):
 def time_compare_pm4():
 
     str_Time_16 = datetime.datetime.now().strftime('%Y-%m-%d') + ' ' + '16:00:00'
-    str_Time_now = (datetime.datetime.now()+datetime.timedelta(hours=8)).strftime('%Y-%m-%d %H:%M:%S')
-    
+    str_Time_now = (datetime.datetime.now()+datetime.timedelta(hours=7)).strftime('%Y-%m-%d %H:%M:%S')
+
     if (str_Time_now > str_Time_16):
         return True
     else:
@@ -61,7 +62,6 @@ def get_period_x_days(x_days):
         end_date = today - oneday
 
     start_date = end_date - days_x
-    print(start_date)
 
     start_date = start_date.strftime("%Y-%m-%d")
     end_date = end_date.strftime("%Y-%m-%d")
@@ -154,7 +154,7 @@ def get_x_trade_days(x):
     cal_date = calendar['cal_date']
 
     today = get_trade_date()
-    print(cal_date[1])
+
     i = 0
     while (i < cal_date.shape[0]):
         if cal_date[i] == today:
@@ -198,7 +198,6 @@ def get_today():
     return(today)
     
 if __name__ == "__main__":
-
-    pass
+    time_compare_pm4()
 
     
