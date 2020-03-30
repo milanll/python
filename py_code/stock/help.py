@@ -58,7 +58,7 @@ print('''
     
 7.连续3天涨幅大于2%。
     
-    py文件：7_count_industres.py
+    py文件：filter_7.py
     需求：a.连续3天涨幅大于2%
           
 8.持仓股票

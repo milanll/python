@@ -39,7 +39,7 @@ def filter_1(stock_data):
         #open   high    close   low     volume      price_change    p_change    ma5     ma10    ma20    v_ma5       v_ma10      v_ma20
         #10.40  10.55   10.52   10.37   679240.88   0.17            1.64        10.384  10.320  9.941   607936.01   663916.01   713548.05
 		
-        if ((df.p_change > 5) and (df.p_change < 9)) and (df.volume > (df.v_ma10 * 1.5)) and (get_amount(df) > 3 * E ):
+        if ((df.p_change > 5) and (df.p_change < 9)) and (df.volume > (df.v_ma10 * 1.75)) and (get_amount(df) > 3 * E ):
             stock_key.append(k)
             #print(k)
             progress_bar(j, base)
@@ -49,7 +49,7 @@ def filter_1(stock_data):
 			
     print('''\n======================= 需求1 =============================
 		a. 当日涨幅 p_change > 5 and p_change < 9
-		b. 当日成交量 volume > (v_ma10 * 1.5)
+		b. 当日成交量 volume > (v_ma10 * 1.75)
 		c. 成交额 > 3亿
         ''')
     stock_p_change = get_stock_info_by_key(stock_key)

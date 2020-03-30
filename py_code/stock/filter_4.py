@@ -38,7 +38,7 @@ def filter_4(stock_data):
             if r.close < 5:
                 break
                 
-            if r.ma5 > (r.ma10 * 1.01) and r.ma10 > (r.ma20 * 1.01) and (r.volume * 100 * ((r.high + r.low) / 2)) > 1 * E:
+            if r.ma5 > (r.ma10 * 0.99) and r.ma10 > (r.ma20 * 0.99) and (r.volume * 100 * ((r.high + r.low) / 2)) > 1 * E:
                 i += 1
             else:
                 break

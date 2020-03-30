@@ -39,7 +39,10 @@ def filter_7(stock_data):
             #print(k)
             progress_bar(j, base)
 
-            
+    print('''\n======================= 需求7 =============================
+            需求：  a.连续3天涨幅大于2%
+          ''') 
+		  
     stock_p_change = get_stock_info_by_key(stock_key)
     #save_stock(stock_p_change, '7_filter') 
 
