@@ -166,7 +166,8 @@ def count_match_finish(match_dict):
 
 if __name__ == '__main__':
 	url_dch = "http://live.500.com/zqdc.php"
-	dict_item, odds = get_items_from_500(url_dch)
+	url_jc = "http://live.500.com"
+	dict_item, odds = get_items_from_500(url_jc)
 	print_items(dict_item)
 	#count_match_finish(dict_item)
 

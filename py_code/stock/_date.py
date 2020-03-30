@@ -1,6 +1,8 @@
 import datetime
-import time
-from _comm_stock import *
+import tushare as ts
+
+#import time
+#from _comm_stock import *
 
 DAYS = 60
 
@@ -10,22 +12,22 @@ DAYS = 60
 #[output]   str_date    20190101    or  2019-01-01
 def transfer_date_format(date):
     if '-' in str(date):
-        return str(date)[0:4] + str(date)[5:7] + str(date)[8:]
+        return str(date)[0:4] + str(date)[5:7] + str(date)[8:10]
     else:
         return str(date)[0:4] + '-' + str(date)[4:6] + '-' + str(date)[6:]
 
 #[Return]   True    After 16:00
 #           False   Before 16:00
 def time_compare_pm4():
-    str_Time_16 = time.strftime("%Y%m%d",time.localtime()) + '160000'
-    str_Time_now = time.strftime("%Y%m%d%H%M%S",time.localtime())
 
-    #print (str_Time_16, str_Time_now)
+    str_Time_16 = datetime.datetime.now().strftime('%Y-%m-%d') + ' ' + '16:00:00'
+    str_Time_now = (datetime.datetime.now()+datetime.timedelta(hours=7)).strftime('%Y-%m-%d %H:%M:%S')
 
     if (str_Time_now > str_Time_16):
         return True
     else:
         return False
+
 
 #[Return]   str_start_date(str)  20180101
 #           str_end_date(str)    20181211
@@ -60,29 +62,24 @@ def get_period_x_days(x_days):
         end_date = today - oneday
 
     start_date = end_date - days_x
-    print(start_date)
 
     start_date = start_date.strftime("%Y-%m-%d")
     end_date = end_date.strftime("%Y-%m-%d")
 
     return start_date, end_date
 
-#[breif]    if before 16:00,return yestoday
-#           else return today
-#[ret]     date(str)   2019-01-14
-def get_date():
-    if time_compare_pm4():
-        #today
-        return datetime.date.today()
-    else:
-        #yestoday
-        return datetime.date.today() - datetime.timedelta(days = 1)
+#[breif]    get the trade calendar of this year
+#[return]   calendar(DataFrame)
+def get_trade_calendar():
+    pro = ts.pro_api()
 
-#[breif]    get x trade days backwards from today
-#[input]    x(int)      amount of days      5
-#[Return]   str_start_date(str)  2018-01-01
-#           str_end_date(str)    2018-12-11
-def get_x_trade_days(x):
+    year = datetime.datetime.now().year
+    month = datetime.datetime.now().month
+    day = datetime.datetime.now().day
+    
+    start = str(year) + '0101'
+    end = str(year) + '1231'
+    
     '''
     input parameters：
     exchange	str	    N	    交易所 SSE上交所 SZSE深交所
@@ -97,32 +94,110 @@ def get_x_trade_days(x):
     pretrade_date	str	N	    上一个交易日
 
     '''
-    from _comm_stock import pro
-    calendar = pro.trade_cal(exchange='', start_date='20190101', end_date='20191231', is_open = '1')
+    
+    #exchange  cal_date     is_open
+    #     SSE  20190102        1
+    calendar = pro.trade_cal(exchange='SSE', start_date=start, end_date=end, is_open = '1')
+    
+    return calendar
 
+#[input]    in_date(str)      20190101    
+#[return]   ret_date(str)     20190101
+def get_pre_trade_day(in_date):
+    date = datetime.datetime.strptime(transfer_date_format(in_date), "%Y-%m-%d")
+    pre_date = date - datetime.timedelta(days = 1)
+    ret_date = transfer_date_format(pre_date)
+    
+    return ret_date
+       
+#[breif]    
+#           if before 16:00,
+#               return previous trade day               
+#           else 
+#               if today is trade day
+#                   return today
+#               else
+#                   reurn the previous trade day
+#[ret]     date(str)   20190114
+def get_trade_date():
+    cal = get_trade_calendar()
+    date_today = datetime.date.today()
+    today = transfer_date_format(date_today)
+    
+    #after 16:00
+    if time_compare_pm4():
+        if today in cal['cal_date'].values:
+            return today
+        else:
+            d = get_pre_trade_day(today)
+            while d not in cal['cal_date'].values:
+                d = get_pre_trade_day(d)
+            return d
+       
+    #before 16:00
+    else:
+        d = get_pre_trade_day(today)
+        while d not in cal['cal_date'].values:
+            d = get_pre_trade_day(d)           
+        return d
+        
+    
+    return None
+        
+#[breif]    get x trade days backwards from today
+#[input]    x(int)      amount of days      5
+#[Return]   str_start_date(str)  2018-01-01
+#           str_end_date(str)    2018-12-11
+def get_x_trade_days(x):
+
+    calendar = get_trade_calendar()
     cal_date = calendar['cal_date']
-    today = transfer_date_format(get_date())
+
+    today = get_trade_date()
 
     i = 0
     while (i < cal_date.shape[0]):
         if cal_date[i] == today:
             break
-
-        i += 1
-
+        else:
+            i += 1
+	
     if i < x:
-        print ('x is too small to get date!')
-        return (None)
-
-    start_date = transfer_date_format(cal_date[i - x])
-    end_date = get_date()
+        print ('\nx is too big to get date!\n')
+        i = x
+    
+    #print('i is %d' % i)
+    start_date = transfer_date_format(cal_date[i - x + 1])
+    end_date = transfer_date_format(get_trade_date())
+    #print(end_date)
 
     #start_date = datetime.datetime.strptime(start_date, "%Y-%m-%d").date()
-    end_date = end_date.strftime("%Y-%m-%d")
-
+    
+    print('\nstart_date: %s\nend_date: %s\n' % (start_date, end_date))
+    
     return start_date, end_date
 
-if __name__ == "__main__":
 
-    start_date, end_date = get_x_trade_days(5)
-    #print (start_date, end_date)
+#[breif]    check if today is a trade day
+#[ret]      True     today is a trade day
+#           False   today is not a trade day
+def today_is_trade_day():
+    cal = get_trade_calendar()
+    date_today = datetime.date.today()
+    today = transfer_date_format(date_today)
+    
+    if today in cal['cal_date'].values:
+        return True
+    
+    return False
+    
+#[Return]   today(str)  2018-01-01
+def get_today():
+    today = datetime.date.today()
+    print(today)
+    return(today)
+    
+if __name__ == "__main__":
+    time_compare_pm4()
+
+    
