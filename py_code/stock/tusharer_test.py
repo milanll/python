@@ -96,13 +96,13 @@ def test_hist_data():
     turnover:换手率[注：指数无此项]
     '''
 
-    x_trade_days = 2
-    start_date, end_date = get_x_trade_days(x_trade_days)
+    #x_trade_days = 2
+    #start_date, end_date = get_x_trade_days(x_trade_days)
 
-    d = ts.get_hist_data('000001', start = '2020-01-03' , end = '2020-03-04')
+    d = ts.get_hist_data('000735', start = '2020-03-23' , end = '2020-03-30')
     d = d.sort_index()
 
-    print(d)
+    print(get_atr(d))
 
 def test(stock_data):
     print('\ntest():')

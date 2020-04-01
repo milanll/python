@@ -53,6 +53,7 @@ def renyy_0(stock_data):
             
             if abs(r.price_change) < (atr * 0.9):
                 i += 1
+				
             if r.close > r.ma5:
                 ma += 1
             
@@ -60,7 +61,11 @@ def renyy_0(stock_data):
             stock_key.append(k)
             #print(k)
             progress_bar(j, base)
-            
+    print('''\n======================= 需求renyy =============================
+		a. 当日涨幅 p_change > 5 and p_change < 9
+		b. 当日成交量 volume > (v_ma10 * 1.75)
+		c. 成交额 > 3亿
+        ''')        
     stock_p_change = get_stock_info_by_key(stock_key)
     #save_stock(stock_p_change, 'renyy_0') 
 
