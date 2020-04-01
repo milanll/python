@@ -40,7 +40,7 @@ def filter_6(stock_data):
         #data.iloc[-1]   #选取DataFrame最后一行，返回的是Series
         #data.iloc[-1:]   #选取DataFrame最后一行，返回的是DataFrame
         df = df[-3:]
-        
+
         #open   high    close   low     volume      price_change    p_change    ma5     ma10    ma20    v_ma5       v_ma10      v_ma20
         #10.40  10.55   10.52   10.37   679240.88   0.17            1.64        10.384  10.320  9.941   607936.01   663916.01   713548.05
         if (((df.iloc[-1].ma5 > df.iloc[-1].ma10) and (df.iloc[-1].ma20 > df.iloc[-1].ma5))

@@ -15,8 +15,8 @@ pd.set_option('display.max_rows', None)
 #设置value的显示长度为100，默认为50
 #pd.set_option('max_colwidth',100)
 
-x_trade_days = 28
-start_date, end_date = get_x_trade_days(x_trade_days)
+#x_trade_days = 28
+#start_date, end_date = get_x_trade_days(x_trade_days)
 
 #0    ts_code       symbol      name        area        industry    market  list_date
 #0      000001.SZ       1       平安银行     深圳       银行        主板      19910403

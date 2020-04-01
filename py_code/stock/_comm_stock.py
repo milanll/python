@@ -95,7 +95,7 @@ def get_atr(stock_info):
     '''
     ATR定义：
     1.TR=∣最高价-最低价∣ 和 ∣最高价-昨收∣ 和 ∣昨收-最低价∣ 的最大值
-        =max(max(∣H-L∣,∣H-PC∣),∣PC-L∣)
+        =max(∣H-L∣,∣H-PC∣,∣PC-L∣)
     2.真实波幅（ATR）= TR的N日简单移动平均
     3.参数N设置为14日
     '''

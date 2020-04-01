@@ -15,6 +15,6 @@ if __name__ == "__main__":
 	filter_3(stock_data)
 	filter_4(stock_data)
 	filter_5(stock_data)
-	filter_6(stock_data)
+#	filter_6(stock_data)
 	filter_7(stock_data)
-	filter_9(stock_data)
+#	filter_9(stock_data)
