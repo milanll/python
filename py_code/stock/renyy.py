@@ -7,6 +7,10 @@ stock_basic_info = pd.read_csv("./data/stock_basic_info.csv", encoding="utf-8")
 
 pd.set_option('display.width', 1000)
 
+#获取5日价格中枢的平局值。
+
+#获取5日偏离价格中枢平局值的最大值。
+
 def renyy_0(stock_data):
     print('\nrenyy_0():')
     # create a initial dataframe
@@ -62,9 +66,9 @@ def renyy_0(stock_data):
             #print(k)
             progress_bar(j, base)
     print('''\n======================= 需求renyy =============================
-		a. 当日涨幅 p_change > 5 and p_change < 9
-		b. 当日成交量 volume > (v_ma10 * 1.75)
-		c. 成交额 > 3亿
+		a. 5日内价格中枢整体抬升。最后一天价格中枢大于第一天。
+        b. 偏离平均价格中枢的最大值，小于一定比例，待定。
+
         ''')        
     stock_p_change = get_stock_info_by_key(stock_key)
     #save_stock(stock_p_change, 'renyy_0') 

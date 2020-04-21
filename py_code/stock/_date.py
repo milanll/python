@@ -173,7 +173,7 @@ def get_x_trade_days(x):
 
     #start_date = datetime.datetime.strptime(start_date, "%Y-%m-%d").date()
     
-    print('\nstart_date: %s\nend_date: %s\n' % (start_date, end_date))
+    #print('\nstart_date: %s\nend_date: %s\n' % (start_date, end_date))
     
     return start_date, end_date
 
