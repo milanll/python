@@ -48,6 +48,8 @@ def save_hist_data():
     file_json = f'hist_data_{end_date}.json'
     file_json_dir = f'./data/{file_json}'
     
+    print(files)
+    
     if file_json not in files:
     
         del_hist_data()
