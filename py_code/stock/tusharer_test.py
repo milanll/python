@@ -63,6 +63,7 @@ def basic_info():
     #stock_info_week = pro.weekly(ts_code = '000001.SZ', start_date = start_date, end_date = end_date,
     #               fields='ts_code,trade_date,open,high,low,close,vol,amount')
     #print(stock_info_daily)
+    
 
 def test_hist_data():
     '''
@@ -99,11 +100,21 @@ def test_hist_data():
     #x_trade_days = 2
     #start_date, end_date = get_x_trade_days(x_trade_days)
 
-    d = ts.get_hist_data('000735', start = '2020-03-23' , end = '2020-03-30')
+    #d = ts.get_hist_data('600438', start = '2020-03-24' , end = '2020-03-31')
+    d = ts.get_hist_data('300194', start = '2020-03-30' , end = '2020-04-03')
     d = d.sort_index()
 
     print(get_atr(d))
+    print(get_average_close(d))
+    print(get_atr(d) / get_average_close(d))
 
+def get_hs300():
+    d = ts.get_hist_data('hs300', start = '2019-03-25' , end = '2020-04-14')
+    if d is not None:
+        d = d.sort_index()
+    d.to_csv('hs300.cvs', encoding="utf-8")
+
+    
 def test(stock_data):
     print('\ntest():')
     
@@ -128,7 +139,9 @@ def test(stock_data):
 if __name__ == '__main__':
     #stock_data = get_hist_data_()
     #test(stock_data)
-	test_hist_data()
-
+	#test_hist_data()
+    #get_hs300();
+    data = pd.read_csv('hs300.cvs', encoding = "utf-8")
+    print(data)
 
 

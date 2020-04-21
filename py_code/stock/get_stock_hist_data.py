@@ -15,8 +15,9 @@ pd.set_option('display.max_rows', None)
 #设置value的显示长度为100，默认为50
 #pd.set_option('max_colwidth',100)
 
-#x_trade_days = 28
-#start_date, end_date = get_x_trade_days(x_trade_days)
+
+#股票数据的周期
+x_trade_days = 28
 
 #0    ts_code       symbol      name        area        industry    market  list_date
 #0      000001.SZ       1       平安银行     深圳       银行        主板      19910403
@@ -38,7 +39,9 @@ def del_hist_data():
     
 #[return]   file(str)  E:\\git\\python\\py_code\\stock\\data\\hist_data_2019-05-22.json 
 def save_hist_data():
-
+    start_date, end_date = get_x_trade_days(x_trade_days)
+    print('\nstart_date: %s\nend_date: %s\n' % (start_date, end_date))
+    
     dir = 'E:\\git\\python\\py_code\\stock\\data\\'
     files = file_name(dir)
     
@@ -78,6 +81,8 @@ def read_hist_data(file):
 def get_stock_hist_data():
   
     print('\nget_stock_hist_data():')
+    start_date, end_date = get_x_trade_days(x_trade_days)
+    
     time_start = time.time()
     #print (time.asctime( time.localtime(time.time()) ))
     
@@ -90,7 +95,7 @@ def get_stock_hist_data():
     for index, row in stock_basic_info.iterrows():
         i += 1
         code = str(row.symbol).zfill(6)
-
+        
         data = ts.get_hist_data(code, start = start_date, end = end_date)
 
         #the data is wrong, discard
@@ -104,8 +109,9 @@ def get_stock_hist_data():
             continue
             
         #hist_data[code] = data
-        data = data.to_dict()
-        hist_data_dict[code] = data
+        data = data.sort_index()
+        data_dict = data.to_dict()
+        hist_data_dict[code] = data_dict
         progress_bar(i, base)
         
         j += 1
@@ -160,7 +166,11 @@ def get_hist_data_():
     return stock_data
     
 if __name__ == '__main__':
-    #stock_data = get_hist_data_()
-    get_stock_hist_data()
+    stock_data = get_hist_data_()
+    for i, r in stock_data.items():
+        df = pd.DataFrame(r)
+        print(df)
+        break
+    #get_stock_hist_data()
     #print(start_date, end_date)
 

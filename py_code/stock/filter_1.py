@@ -15,7 +15,8 @@ def get_amount(df):
     #10.40  10.55   10.52   10.37   679240.88   0.17            1.64        10.384  10.320  9.941   607936.01   663916.01   713548.05
 	avg_price = (df.open + df.high + df.close + df.low) / 4
 	return df.volume * 100 * avg_price
-	
+
+#[input]    stock_data(dict)
 def filter_1(stock_data):
     print('\nfilter_1():')
     # create a initial dataframe
@@ -55,7 +56,7 @@ def filter_1(stock_data):
     stock_p_change = get_stock_info_by_key(stock_key)
     #save_stock(stock_p_change, '1_filter') 
 
-    return
+    return stock_key
     
 if __name__ == '__main__':
     time_start = time.time()

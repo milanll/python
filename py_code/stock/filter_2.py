@@ -65,7 +65,7 @@ def filter_2(stock_data):
     count = len(stock_p_change)
     #save_count_grow_2_days(end_date, count)
 
-    return
+    return stock_key
     
 if __name__ == '__main__':
 

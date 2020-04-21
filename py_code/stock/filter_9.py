@@ -50,7 +50,7 @@ def filter_9(stock_data):
     stock_ma = get_stock_info_by_key(stock_key)
     #save_stock(stock_ma, '9_ma20') 
 
-    return
+    return stock_key
 
 if __name__ == '__main__':
     time_start = time.time()

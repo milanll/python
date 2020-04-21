@@ -53,22 +53,22 @@ def read_stock_trade():
 
     return trade_detail
 
-#[Input]   stock_ma(DataFrame)
-#          filter(str)             ma/amount/trade
-def save_stock(stock_ma, filter):
+#[Input]   stock_info(DataFrame)
+#          sub_name(str)             ma/amount/trade
+def save_stock(stock_info, sub_name):
     date = get_trade_date()
-    dir = f'./stock_date_final/{filter}-{date}.csv'
-    stock_ma.to_csv(dir, encoding="utf-8")
+    dir = f'./stock_date_final/{sub_name}-{date}.csv'
+    stock_info.to_csv(dir, encoding="utf-8")
 
-#[Input]    filter(str)             ma/amount/trade
+#[Input]    sub_name(str)             ma/amount/trade
 #[Return]   trade_detail(DataFrame)
-def read_stock(filter):
+def read_stock(sub_name):
     date = get_trade_date()
-    dir = f'./stock_date_final/{filter}-{date}.csv'
+    dir = f'./stock_date_final/{sub_name}-{date}.csv'
     print(dir)
-    stock_ma = pd.read_csv(dir, encoding = "utf-8")
+    stock_info = pd.read_csv(dir, encoding = "utf-8")
 
-    return stock_ma
+    return stock_info
 
 #[input]    data(DataFrame)
 #           x_trade_days(int)
@@ -117,6 +117,17 @@ def get_atr(stock_info):
     #print(atr)
     
     return round(atr, 2)
+ 
+#[input]    stock_info(DataFrame)
+#[return]   average_close(int)
+def get_average_close(stock_info):
+    sum_close = 0
+
+    for index, v in stock_info.iterrows():
+        sum_close += v.close
+    
+    average_close = sum_close / len(stock_info)
+    return round(average_close, 2)
     
 if __name__ == "__main__":
     '''

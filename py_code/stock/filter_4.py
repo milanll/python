@@ -52,6 +52,8 @@ def filter_4(stock_data):
             b. 每天成交额大于1亿\n''')
     stock_ma = get_stock_info_by_key(stock_key)
     #save_stock(stock_ma, '4_filter') 
+    
+    return stock_key
 
 if __name__ == '__main__':
     time_start = time.time()

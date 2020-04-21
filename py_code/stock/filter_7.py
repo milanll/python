@@ -46,7 +46,7 @@ def filter_7(stock_data):
     stock_p_change = get_stock_info_by_key(stock_key)
     #save_stock(stock_p_change, '7_filter') 
 
-    return
+    return stock_key
 
 if __name__ == '__main__':
     time_start = time.time()
