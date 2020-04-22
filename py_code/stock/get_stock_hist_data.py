@@ -50,7 +50,7 @@ def save_hist_data():
     
     print(files)
     
-    if file_json not in files:
+    if (files is None) or (file_json not in files):
     
         del_hist_data()
         
