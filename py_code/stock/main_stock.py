@@ -39,7 +39,6 @@ def git_push(file_name):
     os.system('git push')
     
 if __name__ == "__main__":
-    '''
     stock_data = get_hist_data_()
 
     key_1 = filter_1(stock_data)
@@ -59,6 +58,5 @@ if __name__ == "__main__":
     key_dict['filter_7'] = key_7
 
     save_key_list(key_dict)
-    '''
-    git_push('./sync_data/key_list_2020-04-21.json')
+
     
