@@ -152,7 +152,7 @@ def get_stock_info_by_key(key_list):
                 stock_info = stock_info.append(df_row)
                 break
                 
-        #progress_bar(i, base)
+        progress_bar(i, base)
     
     #print('\n')
     print(stock_info)
