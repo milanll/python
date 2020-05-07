@@ -50,7 +50,7 @@ def save_hist_data():
     
     print(files)
     
-    if file_json not in files:
+    if (files is None) or (file_json not in files):
     
         del_hist_data()
         
@@ -152,7 +152,7 @@ def get_stock_info_by_key(key_list):
                 stock_info = stock_info.append(df_row)
                 break
                 
-        #progress_bar(i, base)
+        progress_bar(i, base)
     
     #print('\n')
     print(stock_info)

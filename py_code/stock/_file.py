@@ -10,8 +10,11 @@ def file_name(file_dir):
     for root, dirs, files in os.walk(file_dir):  
         #print(files) #当前路径下所有非目录子文件
         pass
-
-    return files
+    
+    if files:
+        return files
+    else:
+        return None
 
 ##其中os.path.splitext()函数将路径拆分为文件名+扩展名        
 def file_name_(file_dir):   
