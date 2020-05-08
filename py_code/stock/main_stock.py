@@ -31,6 +31,12 @@ def save_key_list_list(key_list_dict):
 
     return file_json
 
+def push_key_list_file_to_git():
+    import os
+    print('git status')
+    os.system('st')
+
+
 #[brief]    push the file to git
 #[input]    file_name(str)
 def git_push(file_name):
