@@ -44,12 +44,11 @@ def save_key_list_list(key_list_dict):
 #[breif]    push the key list file (up to date) to git
 def push_key_list_file_to_git():
     #file = get_key_list_file_dir()
-    file = 'sync_data/key_list_2020-04-23.json'
-    print(file)
+    file = './sync_data/key_list_2020-05-06.json'
     
     import os
     os.system(f'git add {file}')
-    os.system('git commit . -m \'update\'')
+    os.system(f'git commit . -m \'upload {file}\'')
     os.system('git push')
 
 
