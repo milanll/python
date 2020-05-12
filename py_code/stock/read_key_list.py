@@ -91,15 +91,17 @@ def print_condition(key):
     else:
         print('filter wrong!!!\n')
         
-    return    
+    return   
 
-if __name__ == '__main__':
-    file_name = get_key_list_file_name()
-    print(file_name)
-
+def read_key_list(file_name):
     key_list_dict = read_hist_data(file_name)
 
     for k, v in key_list_dict.items():
         print_condition(k)
         get_stock_info_by_key(v)
+
+if __name__ == '__main__':
+    file_name = get_key_list_file_name()
+    read_key_list(file_name)
+    
 

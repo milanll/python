@@ -39,18 +39,17 @@ def save_key_list_list(key_list_dict):
     else:
         print('\'%s\' exsit!!!\n' % file_json)
 
-    return file_json
+    return file_json_dir
 
 #[breif]    push the key list file (up to date) to git
-def push_key_list_file_to_git():
-    #file = get_key_list_file_dir()
-    file = './sync_data/key_list_2020-05-06.json'
-    
+#[input]    file    the file to be pushed to git
+def push_key_list_file_to_git(file):
     import os
     os.system(f'git add {file}')
     os.system(f'git commit . -m \'upload {file}\'')
     os.system('git push')
-
+    
+    return
 
 #[brief]    push the file to git
 #[input]    file_name(str)
@@ -59,10 +58,34 @@ def git_push(file_name):
     os.system(f'git commit {file_name}')
     os.system('git push')
     
-if __name__ == "__main__":
-    key_list_dict = {}
+    return
     
-    if 0:
+def git_pull():
+    os.system('git pull')
+    os.system('git checkout ./sync_data/')
+    
+    return
+
+def key_list_file_exist():
+    dir = './sync_data'
+    files = file_name(dir)
+
+    file_json = get_key_list_file_name()
+
+    if (files is None) or (file_json not in files):
+        return False
+    else:
+        return get_key_list_file_dir()
+    
+    
+if __name__ == "__main__":
+    git_pull()
+    
+    key_list_file = key_list_file_exist()
+    if key_list_file:
+        read_key_list(key_list_file)
+    else:
+        key_list_dict = {}
         stock_data = get_hist_data_()
 
         key_list_1 = filter_1(stock_data)
@@ -79,10 +102,9 @@ if __name__ == "__main__":
         key_list_dict['filter_5'] = key_list_5
         key_list_dict['filter_7'] = key_list_7
 
-        save_key_list_list(key_list_dict)
-        
-    else:
-        push_key_list_file_to_git()
+        file = save_key_list_list(key_list_dict)
+
+        push_key_list_file_to_git(file)
     
     
     
