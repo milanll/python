@@ -49,7 +49,7 @@ def push_key_list_file_to_git():
     
     import os
     os.system(f'git add {file}')
-    os.system('git commit .')
+    os.system('git commit . -m \'update\'')
     os.system('git push')
 
 
@@ -63,7 +63,7 @@ def git_push(file_name):
 if __name__ == "__main__":
     key_list_dict = {}
     
-    if 1:
+    if 0:
         stock_data = get_hist_data_()
 
         key_list_1 = filter_1(stock_data)
