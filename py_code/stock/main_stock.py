@@ -83,6 +83,7 @@ if __name__ == "__main__":
     
     key_list_file = key_list_file_exist()
     if key_list_file:
+        from read_key_list import *
         read_key_list(key_list_file)
     else:
         key_list_dict = {}
