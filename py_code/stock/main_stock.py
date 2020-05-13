@@ -83,6 +83,7 @@ if __name__ == "__main__":
     
     key_list_file = key_list_file_exist()
     if key_list_file:
+        print('key list file exist!!\n')
         from read_key_list import *
         read_key_list(key_list_file)
     else:
@@ -92,14 +93,14 @@ if __name__ == "__main__":
         key_list_1 = filter_1(stock_data)
         key_list_2 = filter_2(stock_data)
         key_list_3 = filter_3(stock_data)
-        key_list_4 = filter_4(stock_data)
+        #key_list_4 = filter_4(stock_data)
         key_list_5 = filter_5(stock_data)
         key_list_7 = filter_7(stock_data)
 
         key_list_dict['filter_1'] = key_list_1
         key_list_dict['filter_2'] = key_list_2
         key_list_dict['filter_3'] = key_list_3
-        key_list_dict['filter_4'] = key_list_4
+        #key_list_dict['filter_4'] = key_list_4
         key_list_dict['filter_5'] = key_list_5
         key_list_dict['filter_7'] = key_list_7
 
