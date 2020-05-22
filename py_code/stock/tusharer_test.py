@@ -109,9 +109,10 @@ def test_hist_data():
     print(get_atr(d) / get_average_close(d))
 
 def get_hs300():
-    d = ts.get_hist_data('hs300', start = '2019-03-25' , end = '2020-04-14')
+    d = ts.get_hist_data('hs300', start = '2020-04-10' , end = '2020-04-14')
     if d is not None:
         d = d.sort_index()
+        print(d.index.values[0])
     d.to_csv('hs300.cvs', encoding="utf-8")
 
     
@@ -140,8 +141,8 @@ if __name__ == '__main__':
     #stock_data = get_hist_data_()
     #test(stock_data)
 	#test_hist_data()
-    #get_hs300();
-    data = pd.read_csv('hs300.cvs', encoding = "utf-8")
-    print(data)
+    get_hs300();
+    #data = pd.read_csv('hs300.cvs', encoding = "utf-8")
+    #print(data)
 
 

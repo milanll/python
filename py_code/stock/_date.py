@@ -4,7 +4,7 @@ import tushare as ts
 #import time
 #from _comm_stock import *
 
-DAYS = 60
+DAYS = 63
 
 #[breif]    if      input 2019-01-01,  output  20190101
 #           elif    input 20190101,    o  2019-01-01

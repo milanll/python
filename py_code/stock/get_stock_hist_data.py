@@ -102,15 +102,26 @@ def get_stock_hist_data():
         if check_stock_data(data, x_trade_days, code) != True:
             continue
             
-        #最近一日成交额 < 1 亿，不要
+        #1. volume * price < 10,000,000, discard
         avg_price = (data.iloc[0].high + data.iloc[0].low + data.iloc[0].open + data.iloc[0].close) / 4
         volume = data.iloc[0].volume * 100
         if (avg_price * volume) < (1.0 * E):
             continue
             
+        #2. price(today) < price(3 months ago) * 0.8, discard
+        if(data.iloc[0].close < (data.iloc[-1].close * 0.8)):
+            continue
+            
+        #3. suspend today, discard    
+        if(data.index.values[0] != end_date):
+            continue
+  
         #hist_data[code] = data
+        
+        #sort by date, ascending order
         data = data.sort_index()
         data_dict = data.to_dict()
+        
         hist_data_dict[code] = data_dict
         progress_bar(i, base)
         
