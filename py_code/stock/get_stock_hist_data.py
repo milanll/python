@@ -107,10 +107,10 @@ def get_stock_hist_data():
         volume = data.iloc[0].volume * 100
         if (avg_price * volume) < (1.0 * E):
             continue
-            
+          
         #2. price(today) < price(3 months ago) * 0.8, discard
-        if(data.iloc[0].close < (data.iloc[-1].close * 0.8)):
-            continue
+        #if(data.iloc[0].close < (data.iloc[-1].close * 0.8)):
+            #continue
             
         #3. suspend today, discard    
         if(data.index.values[0] != end_date):
