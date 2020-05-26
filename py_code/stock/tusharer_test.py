@@ -136,12 +136,20 @@ def test(stock_data):
     stock_p_change = get_stock_info_by_key(stock_key) 
 
     return
+    
+def get_stock():
+    d = ts.get_hist_data('159995', start = '2020-05-20' , end = '2020-05-25')
+
+    if d is not None:
+        d = d.sort_index()
+        print(d)
 
 if __name__ == '__main__':
     #stock_data = get_hist_data_()
     #test(stock_data)
 	#test_hist_data()
-    get_hs300();
+    #get_hs300();
+    get_stock()
     #data = pd.read_csv('hs300.cvs', encoding = "utf-8")
     #print(data)
 
