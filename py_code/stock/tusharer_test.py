@@ -138,7 +138,7 @@ def test(stock_data):
     return
     
 def get_stock():
-    d = ts.get_hist_data('159995', start = '2020-05-20' , end = '2020-05-25')
+    d = ts.get_hist_data('603385', start = '2020-05-20' , end = '2020-05-26')
 
     if d is not None:
         d = d.sort_index()

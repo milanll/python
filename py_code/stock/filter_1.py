@@ -35,12 +35,14 @@ def filter_1(stock_data):
         df = pd.DataFrame(v)
         #data.iloc[-1]      #选取DataFrame最后一行，返回的是Series
         #data.iloc[-1:]     #选取DataFrame最后一行，返回的是DataFrame
-        df = df.iloc[-1]
+        df = df.iloc[-3:]
         
         #open   high    close   low     volume      price_change    p_change    ma5     ma10    ma20    v_ma5       v_ma10      v_ma20
         #10.40  10.55   10.52   10.37   679240.88   0.17            1.64        10.384  10.320  9.941   607936.01   663916.01   713548.05
 		
-        if ((df.p_change > 5)) and (df.volume > (df.v_ma10 * 1.75)) and (get_amount(df) > 3 * E ):
+        if (((df.iloc[-3].p_change > 0) and (df.iloc[-2].p_change > 0) and (df.iloc[-1].p_change > 0))      #a. 连续三天 p_change > 0
+            and ((df.iloc[-2].volume > df.iloc[-3].volume) and (df.iloc[-1].volume > df.iloc[-2].volume) and (df.iloc[-1].volume > df.iloc[-1].v_ma10 * 2))   #b. 连续三天成交量上涨
+            and (get_amount(df.iloc[-1]) > 1 * E )):  #c. 成交额 1 亿  
             stock_key.append(k)
             #print(k)
             progress_bar(j, base)
@@ -49,9 +51,9 @@ def filter_1(stock_data):
             #break
 			
     print('''\n======================= 需求1 =============================
-		a. 当日涨幅 p_change > 5 and p_change < 9
-		b. 当日成交量 volume > (v_ma10 * 1.75)
-		c. 成交额 > 3亿
+		a. 连续三天 p_change > 0
+		b. 连续三天成交量上涨
+		c. 成交额 1 亿
         ''')
     stock_p_change = get_stock_info_by_key(stock_key)
     #save_stock(stock_p_change, '1_filter') 
