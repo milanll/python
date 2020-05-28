@@ -42,7 +42,7 @@ def filter_1(stock_data):
 		
         if (((df.iloc[-3].p_change > 0) and (df.iloc[-2].p_change > 0) and (df.iloc[-1].p_change > 0))      #a. 连续三天 p_change > 0
             and ((df.iloc[-2].volume > df.iloc[-3].volume) and (df.iloc[-1].volume > df.iloc[-2].volume) and (df.iloc[-1].volume > df.iloc[-1].v_ma10 * 2))   #b. 连续三天成交量上涨
-            and (get_amount(df.iloc[-1]) > 1 * E )):  #c. 成交额 1 亿  
+            and (get_amount(df.iloc[-1]) > 2 * E )):  #c. 成交额 1 亿  
             stock_key.append(k)
             #print(k)
             progress_bar(j, base)
