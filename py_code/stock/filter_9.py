@@ -10,7 +10,13 @@ start_date, end_date = get_x_trade_days(count_days)
 stock_basic_info = pd.read_csv("./data/stock_basic_info.csv", encoding="utf-8")
 
 pd.set_option('display.width', 1000)
-   
+
+def print_filter_9_condition():
+    print('''\n======================= 需求9 =============================
+            需求：连续20个交易日，收盘价在ma20以上
+          ''')    
+    return
+    
 #[input]     stock_data(dict)   
 def filter_9(stock_data):
     print('\nfilter_9():')
@@ -44,9 +50,7 @@ def filter_9(stock_data):
     
         #if j > 250:
             #break
-    print('''\n======================= 需求9 =============================
-            需求：连续20个交易日，收盘价在ma20以上
-          ''') 
+    print_filter_9_condition() 
     stock_ma = get_stock_info_by_key(stock_key)
     #save_stock(stock_ma, '9_ma20') 
 

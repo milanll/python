@@ -7,6 +7,12 @@ stock_basic_info = pd.read_csv("./data/stock_basic_info.csv", encoding="utf-8")
 
 pd.set_option('display.width', 1000)
 
+def print_filter_5_condition():
+    print('''\n======================= 需求5 =============================
+            需求：  a.过去5个交易日中，有三个涨停板
+          ''')    
+    return
+    
 def filter_5(stock_data):
     print('\nfilter_5():')
     # create a initial dataframe
@@ -38,9 +44,8 @@ def filter_5(stock_data):
             stock_key.append(k)
             #print(k)
             progress_bar(j, base)
-    print('''\n======================= 需求5 =============================
-            需求：  a.过去5个交易日中，有三个涨停板
-          ''')          
+            
+    print_filter_5_condition()          
     stock_p_change = get_stock_info_by_key(stock_key)
     #save_stock(stock_p_change, '1_filter') 
 

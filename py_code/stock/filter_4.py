@@ -7,8 +7,12 @@ stock_basic_info = pd.read_csv("./data/stock_basic_info.csv", encoding="utf-8")
 
 pd.set_option('display.width', 1000)
 
-W = 10000
-E = 100000000
+def print_filter_4_condition():
+    print('''\n======================= 需求4 =============================   
+            a. 连续5天，ma5 > ma10 > ma20
+            b. 每天成交额大于1亿\n''')    
+    return
+    
 #[input]     stock_data(dict)   
 def filter_4(stock_data):
     
@@ -47,9 +51,7 @@ def filter_4(stock_data):
             stock_key.append(k)
             progress_bar(j, base)
     
-    print('''\n======================= 需求4 =============================   
-            a. 连续5天，ma5 > ma10 > ma20
-            b. 每天成交额大于1亿\n''')
+    print_filter_4_condition()
     stock_ma = get_stock_info_by_key(stock_key)
     #save_stock(stock_ma, '4_filter') 
     

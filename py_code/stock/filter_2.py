@@ -7,6 +7,13 @@ stock_basic_info = pd.read_csv("./data/stock_basic_info.csv", encoding="utf-8")
 
 pd.set_option('display.width', 1000)
 
+def print_filter_2_condition():
+    print('''\n======================= 需求2 =============================
+            a. 连续3天，累计涨幅超15%。
+            b. 每天涨幅大于1%。 
+            \n''')    
+    return
+    
 #[breif]    append one record to count_grow_2_days.csv  
 #[input]    date(str)       2019-05-15
 #           count(int)      50
@@ -55,10 +62,7 @@ def filter_2(stock_data):
         #if j > 250:
             #break
     
-    print('''\n======================= 需求2 =============================
-            a. 连续3天，累计涨幅超15%。
-            b. 每天涨幅大于1%。 
-            \n''')
+    print_filter_2_condition()
     stock_p_change = get_stock_info_by_key(stock_key)
     #save_stock(stock_p_change, '2_filter') 
     

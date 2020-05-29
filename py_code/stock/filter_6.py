@@ -19,8 +19,14 @@ ts.get_hist_data('600848') #一次性获取全部日k线数据
 15.ts.get_hist_data('cyb'）#获取创业板指数k线数据
 '''
 
-E = 100000000
-
+def print_filter_6_condition():
+    print('''\n======================= 需求6 =============================
+            需求：  a.当日ma5 > ma10 and ma5 > ma20
+                    b.前一日ma5 < ma10 < ma20
+                    c.成交额大于2亿
+          ''')    
+    return
+    
 from get_stock_hist_data import *
 def filter_6(stock_data):
     print('\nfilter_6():')
@@ -51,11 +57,7 @@ def filter_6(stock_data):
             #print(k)
             progress_bar(j, base)
 
-    print('''\n======================= 需求6 =============================
-            需求：  a.当日ma5 > ma10 and ma5 > ma20
-                    b.前一日ma5 < ma10 < ma20
-                    c.成交额大于2亿
-          ''')        
+    print_filter_6_condition()        
     stock_p_change = get_stock_info_by_key(stock_key)
     #save_stock(stock_p_change, '6_filter') 
 

@@ -7,9 +7,13 @@ stock_basic_info = pd.read_csv("./data/stock_basic_info.csv", encoding="utf-8")
 
 pd.set_option('display.width', 1000)
 
-E = 100000000
-W = 10000
-
+def print_filter_3_condition():
+    print('''\n======================= 需求3 =============================  
+            a. 三天涨幅超过10%
+            b. 收盘价 > 开盘价
+            c. 每天ma5 > ma10 > ma20\n''')    
+    return
+    
 from get_stock_hist_data import *
 def filter_3(stock_data):
     
@@ -73,10 +77,7 @@ def filter_3(stock_data):
             #print(k)
             progress_bar(j, base)
 
-    print('''\n======================= 需求3 =============================  
-            a. 三天涨幅超过10%
-            b. 收盘价 > 开盘价
-            c. 每天ma5 > ma10 > ma20\n''')        
+    print_filter_3_condition()        
     stock_p_change = get_stock_info_by_key(stock_key)
     #save_stock(stock_p_change, '3_filter') 
 

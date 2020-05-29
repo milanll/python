@@ -7,6 +7,11 @@ stock_basic_info = pd.read_csv("./data/stock_basic_info.csv", encoding="utf-8")
 
 pd.set_option('display.width', 1000)
 
+def print_filter_7_condition():
+    print('''\n======================= 需求7 =============================
+            需求：  a.连续3天涨幅大于2%
+          ''')    
+    return
 
 from get_stock_hist_data import *
 def filter_7(stock_data):
@@ -39,10 +44,8 @@ def filter_7(stock_data):
             #print(k)
             progress_bar(j, base)
 
-    print('''\n======================= 需求7 =============================
-            需求：  a.连续3天涨幅大于2%
-          ''') 
-		  
+     
+    print_filter_7_condition()
     stock_p_change = get_stock_info_by_key(stock_key)
     #save_stock(stock_p_change, '7_filter') 
 
