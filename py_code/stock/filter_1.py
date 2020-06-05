@@ -18,9 +18,9 @@ def get_amount(df):
 
 def print_filter_1_condition():
     print('''\n======================= 需求1 =============================
-		a. 连续三天 p_change > 0
+		a. 连续三天成交额上涨
 		b. 连续三天成交量上涨
-		c. 当天成交额 2 亿
+		c. 当天成交额 1 亿
         ''')    
     return
     
@@ -48,9 +48,9 @@ def filter_1(stock_data):
         #open   high    close   low     volume      price_change    p_change    ma5     ma10    ma20    v_ma5       v_ma10      v_ma20
         #10.40  10.55   10.52   10.37   679240.88   0.17            1.64        10.384  10.320  9.941   607936.01   663916.01   713548.05
 		
-        if (((df.iloc[-3].p_change > (-2)) and (df.iloc[-2].p_change > 0 and df.iloc[-2].p_change > df.iloc[-3].p_change) and (df.iloc[-1].p_change > df.iloc[-2].p_change))      #a. 连续三天 p_change > 0
+        if (((df.iloc[-3].p_change > (-2)) and (df.iloc[-2].p_change > 0 and df.iloc[-2].p_change > df.iloc[-3].p_change) and (df.iloc[-1].p_change > df.iloc[-2].p_change and df.iloc[-1].p_change > 2))      #a. 连续三天 p_change > 0
             and ((df.iloc[-2].volume > df.iloc[-3].volume) and (df.iloc[-1].volume > df.iloc[-2].volume) and (df.iloc[-1].volume > df.iloc[-1].v_ma10 * 2))   #b. 连续三天成交量上涨
-            and (get_amount(df.iloc[-1]) > 2 * E )):  #c. 当天成交额 2 亿  
+            and (get_amount(df.iloc[-1]) > 1 * E )):  #c. 当天成交额 1 亿  
             stock_key.append(k)
             #print(k)
             progress_bar(j, base)
