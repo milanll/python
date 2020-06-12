@@ -105,7 +105,7 @@ def get_stock_hist_data():
         #1. volume * price < 10,000,000, discard
         avg_price = (data.iloc[0].high + data.iloc[0].low + data.iloc[0].open + data.iloc[0].close) / 4
         volume = data.iloc[0].volume * 100
-        if (avg_price * volume) < (1.0 * E):
+        if (avg_price * volume) < (2.0 * E):
             continue
           
         #2. price(today) < price(3 months ago) * 0.8, discard
