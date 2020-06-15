@@ -144,6 +144,14 @@ def get_stock():
         d = d.sort_index()
         print(d)
 
+def art_():
+    d = ts.get_hist_data('300485', start = '2020-05-29' , end = '2020-06-24')
+    print(d)
+    atr = get_atr(d)
+    print(atr, atr/d.iloc[0].close)
+    
+    
+    
 if __name__ == '__main__':
     #stock_data = get_hist_data_()
     #test(stock_data)
@@ -152,5 +160,6 @@ if __name__ == '__main__':
     get_stock()
     #data = pd.read_csv('hs300.cvs', encoding = "utf-8")
     #print(data)
+    art_()
 
 
