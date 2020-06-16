@@ -145,21 +145,134 @@ def get_stock():
         print(d)
 
 def art_():
-    d = ts.get_hist_data('300485', start = '2020-05-29' , end = '2020-06-24')
+    d = ts.get_hist_data('300485', start = '2020-05-29' , end = '2020-06-04')
     print(d)
     atr = get_atr(d)
     print(atr, atr/d.iloc[0].close)
+
+#统计5天ATR分布    
+def atr_statistics(stock_data):
+    print('\nrenyy_0():')
+    # create a initial dataframe
+    col_name = ('ts_code', 'symbol', 'name', 'area', 'industry', 'market', 'list_date')
+    stock_ma = pd.DataFrame(columns=col_name)
     
+    stock_key = []
+    #base = stock_basic_info.shape[0]
+    base = len(stock_data)
     
+    j = 0
+    atr_01 = 0
+    atr_02 = 0
+    atr_03 = 0
+    atr_04 = 0
+    atr_05 = 0
+    atr_06 = 0
+    atr_07 = 0
+    atr_08 = 0
+    atr_09 = 0
+    atr_10 = 0
+    atr_11 = 0
+    atr_12 = 0
+    atr_13 = 0
+    atr_14 = 0
+    
+    for k, v in stock_data.items():
+        j += 1
+        df = pd.DataFrame(v)
+        #data.iloc[-1]      #选取DataFrame最后一行，返回的是Series
+        #data.iloc[-1:]     #选取DataFrame最后一行，返回的是DataFrame
+        
+        if(len(df) >= 5):
+            df = df[-5:]
+        else:
+            print('len(df) is too short!!!\n')
+            return
+        
+        atr = get_atr(df)
+        
+        #open   high    close   low     volume      price_change    p_change    ma5     ma10    ma20    v_ma5       v_ma10      v_ma20
+        #10.40  10.55   10.52   10.37   679240.88   0.17            1.64        10.384  10.320  9.941   607936.01   663916.01   713548.05
+        i = 0
+        ma = 0
+        first_close = 0
+        last_close = 0
+        high = 0
+        low = 1000
+        sum_close = 0
+        avg_close = 0
+        atr_rate = 0
+
+        for index, r in df.iterrows():
+            i += 1
+            sum_close += r.close
+        
+        avg_close = sum_close/i
+        atr_rate = atr/avg_close
+        
+        if atr_rate < 0.01:
+            atr_01 += 1
+        elif atr_rate < 0.02:
+            atr_02 += 1
+        elif atr_rate < 0.03:
+            atr_03 += 1
+        elif atr_rate < 0.04:
+            atr_04 += 1
+        elif atr_rate < 0.05:
+            atr_05 += 1
+        elif atr_rate < 0.06:
+            atr_06 += 1
+        elif atr_rate < 0.07:
+            atr_07 += 1
+        elif atr_rate < 0.08:
+            atr_08 += 1
+        elif atr_rate < 0.09:
+            atr_09 += 1
+        elif atr_rate < 0.1:
+            atr_10 += 1
+        elif atr_rate < 0.11:
+            atr_11 += 1    
+        elif atr_rate < 0.12:
+            atr_12 += 1
+        elif atr_rate < 0.13:
+            atr_13 += 1 
+        else:
+            atr_14 += 1
+        
+        stock_key.append(k)
+        #print(k)
+        progress_bar(j, base)
+    print('''\n======================= 需求renyy =============================
+		a. 5日内价格中枢整体抬升。最后一天价格中枢大于第一天。
+        b. 偏离平均价格中枢的最大值，小于一定比例，待定。
+
+        ''') 
+        
+    print(atr_01)
+    print(atr_02)
+    print(atr_03)
+    print(atr_04)
+    print(atr_05)
+    print(atr_06)
+    print(atr_07)
+    print(atr_08)
+    print(atr_09)
+    print(atr_10)
+    print(atr_11)
+    print(atr_12)
+    print(atr_13)
+    print(atr_14)
+    return    
     
 if __name__ == '__main__':
-    #stock_data = get_hist_data_()
+    stock_data = get_hist_data_()
     #test(stock_data)
 	#test_hist_data()
     #get_hs300();
-    get_stock()
+    #get_stock()
     #data = pd.read_csv('hs300.cvs', encoding = "utf-8")
     #print(data)
-    art_()
+    #art_()
+    atr_statistics(stock_data)
 
 

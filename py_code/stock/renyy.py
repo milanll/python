@@ -27,8 +27,9 @@ def renyy_0(stock_data):
         df = pd.DataFrame(v)
         #data.iloc[-1]      #选取DataFrame最后一行，返回的是Series
         #data.iloc[-1:]     #选取DataFrame最后一行，返回的是DataFrame
-        if(len(df) >= 14):
-            df = df[-14:]
+        
+        if(len(df) >= 5):
+            df = df[-5:]
         else:
             print('len(df) is too short!!!\n')
             return
@@ -61,7 +62,7 @@ def renyy_0(stock_data):
             if r.close > r.ma5:
                 ma += 1
             
-        if i == 14 and ma > 7 and last_close > (first_close * 1.10) and (high - low) < 2.8 * atr:
+        if atr/last_close < 0.03 and last_close > first_close:
             stock_key.append(k)
             #print(k)
             progress_bar(j, base)
