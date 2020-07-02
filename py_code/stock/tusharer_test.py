@@ -138,7 +138,7 @@ def test(stock_data):
     return
     
 def get_stock():
-    d = ts.get_hist_data('603385', start = '2020-05-20' , end = '2020-05-26')
+    d = ts.get_hist_data('002605', start = '2020-06-20' , end = '2020-07-01')
 
     if d is not None:
         d = d.sort_index()
@@ -269,10 +269,10 @@ if __name__ == '__main__':
     #test(stock_data)
 	#test_hist_data()
     #get_hs300();
-    #get_stock()
+    get_stock()
     #data = pd.read_csv('hs300.cvs', encoding = "utf-8")
     #print(data)
     #art_()
-    atr_statistics(stock_data)
+    #atr_statistics(stock_data)
 
 

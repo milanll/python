@@ -68,7 +68,7 @@ def filter_3(stock_data):
 
             pre_close = r.close
                 
-        if (p_change > 6 
+        if (p_change > 10 
             and i == 3 
             #成交额大于2亿
             and ((d.iloc[-1].close * d.iloc[-1].volume * 100) > 2 * E)):
@@ -76,7 +76,7 @@ def filter_3(stock_data):
             stock_key.append(k)
             #print(k)
             progress_bar(j, base)
-
+        
     print_filter_3_condition()        
     stock_p_change = get_stock_info_by_key(stock_key)
     #save_stock(stock_p_change, '3_filter') 
