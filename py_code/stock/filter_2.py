@@ -54,7 +54,7 @@ def filter_2(stock_data):
                 i += 1
             p += r.p_change
                 
-        if p > 15 and i == 3:
+        if p > 25 and i == 3:
             stock_key.append(k)
             #print(k)
             progress_bar(j, base)
