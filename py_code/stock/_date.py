@@ -167,8 +167,10 @@ def get_x_trade_days(x):
         i = x
     
     #print('i is %d' % i)
-    start_date = transfer_date_format(cal_date[i - x + 1])
-    end_date = transfer_date_format(get_trade_date())
+    #start_date = transfer_date_format(cal_date[i - x + 1])
+    #end_date = transfer_date_format(get_trade_date())
+    start_date = cal_date[i - x + 1]
+    end_date = get_trade_date()
     #print(end_date)
 
     #start_date = datetime.datetime.strptime(start_date, "%Y-%m-%d").date()

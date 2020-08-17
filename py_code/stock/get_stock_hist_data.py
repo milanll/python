@@ -17,7 +17,7 @@ pd.set_option('display.max_rows', None)
 
 
 #股票数据的周期
-x_trade_days = 28
+x_trade_days = 50
 
 #0    ts_code       symbol      name        area        industry    market  list_date
 #0      000001.SZ       1       平安银行     深圳       银行        主板      19910403
@@ -54,11 +54,14 @@ def save_hist_data():
         
         hist_data_dict = get_stock_hist_data()
         
-        with open(file_json_dir, 'w') as f:
-            data_dict = json.dumps(hist_data_dict)
-            json.dump(data_dict, f)
-            f.close()
-        print('Save \'%s\' successfully!!!' % file_json)
+        if hist_data_dict != None:
+            with open(file_json_dir, 'w') as f:
+                data_dict = json.dumps(hist_data_dict)
+                json.dump(data_dict, f)
+                f.close()
+            print('Save \'%s\' successfully!!!' % file_json)
+        else:
+            print("save_hist_data(): hist_data_dict is None")
     else:
         print('\'%s\' exsit!!!\n' % file_json)
     
@@ -69,6 +72,9 @@ def save_hist_data():
 def read_hist_data(file):
     #file_json = f'hist_data_{end_date}.json'
     #file_json_dir = f'./data/{file_json}'
+    if file == None:
+        print("read_hist_data():file is None")
+        return None
     
     with open(file, 'r') as f:
         data = json.load(f)
@@ -96,30 +102,49 @@ def get_stock_hist_data():
         i += 1
         code = str(row.symbol).zfill(6)
         
-        data = ts.get_hist_data(code, start = start_date, end = end_date)
-
+        #data = ts.get_hist_data(code, start = start_date, end = end_date)
+        #data = ts.get_h_data(code, start = start_date, end = end_date)
+        
+        #       ts_code  trade_date   open   high    low    close     pre_close  change  pct_chg         vol         amount         ma5       ma_v_5        ma10      ma_v_10       ma20       ma_v_20
+        #0   000001.SZ   20181011     10.05  10.16   9.70   9.86      10.45       -0.59  -5.6459         1995143.83  1994186.611    10.474    1570205.872   10.527    1344378.759   10.2365    1.068715e+06
+        #print(code, start_date, end_date)
+        data = ts.pro_bar(ts_code = row.ts_code, start_date = start_date, end_date = end_date, adj='qfq', ma=[5, 10, 20])
+        #print(data)
+        #break
+        
         #the data is wrong, discard
         if check_stock_data(data, x_trade_days, code) != True:
             continue
             
         #1. volume * price < 10,000,000, discard
         avg_price = (data.iloc[0].high + data.iloc[0].low + data.iloc[0].open + data.iloc[0].close) / 4
-        volume = data.iloc[0].volume * 100
-        if (avg_price * volume) < (2.0 * E):
+        volume = data.iloc[0].vol * 100
+        if (avg_price * volume) < (1.5 * E):
             continue
           
         #2. price(today) < price(3 months ago) * 0.8, discard
         #if(data.iloc[0].close < (data.iloc[-1].close * 0.8)):
             #continue
             
-        #3. suspend today, discard    
-        if(data.index.values[0] != end_date):
+        #3. suspend today, discard         
+        if(data.iloc[0].trade_date != end_date):
             continue
   
         #hist_data[code] = data
         
         #sort by date, ascending order
-        data = data.sort_index()
+        '''
+        sort_index(axis=0, level=None, ascending=True, inplace=False, kind='quicksort', na_position='last', sort_remaining=True, by=None)
+        axis：0按照行名排序；1按照列名排序
+        level：默认None，否则按照给定的level顺序排列---貌似并不是，文档
+        ascending：默认True升序排列；False降序排列
+        inplace：默认False，否则排序之后的数据直接替换原来的数据框
+        kind：排序方法，{‘quicksort’, ‘mergesort’, ‘heapsort’}, default ‘quicksort’。似乎不用太关心。
+        na_position：缺失值默认排在最后{"first","last"}
+        by：按照某一列或几列数据进行排序，但是by参数貌似不建议使用
+        '''
+        
+        #data = data.sort_index(ascending=False)
         data_dict = data.to_dict()
         
         hist_data_dict[code] = data_dict

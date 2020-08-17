@@ -13,7 +13,7 @@ pd.set_option('display.width', 1000)
 
 def print_filter_9_condition():
     print('''\n======================= 需求9 =============================
-            需求：连续20个交易日，收盘价在ma20以上
+            需求：连续4个交易日，收盘涨幅2%以上
           ''')    
     return
     
@@ -34,16 +34,16 @@ def filter_9(stock_data):
     for k, v in stock_data.items():
         j += 1
         df = pd.DataFrame(v)
-
+        df = df[-4:]
         #open   high    close   low     volume      price_change    p_change    ma5     ma10    ma20    v_ma5       v_ma10      v_ma20
         #10.40  10.55   10.52   10.37   679240.88   0.17            1.64        10.384  10.320  9.941   607936.01   663916.01   713548.05
         i = 0
         for index, r in df.iterrows():           
-            if r.close > (r.ma20):
+            if r.p_change > 2:
                 i += 1
                 continue
             
-        if i == len(df):
+        if i == 4:
             stock_key.append(k)
             #print(k)
             progress_bar(j, base)

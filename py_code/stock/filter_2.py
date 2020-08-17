@@ -31,7 +31,7 @@ def filter_2(stock_data):
     # create a initial dataframe
     col_name = ('ts_code', 'symbol', 'name', 'area', 'industry', 'market', 'list_date')
     stock_ma = pd.DataFrame(columns=col_name)
-    
+
     stock_key = []
     #base = stock_basic_info.shape[0]
     base = len(stock_data)
@@ -42,19 +42,22 @@ def filter_2(stock_data):
     for k, v in stock_data.items():
         j += 1
         df = pd.DataFrame(v)
+        df = df.sort_values(by = "trade_date")
+        
         #get the last 3 rows.
         df = df[-3:]
         
-        #open   high    close   low     volume      price_change    p_change    ma5     ma10    ma20    v_ma5       v_ma10      v_ma20
-        #10.40  10.55   10.52   10.37   679240.88   0.17            1.64        10.384  10.320  9.941   607936.01   663916.01   713548.05
+        #       ts_code  trade_date   open   high    low    close     pre_close  change(额度)   pct_chg(幅度)   vol         amount         ma5       ma_v_5        ma10      ma_v_10       ma20       ma_v_20
+        #0   000001.SZ   20181011     10.05  10.16   9.70   9.86      10.45       -0.59         -5.6459         1995143.83  1994186.611    10.474    1570205.872   10.527    1344378.759   10.2365    1.068715e+06
+		
         p = 0
         i = 0
         for index, r in df.iterrows(): 
-            if r.p_change > 1:
+            if r.pct_chg > 1:
                 i += 1
-            p += r.p_change
+            p += r.pct_chg
                 
-        if p > 25 and i == 3:
+        if p > 15 and i == 3:
             stock_key.append(k)
             #print(k)
             progress_bar(j, base)

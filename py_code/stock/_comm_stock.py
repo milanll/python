@@ -100,7 +100,10 @@ def get_atr(stock_info):
     3.参数N设置为14日
     '''
     pre_close = 0
-
+    
+    #    ts_code     trade_date  open  high     low  close      pre_close  change  pct_chg      vol         amount      ma5     ma_v_5      ma10        ma_v_10     ma20      ma_v_20
+    #1   600157.SH   20200811    1.39  1.43     1.38   1.38       1.39      -0.01  -0.7194      2159391.85  303472.626  1.382   1739221.142  1.371      1555656.944  1.3540  1413549.894
+    #0   600157.SH   20200812    1.37  1.42     1.36   1.41       1.38      0.03   2.1739       1881561.60  259874.204  1.390   1888087.140  1.379      1653376.382  1.3560  1418746.485
     for index, v in stock_info.iterrows():
         if pre_close == 0:
             pre_close = v.close

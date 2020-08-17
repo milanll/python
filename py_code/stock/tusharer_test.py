@@ -108,44 +108,12 @@ def test_hist_data():
     print(get_average_close(d))
     print(get_atr(d) / get_average_close(d))
 
-def get_hs300():
-    d = ts.get_hist_data('hs300', start = '2020-04-10' , end = '2020-04-14')
-    if d is not None:
-        d = d.sort_index()
-        print(d.index.values[0])
-    d.to_csv('hs300.cvs', encoding="utf-8")
 
     
-def test(stock_data):
-    print('\ntest():')
-    
-    stock_key = []
-    #base = stock_basic_info.shape[0]
-    base = len(stock_data)
-      
-    j = 0
-    for k, v in stock_data.items():
-        j += 1
-        df = pd.DataFrame(v)
-        
-        if df.iloc[0].close < df.iloc[-1].close:
-            stock_key.append(k)
-            #print(k)
-            progress_bar(j, base)
-            
-    stock_p_change = get_stock_info_by_key(stock_key) 
 
-    return
-    
-def get_stock():
-    d = ts.get_hist_data('002605', start = '2020-06-20' , end = '2020-07-01')
-
-    if d is not None:
-        d = d.sort_index()
-        print(d)
 
 def art_():
-    d = ts.get_hist_data('300485', start = '2020-05-29' , end = '2020-06-04')
+    d = ts.get_hist_data('300454', start = '2020-07-01' , end = '2020-07-10')
     print(d)
     atr = get_atr(d)
     print(atr, atr/d.iloc[0].close)
@@ -263,16 +231,21 @@ def atr_statistics(stock_data):
     print(atr_13)
     print(atr_14)
     return    
+
+def test():
+    #    ts_code     trade_date  open  high     low  close      pre_close  change  pct_chg      vol         amount      ma5     ma_v_5      ma10        ma_v_10     ma20      ma_v_20
+    #1   600157.SH   20200811    1.39  1.43     1.38   1.38       1.39      -0.01  -0.7194      2159391.85  303472.626  1.382   1739221.142  1.371      1555656.944  1.3540  1413549.894
+    #0   600157.SH   20200812    1.37  1.42     1.36   1.41       1.38      0.03   2.1739       1881561.60  259874.204  1.390   1888087.140  1.379      1653376.382  1.3560  1418746.485
+    df = ts.pro_bar(ts_code='600157.SH', adj='qfq', start_date='20200713', end_date='20200812', ma = [5,10,20])
+    df = df.sort_values(by = "trade_date")
+    #print(df)
+    
+    atr = get_atr(df)
+    print((atr/df.iloc[-1].ma10).round(3))
     
 if __name__ == '__main__':
-    stock_data = get_hist_data_()
-    #test(stock_data)
-	#test_hist_data()
-    #get_hs300();
-    get_stock()
-    #data = pd.read_csv('hs300.cvs', encoding = "utf-8")
-    #print(data)
-    #art_()
-    #atr_statistics(stock_data)
+    #stock_data = get_hist_data_()
+    test()
+    
 
 
